@@ -1,8 +1,12 @@
 # Demo video
 
-**Link:** _not recorded yet – paste the YouTube / Drive link here once it exists._
+**Video:** [`sagarkatha_demo_video.mp4`](sagarkatha_demo_video.mp4) (about 2 min 47 s, 1280×720, 6.8 MB). On GitHub, click the file to play it in the browser.
 
-## Suggested 2-minute walkthrough
+It is a narrated **pitch video** (slides and captions) that explains the problem and the idea. It is not a screen recording of the app. The quotes shown in it are the author's own pitch material; check that each one is a real, consented quotation or label it as illustrative before using it publicly.
+
+If you upload it to YouTube or Drive as well, paste that link here.
+
+## Suggested script for a screen-recording of the app
 
 1. **(0:00)** Home page – the problem in one sentence, the sample-data notice.
 2. **(0:15)** *Contribute a story* – tick consent, record 10 seconds with the microphone, type the transcript, choose "Approximate" location, save, show the withdraw code.

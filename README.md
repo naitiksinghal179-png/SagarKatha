@@ -14,6 +14,8 @@ A multilingual web app where India's fishers record what they know about the sea
 
 Built for the **Viksit Bharat Young Leaders Dialogue (VBYLD) 2027**.
 
+🎬 **Pitch video:** [demo/sagarkatha_demo_video.mp4](demo/sagarkatha_demo_video.mp4) (2 min 47 s)
+
 > **Status: working prototype.** The code is tested (100+ automated tests) and every page runs, but it has **not** been tested with real fishing communities, and the live-data features (Open-Meteo, GBIF, speech-to-text) were tested with mocked responses because the build environment had no access to those services. Read [What is not built yet](#what-is-not-built-yet) before presenting it.
 
 | Home | Contribute a story |
