@@ -1,0 +1,13 @@
+[theme]
+primaryColor = "#1B6A8A"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#EAF4F9"
+textColor = "#102A3A"
+
+[server]
+maxUploadSize = 25          # MB – keep equal to SAGARKATHA_MAX_AUDIO_MB
+enableXsrfProtection = true
+enableCORS = true
+
+[browser]
+gatherUsageStats = false

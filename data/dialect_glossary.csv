@@ -1,0 +1,69 @@
+id,term,transliteration,language,dialect_region,concept,category,meaning_en,usage_note,status
+g001,മത്തി,mathi,ml,Kerala,sardine,species,Sardine (oil sardine),One of the most common fish on Kerala's coast.,needs_review
+g002,ചാള,chaala,ml,Kerala,sardine,species,Sardine,Another name for the sardine in many parts of Kerala.,needs_review
+g003,சாளை,sālai,ta,Tamil Nadu,sardine,species,Sardine,Tamil name for the sardine.,needs_review
+g004,ಬೂತಾಯಿ,boothai,kn,Mangaluru–Udupi,sardine,species,Sardine,Also used in the Tulu-speaking coast.,needs_review
+g005,तारली,tārlī,mr,Konkan,sardine,species,Sardine,Konkan name for the sardine.,needs_review
+g006,അയല,ayala,ml,Kerala,mackerel,species,Indian mackerel,,needs_review
+g007,बांगडा,bāṅgḍā,mr,Konkan,mackerel,species,Indian mackerel,A staple of Konkan fish meals.,needs_review
+g008,ಬಂಗುಡೆ,bangude,kn,Mangaluru–Udupi,mackerel,species,Indian mackerel,,needs_review
+g009,அயிலை,ayilai,ta,Tamil Nadu,mackerel,species,Indian mackerel,,needs_review
+g010,ചെമ്മീൻ,chemmeen,ml,Kerala,prawn,species,Prawn / shrimp,,needs_review
+g011,চিংড়ি,chingri,bn,West Bengal,prawn,species,Prawn / shrimp,,needs_review
+g012,ଚିଙ୍ଗୁଡ଼ି,chinguḍi,or,Odisha,prawn,species,Prawn / shrimp,,needs_review
+g013,कोळंबी,kōḷambī,mr,Konkan,prawn,species,Prawn / shrimp,,needs_review
+g014,రొయ్య,royya,te,Andhra Pradesh,prawn,species,Prawn / shrimp,,needs_review
+g015,இறால்,iṟāl,ta,Tamil Nadu,prawn,species,Prawn / shrimp,,needs_review
+g016,सुंगटां,sungṭāṁ,kok,Goa,prawn,species,Prawn / shrimp,Plural form; common in Goan kitchens.,needs_review
+g017,बोंबील,bombīl,mr,Konkan / Mumbai,bombay_duck,species,Bombay duck (Harpadon nehereus),Caught with stationary bag nets (dol) off Maharashtra and Gujarat.,needs_review
+g018,બૂમલા,būmlā,gu,Gujarat,bombay_duck,species,Bombay duck,Gujarati name; the dried fish is also sold as 'bombil'.,needs_review
+g019,ইলিশ,ilish,bn,West Bengal,hilsa,species,Hilsa (Tenualosa ilisha),Migrates from the sea into rivers and estuaries.,needs_review
+g020,ଇଲିଶି,ilisi,or,Odisha,hilsa,species,Hilsa,,needs_review
+g021,పులస,pulasa,te,Godavari delta,hilsa,species,Hilsa caught in the Godavari,Prized river-run hilsa of the Godavari.,needs_review
+g022,पापलेट,pāpleṭ,mr,Konkan / Mumbai,pomfret,species,Pomfret,,needs_review
+g023,ആവോലി,avoli,ml,Kerala,pomfret,species,Pomfret,,needs_review
+g024,सुरमई,surmaī,mr,Konkan / Mumbai,seer_fish,species,Seer fish / king mackerel,,needs_review
+g025,നെയ്മീൻ,neymeen,ml,Kerala,seer_fish,species,Seer fish / king mackerel,,needs_review
+g026,வஞ்சிரம்,vañjiram,ta,Tamil Nadu,seer_fish,species,Seer fish / king mackerel,,needs_review
+g027,ಅಂಜಲ್,anjal,kn,Mangaluru–Udupi,seer_fish,species,Seer fish / king mackerel,,needs_review
+g028,വള്ളം,vallam,ml,Kerala,boat,technique,Country boat / canoe,,needs_review
+g029,கட்டுமரம்,kaṭṭumaram,ta,Tamil Nadu,boat,technique,Log raft ('tied wood'),The origin of the English word 'catamaran'.,needs_review
+g030,होडी,hōḍī,mr,Konkan,boat,technique,Small wooden fishing boat,,needs_review
+g031,હોડી,hōḍī,gu,Gujarat,boat,technique,Boat,,needs_review
+g032,పడవ,paḍava,te,Andhra Pradesh,boat,technique,Boat,,needs_review
+g033,नाव,nāv,hi,standard,boat,technique,Boat,,needs_review
+g034,নৌকা,noukā,bn,West Bengal,boat,technique,Boat,,needs_review
+g035,വല,vala,ml,Kerala,net,technique,Fishing net,,needs_review
+g036,ചീനവല,chīnavala,ml,Kochi,net,technique,Chinese fishing net,Large cantilever net worked from the shore at Kochi.,needs_review
+g037,வலை,valai,ta,Tamil Nadu,net,technique,Fishing net,,needs_review
+g038,जाळं,jāḷaṁ,mr,Konkan,net,technique,Fishing net,,needs_review
+g039,डोल,ḍōl,mr,Maharashtra,net,technique,Stationary bag net,Fixed net used for Bombay duck; the tide flows fish into it.,needs_review
+g040,ಬಲೆ,bale,kn,Mangaluru–Udupi,net,technique,Fishing net,,needs_review
+g041,వల,vala,te,Andhra Pradesh,net,technique,Fishing net,,needs_review
+g042,જાળ,jāḷ,gu,Gujarat,net,technique,Fishing net,,needs_review
+g043,जाल,jāl,hi,standard,net,technique,Fishing net,,needs_review
+g044,জাল,jāl,bn,West Bengal,net,technique,Fishing net,,needs_review
+g045,भरती,bharatī,mr,Konkan,high_tide,current,High tide,,needs_review
+g046,ओहोटी,ohoṭī,mr,Konkan,low_tide,current,Low tide / ebb,,needs_review
+g047,ભરતી,bharatī,gu,Gujarat,high_tide,current,High tide,,needs_review
+g048,ઓટ,oṭ,gu,Gujarat,low_tide,current,Low tide / ebb,,needs_review
+g049,വേലിയേറ്റം,vēliyēṟṟaṁ,ml,Kerala,high_tide,current,High tide,,needs_review
+g050,വേലിയിറക്കം,vēliyiṟakkaṁ,ml,Kerala,low_tide,current,Low tide / ebb,,needs_review
+g051,ज्वार,jwār,hi,standard,high_tide,current,High tide,,needs_review
+g052,भाटा,bhāṭā,hi,standard,low_tide,current,Low tide / ebb,,needs_review
+g053,கடல்,kaṭal,ta,Tamil Nadu,sea,current,Sea,,needs_review
+g054,കടൽ,kaṭal,ml,Kerala,sea,current,Sea,,needs_review
+g055,समुद्र,samudra,hi,standard,sea,current,Sea,,needs_review
+g056,દરિયો,dariyo,gu,Gujarat,sea,current,Sea,Used for 'the sea' in everyday Gujarati.,needs_review
+g057,அலை,alai,ta,Tamil Nadu,wave,current,Wave,,needs_review
+g058,തിര,tira,ml,Kerala,wave,current,Wave,,needs_review
+g059,लहर,lahar,hi,standard,wave,current,Wave,,needs_review
+g060,ತೆರೆ,tere,kn,Mangaluru–Udupi,wave,current,Wave,,needs_review
+g061,लाट,lāṭ,mr,Konkan,wave,current,Wave,,needs_review
+g062,कोळी,kōḷī,mr,Konkan / Mumbai,fisher,other,Koli – fishing community of Maharashtra,Name of a fishing community and also used for its members.,needs_review
+g063,ખારવા,khārvā,gu,Saurashtra,fisher,other,Kharva – seafaring and fishing community of Gujarat,,needs_review
+g064,മുക്കുവൻ,mukkuvan,ml,Kerala,fisher,other,Fisherman,,needs_review
+g065,மீனவர்,mīṉavar,ta,Tamil Nadu,fisher,other,Fisher,,needs_review
+g066,मछुआरा,machhuārā,hi,standard,fisher,other,Fisher,,needs_review
+g067,জেলে,jele,bn,West Bengal,fisher,other,Fisher,,needs_review
+g068,ചാകര,chākara,ml,Kerala,mudbank_catch,species,"Sudden abundance of fish near the shore, linked to monsoon mudbanks","Calm, muddy water near the beach and a rush of fish – see the sample story 'Chakara'.",needs_review

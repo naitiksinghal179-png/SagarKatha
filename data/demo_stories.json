@@ -1,0 +1,818 @@
+[
+  {
+    "category": "folklore",
+    "note": "Traditional tale retold in simple English for this demo. Versions differ between communities - check with local elders and credit them before sharing.",
+    "narrator": "",
+    "title": "Parashurama and the Retreating Sea",
+    "tags": [
+      "folktale",
+      "Konkan",
+      "Malabar",
+      "creation"
+    ],
+    "text": "Long ago the sage Parashurama stood on the western hills and wished for new land where people could live. He hurled his axe far out over the water. Where it fell, the sea drew back, and a long green strip of coast appeared: the Konkan and the Malabar. Fishers say the sea still remembers, and that it comes close in the monsoon as if asking for its land back.",
+    "lesson": "Coasts are shared with the sea, so respect its moods.",
+    "quiz": {
+      "question": "How does the new coast appear in this tale?",
+      "options": [
+        "A river carries soil to the sea",
+        "The sea draws back where the axe falls",
+        "A storm builds a sandbar"
+      ],
+      "answer": 1
+    },
+    "id": "sample_01",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-02T09:00:00+00:00",
+    "region": "mng",
+    "state": "Karnataka",
+    "lat": 13.35,
+    "lng": 74.75
+  },
+  {
+    "category": "folklore",
+    "note": "Traditional tale retold in simple English for this demo. Versions differ between communities - check with local elders and credit them before sharing.",
+    "narrator": "",
+    "title": "Matsya and the Great Flood",
+    "tags": [
+      "folktale",
+      "flood",
+      "Vishnu",
+      "told across India"
+    ],
+    "region": "",
+    "text": "A tiny fish begged the king Manu to save it from bigger fish. Manu kept it in a jar, then a pond, then a river, and each time it grew. At last the fish became huge and revealed itself as the god Vishnu. It warned Manu that a great flood was coming and told him to build a boat. When the waters rose, the fish towed the boat to safety, carrying the seeds of life for a new beginning.",
+    "lesson": "Kindness to the smallest creature can save the world.",
+    "quiz": {
+      "question": "What did the fish do after it grew?",
+      "options": [
+        "It warned Manu and towed his boat through the flood",
+        "It ate the other fish in the river",
+        "It swam back to the sea alone"
+      ],
+      "answer": 0
+    },
+    "id": "sample_02",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-03T09:00:00+00:00"
+  },
+  {
+    "category": "folklore",
+    "note": "Traditional tale retold in simple English for this demo. Versions differ between communities - check with local elders and credit them before sharing.",
+    "narrator": "",
+    "title": "The Drowned City of Dwarka",
+    "tags": [
+      "folktale",
+      "Dwarka",
+      "Krishna",
+      "Gujarat"
+    ],
+    "text": "Tradition says Krishna built the shining city of Dwarka beside the western sea. After he left the world, the sea rose and covered the city. Divers and marine archaeologists have studied underwater stone structures off Dwarka and Bet Dwarka, though scholars still debate how old they are. Gujarat's fishers grew up on this tale: today's shore may be tomorrow's sea.",
+    "lesson": "Coastlines change. The sea is powerful, so stay humble before it.",
+    "quiz": {
+      "question": "What does the legend say happened to Dwarka?",
+      "options": [
+        "Fire destroyed it",
+        "The sea rose and covered it",
+        "It was moved inland"
+      ],
+      "answer": 1
+    },
+    "id": "sample_03",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-04T09:00:00+00:00",
+    "region": "guj",
+    "state": "Gujarat",
+    "lat": 22.25,
+    "lng": 68.95
+  },
+  {
+    "category": "folklore",
+    "note": "Traditional tale retold in simple English for this demo. Versions differ between communities - check with local elders and credit them before sharing.",
+    "narrator": "",
+    "title": "Poompuhar, the Port the Sea Took",
+    "tags": [
+      "folktale",
+      "Poompuhar",
+      "Silappatikaram",
+      "Manimekalai",
+      "Tamil Nadu"
+    ],
+    "text": "Poompuhar, also called Kaveripoompattinam, was a busy port where the river Kaveri meets the sea. Tamil epics such as Silappatikaram and Manimekalai sing of its ships, markets and seaside festivals. Manimekalai also tells that the sea swallowed the city, and that a sea goddess watched over travellers on the waves. Underwater surveys have searched the sea floor near Poompuhar for traces of the old port.",
+    "lesson": "Great ports can vanish. Memory is how a coast survives.",
+    "quiz": {
+      "question": "What do Tamil epic traditions say happened to the port of Puhar?",
+      "options": [
+        "It was burned in a war",
+        "The sea swallowed it",
+        "The river dried up"
+      ],
+      "answer": 1
+    },
+    "id": "sample_04",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-05T09:00:00+00:00",
+    "region": "gom",
+    "state": "Tamil Nadu",
+    "lat": 11.15,
+    "lng": 79.85
+  },
+  {
+    "category": "folklore",
+    "note": "Traditional tale retold in simple English for this demo. Versions differ between communities - check with local elders and credit them before sharing.",
+    "narrator": "",
+    "title": "Bonbibi, Lady of the Forest",
+    "tags": [
+      "folktale",
+      "Bonbibi",
+      "Sundarbans",
+      "mangrove",
+      "honey"
+    ],
+    "text": "In the mangrove forests of the Sundarbans, honey-gatherers, woodcutters and fishers pray to Bonbibi, lady of the forest. The tale says a greedy tiger-spirit, Dakshin Rai, wanted to eat a poor boy named Dukhe. The boy called on Bonbibi, and she saved him. Her rule for everyone who enters the forest is simple: take only what you need, and never be greedy. People of different faiths honour her together.",
+    "lesson": "Take only what you need. Greed brings danger.",
+    "quiz": {
+      "question": "What is Bonbibi's rule for people who enter the forest?",
+      "options": [
+        "Bring gold as a gift",
+        "Go in alone at night",
+        "Take only what you need"
+      ],
+      "answer": 2
+    },
+    "id": "sample_05",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-06T09:00:00+00:00",
+    "region": "wb",
+    "state": "West Bengal",
+    "lat": 21.9,
+    "lng": 88.8
+  },
+  {
+    "category": "folklore",
+    "note": "Traditional tale retold in simple English for this demo. Versions differ between communities - check with local elders and credit them before sharing.",
+    "narrator": "",
+    "title": "Kalijai of Chilika",
+    "tags": [
+      "folktale",
+      "Kalijai",
+      "Chilika",
+      "Odisha"
+    ],
+    "text": "On a small island in Chilika lake stands a shrine to Kalijai. In one popular version of the tale, a newly married girl named Jai was crossing the lake by boat with her father to meet her husband's family on an island. A cyclone capsized the boat. The boatman and her father survived, but Jai was lost. The villagers came to see her as a goddess who protects people on the water, and the shrine still draws boatmen and pilgrims.",
+    "lesson": "Respect the weather and pray for a safe crossing.",
+    "quiz": {
+      "question": "Whom does Kalijai protect?",
+      "options": [
+        "Only temple priests",
+        "Farmers in the hills",
+        "Boatmen crossing the lake"
+      ],
+      "answer": 2
+    },
+    "id": "sample_06",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-07T09:00:00+00:00",
+    "region": "odi",
+    "state": "Odisha",
+    "lat": 19.7,
+    "lng": 85.25
+  },
+  {
+    "category": "folklore",
+    "note": "Traditional tale retold in simple English for this demo. Versions differ between communities - check with local elders and credit them before sharing.",
+    "narrator": "",
+    "title": "Narali Purnima, a Gift to the Sea",
+    "tags": [
+      "folktale",
+      "festival",
+      "Koli",
+      "Maharashtra",
+      "coconut"
+    ],
+    "text": "Every year after the monsoon, on the full-moon day of Shravan, Koli fishing families of Maharashtra gather on the shore. They offer a coconut to the sea to say thank you and to ask for safe journeys. The monsoon months are a rest time, when many fish breed. The coconut marks the day the boats go back to the water.",
+    "lesson": "Give thanks, and let the sea rest so it can give again.",
+    "quiz": {
+      "question": "What do Koli families offer to the sea?",
+      "options": [
+        "A coconut",
+        "A silver fish",
+        "A new net"
+      ],
+      "answer": 0
+    },
+    "id": "sample_07",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-08T09:00:00+00:00",
+    "region": "mum",
+    "state": "Maharashtra",
+    "lat": 18.95,
+    "lng": 72.85
+  },
+  {
+    "category": "folklore",
+    "note": "Traditional tale retold in simple English for this demo. Versions differ between communities - check with local elders and credit them before sharing.",
+    "narrator": "",
+    "title": "Rama's Bridge and the Little Squirrel",
+    "tags": [
+      "folktale",
+      "Ramayana",
+      "Rameswaram",
+      "Rama Setu"
+    ],
+    "text": "The Ramayana tells of the great bridge built across the sea to Lanka. Rama's army of vanaras dropped stones into the water, and the stones floated when Rama's name was written on them. A little squirrel also helped, rolling in the sand and shaking grains onto the bridge. Rama stroked her back in thanks. The chain of shoals between Rameswaram and Sri Lanka is known as Rama's Bridge, or Adam's Bridge.",
+    "lesson": "Small help counts. Every hand matters.",
+    "quiz": {
+      "question": "Who helped by carrying tiny grains of sand?",
+      "options": [
+        "A little squirrel",
+        "A crab",
+        "A heron"
+      ],
+      "answer": 0
+    },
+    "id": "sample_08",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-09T09:00:00+00:00",
+    "region": "gom",
+    "state": "Tamil Nadu",
+    "lat": 9.3,
+    "lng": 79.3
+  },
+  {
+    "title": "Bombil used to come to the shore",
+    "region": "guj",
+    "category": "change",
+    "species": [
+      "Bombil (Bombay duck)"
+    ],
+    "tags": [
+      "shore catch",
+      "monsoon"
+    ],
+    "text": "When I was a boy the Bombil came so close in the monsoon that we could net them from the shore. Now the boats have to go much farther out to find them.",
+    "summary_en": "Bombil, once caught near shore in the monsoon, is now found much farther out.",
+    "note": "Illustrative sample written for this demo - not a real fisher's recording.",
+    "id": "sample_09",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-10T09:00:00+00:00",
+    "state": "Gujarat",
+    "lat": 21.0,
+    "lng": 70.2
+  },
+  {
+    "title": "Chakara: when the sea turns muddy and calm",
+    "region": "ker",
+    "category": "species",
+    "species": [
+      "Sardine"
+    ],
+    "tags": [
+      "monsoon",
+      "mudbank",
+      "chakara"
+    ],
+    "text": "In the monsoon, in some places the sea near our beach turns muddy and calm. We call it chakara, and the fish, especially sardines, come in close. We watch the colour of the water to know.",
+    "summary_en": "Calm, muddy water near the beach in the monsoon (chakara) brings fish, especially sardines, close to shore.",
+    "note": "Illustrative sample written for this demo - not a real fisher's recording.",
+    "id": "sample_10",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-11T09:00:00+00:00",
+    "state": "Kerala",
+    "lat": 10.1,
+    "lng": 76.2
+  },
+  {
+    "title": "Reading the north-east wind",
+    "region": "che",
+    "category": "weather",
+    "species": [],
+    "tags": [
+      "north-east wind",
+      "clouds",
+      "dusk"
+    ],
+    "text": "When the wind swings to the north-east and the clouds pile up over the sea at dusk, my father brought the boats in early. He read the sky, not a phone.",
+    "summary_en": "A north-east wind shift and dusk clouds were a signal to bring boats in early.",
+    "note": "Illustrative sample written for this demo - not a real fisher's recording.",
+    "id": "sample_11",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-12T09:00:00+00:00",
+    "state": "Tamil Nadu",
+    "lat": 13.05,
+    "lng": 80.3
+  },
+  {
+    "title": "Clear water in Chilika",
+    "region": "odi",
+    "category": "species",
+    "species": [
+      "Prawn",
+      "Crab"
+    ],
+    "tags": [
+      "chilika",
+      "clear water"
+    ],
+    "text": "In Chilika the crabs and prawns are plentiful when the water is clear and the wind is light. We set the nets before sunrise.",
+    "summary_en": "Clear water and light wind in Chilika signal good prawn and crab catches.",
+    "note": "Illustrative sample written for this demo - not a real fisher's recording.",
+    "id": "sample_12",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-13T09:00:00+00:00",
+    "state": "Odisha",
+    "lat": 19.7,
+    "lng": 85.25
+  },
+  {
+    "title": "Before we enter the creeks",
+    "region": "wb",
+    "category": "folklore",
+    "species": [],
+    "tags": [
+      "bonbibi",
+      "sundarbans",
+      "safety"
+    ],
+    "text": "Before we enter the creeks of the Sundarbans we call on Bonbibi. We go in groups, never alone, and we take only what we need.",
+    "summary_en": "Fishers invoke Bonbibi, travel in groups and take only what they need in the Sundarbans.",
+    "note": "Illustrative sample written for this demo - not a real fisher's recording.",
+    "id": "sample_13",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-14T09:00:00+00:00",
+    "state": "West Bengal",
+    "lat": 21.9,
+    "lng": 88.8
+  },
+  {
+    "title": "Silver flashes at dawn",
+    "region": "mng",
+    "category": "technique",
+    "species": [
+      "Sardine"
+    ],
+    "tags": [
+      "ring net",
+      "shoal",
+      "dawn"
+    ],
+    "text": "At first light we look for silver flashes on the water. That is the shoal. We circle it quietly with the net before the sun gets high.",
+    "summary_en": "Fishers spot sardine shoals by silver flashes at dawn and circle them with nets.",
+    "note": "Illustrative sample written for this demo - not a real fisher's recording.",
+    "id": "sample_14",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-15T09:00:00+00:00",
+    "state": "Karnataka",
+    "lat": 13.0,
+    "lng": 74.75
+  },
+  {
+    "title": "The sea is taking our beach",
+    "region": "ap",
+    "category": "change",
+    "species": [],
+    "tags": [
+      "erosion",
+      "village",
+      "shoreline"
+    ],
+    "text": "The sea is taking the beach at our village. Our fathers' houses stood where the waves are now.",
+    "summary_en": "Coastal erosion has moved the shoreline past the site of old village houses.",
+    "note": "Illustrative sample written for this demo - not a real fisher's recording.",
+    "id": "sample_15",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-16T09:00:00+00:00",
+    "state": "Andhra Pradesh",
+    "lat": 17.7,
+    "lng": 83.35
+  },
+  {
+    "title": "Follow the birds",
+    "region": "lak",
+    "category": "species",
+    "species": [
+      "Tuna",
+      "Seabirds"
+    ],
+    "tags": [
+      "pole and line",
+      "birds"
+    ],
+    "text": "We follow the birds. When they dive over one spot, the tuna are driving small fish to the surface. That is where we throw the bait.",
+    "summary_en": "Diving seabirds reveal where tuna are herding small fish near the surface.",
+    "note": "Illustrative sample written for this demo - not a real fisher's recording.",
+    "id": "sample_16",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-17T09:00:00+00:00",
+    "state": "Lakshadweep",
+    "lat": 10.55,
+    "lng": 72.65
+  },
+  {
+    "title": "Squid and the lamp",
+    "region": "and",
+    "category": "technique",
+    "species": [
+      "Squid"
+    ],
+    "tags": [
+      "night fishing",
+      "lamp"
+    ],
+    "text": "On calm nights we hang a bright lamp over the water. The squid come up to the light and we lift them in with small nets.",
+    "summary_en": "On calm nights lamps draw squid to the surface for small-net catches.",
+    "note": "Illustrative sample written for this demo - not a real fisher's recording.",
+    "id": "sample_17",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-18T09:00:00+00:00",
+    "state": "Andaman & Nicobar",
+    "lat": 11.55,
+    "lng": 92.85
+  },
+  {
+    "title": "A strangely flat sea",
+    "region": "goa",
+    "category": "weather",
+    "species": [],
+    "tags": [
+      "pre-monsoon",
+      "calm sea"
+    ],
+    "text": "When the sea goes strangely flat and quiet before the monsoon, we pull the boats high up the beach. The weather will turn soon.",
+    "summary_en": "An unusually flat, quiet sea before the monsoon signals a weather change.",
+    "note": "Illustrative sample written for this demo - not a real fisher's recording.",
+    "id": "sample_18",
+    "language": "en",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-19T09:00:00+00:00",
+    "state": "Goa / Karnataka",
+    "lat": 15.4,
+    "lng": 73.75
+  },
+  {
+    "title": "बोंबील अब दूर जाने लगी है",
+    "language": "hi",
+    "region": "guj",
+    "category": "change",
+    "species": [
+      "बोंबील"
+    ],
+    "tags": [
+      "मानसून",
+      "किनारा"
+    ],
+    "text": "जब मैं छोटा था, मानसून में बोंबील किनारे के पास ही जाल में आ जाती थी। अब नाव को बहुत दूर जाना पड़ता है।",
+    "summary_en": "Bombil used to be netted near the shore in the monsoon; now boats must go much farther out.",
+    "note": "Illustrative sample. The translation was drafted by an AI assistant and needs review by a native speaker.",
+    "id": "sample_19",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-20T09:00:00+00:00",
+    "state": "Gujarat",
+    "lat": 20.95,
+    "lng": 70.1
+  },
+  {
+    "title": "हवा और बादलों का इशारा",
+    "language": "hi",
+    "region": "che",
+    "category": "weather",
+    "species": [],
+    "tags": [
+      "हवा",
+      "बादल",
+      "शाम"
+    ],
+    "text": "जब हवा उत्तर-पूर्व की ओर मुड़ती है और शाम को समुद्र के ऊपर बादल जमा हो जाते हैं, तो पिताजी नावों को जल्दी वापस बुला लेते थे।",
+    "summary_en": "When the wind turns north-east and clouds gather over the sea at dusk, father called the boats back early.",
+    "note": "Illustrative sample. The translation was drafted by an AI assistant and needs review by a native speaker.",
+    "id": "sample_20",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-21T09:00:00+00:00",
+    "state": "Tamil Nadu",
+    "lat": 13.0,
+    "lng": 80.35
+  },
+  {
+    "title": "नारळी पौर्णिमा",
+    "language": "mr",
+    "region": "mum",
+    "category": "folklore",
+    "species": [],
+    "tags": [
+      "नारळी पौर्णिमा",
+      "कोळी",
+      "नारळ"
+    ],
+    "text": "नारळी पौर्णिमेला आम्ही कोळी लोक समुद्राला नारळ अर्पण करतो. पावसाळ्यानंतर होड्या पुन्हा समुद्रात जातात.",
+    "summary_en": "On Narali Purnima we Koli people offer a coconut to the sea; after the monsoon the boats return to the water.",
+    "note": "Illustrative sample. The translation was drafted by an AI assistant and needs review by a native speaker.",
+    "id": "sample_21",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-22T09:00:00+00:00",
+    "state": "Maharashtra",
+    "lat": 19.0,
+    "lng": 72.8
+  },
+  {
+    "title": "ചാകര",
+    "language": "ml",
+    "region": "ker",
+    "category": "species",
+    "species": [
+      "മത്തി"
+    ],
+    "tags": [
+      "ചാകര",
+      "മഴക്കാലം"
+    ],
+    "text": "മഴക്കാലത്ത് ചില സ്ഥലങ്ങളിൽ കടപ്പുറത്തെ കടൽ കലങ്ങി ശാന്തമാകും. അതിനെ ഞങ്ങൾ ചാകര എന്നു വിളിക്കും. അപ്പോൾ മത്തി കരയോട് അടുത്ത് വരും.",
+    "summary_en": "In the monsoon the sea near some beaches turns muddy and calm. We call it chakara, and sardines come close to shore.",
+    "note": "Illustrative sample. The translation was drafted by an AI assistant and needs review by a native speaker.",
+    "id": "sample_22",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-23T09:00:00+00:00",
+    "state": "Kerala",
+    "lat": 10.05,
+    "lng": 76.25
+  },
+  {
+    "title": "விடியலில் மீன் கூட்டம்",
+    "language": "ta",
+    "region": "gom",
+    "category": "technique",
+    "species": [],
+    "tags": [
+      "விடியல்",
+      "வலை"
+    ],
+    "text": "விடியற்காலையில் கடலில் வெள்ளி போல மின்னும் மீன் கூட்டத்தைப் பார்த்தால், அங்கே வலை வீசுவோம்.",
+    "summary_en": "At dawn, when we see a shoal shining silver on the sea, we cast the net there.",
+    "note": "Illustrative sample. The translation was drafted by an AI assistant and needs review by a native speaker.",
+    "id": "sample_23",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-24T09:00:00+00:00",
+    "state": "Tamil Nadu",
+    "lat": 9.35,
+    "lng": 79.2
+  },
+  {
+    "title": "বনবিবি ও সুন্দরবন",
+    "language": "bn",
+    "region": "wb",
+    "category": "folklore",
+    "species": [],
+    "tags": [
+      "বনবিবি",
+      "সুন্দরবন"
+    ],
+    "text": "সুন্দরবনের খাঁড়িতে ঢোকার আগে আমরা বনবিবিকে স্মরণ করি। আমরা দল বেঁধে যাই, কখনও একা নয়, আর যতটুকু দরকার ততটুকুই নিই।",
+    "summary_en": "Before entering the creeks of the Sundarbans we remember Bonbibi, go in groups and take only what we need.",
+    "note": "Illustrative sample. The translation was drafted by an AI assistant and needs review by a native speaker.",
+    "id": "sample_24",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-25T09:00:00+00:00",
+    "state": "West Bengal",
+    "lat": 21.75,
+    "lng": 89.0
+  },
+  {
+    "title": "શાંત દરિયો",
+    "language": "gu",
+    "region": "guj",
+    "category": "weather",
+    "species": [],
+    "tags": [
+      "ચોમાસું",
+      "શાંત દરિયો"
+    ],
+    "text": "ચોમાસા પહેલાં દરિયો અચાનક શાંત થઈ જાય ત્યારે અમે હોડીઓ કિનારે ઊંચે ખેંચી લઈએ છીએ.",
+    "summary_en": "When the sea suddenly goes calm before the monsoon, we pull the boats high up the shore.",
+    "note": "Illustrative sample. The translation was drafted by an AI assistant and needs review by a native speaker.",
+    "id": "sample_25",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-26T09:00:00+00:00",
+    "state": "Gujarat",
+    "lat": 20.8,
+    "lng": 70.4
+  },
+  {
+    "title": "ಬೂತಾಯಿ ಮೀನಿನ ಗುಂಪು",
+    "language": "kn",
+    "region": "mng",
+    "category": "technique",
+    "species": [
+      "ಬೂತಾಯಿ"
+    ],
+    "tags": [
+      "ಬೆಳಗಿನ ಜಾವ",
+      "ಬಲೆ"
+    ],
+    "text": "ಬೆಳಗಿನ ಜಾವ ನೀರಿನ ಮೇಲೆ ಬೆಳ್ಳಿಯಂತೆ ಮಿಂಚುವುದನ್ನು ನೋಡಿದರೆ ಅದು ಬೂತಾಯಿ ಮೀನಿನ ಗುಂಪು. ಬಲೆ ಬೀಸುವ ಸಮಯ ಅದು.",
+    "summary_en": "Silvery flashes on the water at dawn mean a shoal of boothai (sardine) - time to cast the net.",
+    "note": "Illustrative sample. The translation was drafted by an AI assistant and needs review by a native speaker.",
+    "id": "sample_26",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-27T09:00:00+00:00",
+    "state": "Karnataka",
+    "lat": 12.8,
+    "lng": 74.85
+  },
+  {
+    "title": "ଚିଲିକାର ଚିଙ୍ଗୁଡ଼ି",
+    "language": "or",
+    "region": "odi",
+    "category": "species",
+    "species": [
+      "ଚିଙ୍ଗୁଡ଼ି"
+    ],
+    "tags": [
+      "ଚିଲିକା"
+    ],
+    "text": "ଚିଲିକାରେ ପାଣି ସଫା ଆଉ ପବନ ମୃଦୁ ଥିଲେ ଚିଙ୍ଗୁଡ଼ି ଓ କଙ୍କଡ଼ା ବହୁତ ମିଳେ।",
+    "summary_en": "In Chilika, when the water is clear and the wind is gentle, prawns and crabs are plentiful.",
+    "note": "Illustrative sample. The translation was drafted by an AI assistant and needs review by a native speaker.",
+    "id": "sample_27",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-01T09:00:00+00:00",
+    "state": "Odisha",
+    "lat": 19.75,
+    "lng": 85.3
+  },
+  {
+    "title": "సముద్రం మా బీచ్‌ను మింగేస్తోంది",
+    "language": "te",
+    "region": "ap",
+    "category": "change",
+    "species": [],
+    "tags": [
+      "కోత",
+      "తీరం"
+    ],
+    "text": "మా ఊరిలో సముద్రం బీచ్‌ను మింగేస్తోంది. మా తండ్రుల ఇళ్లు ఉన్న చోట ఇప్పుడు అలలు వస్తున్నాయి.",
+    "summary_en": "At our village the sea is eating the beach; waves now reach where our fathers' houses stood.",
+    "note": "Illustrative sample. The translation was drafted by an AI assistant and needs review by a native speaker.",
+    "id": "sample_28",
+    "source": "sample",
+    "status": "approved",
+    "category_source": "sample",
+    "transcript_source": "sample",
+    "consent_public": true,
+    "precision": "approx",
+    "created_at": "2026-09-02T09:00:00+00:00",
+    "state": "Andhra Pradesh",
+    "lat": 17.65,
+    "lng": 83.3
+  }
+]

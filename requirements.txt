@@ -1,0 +1,9 @@
+streamlit>=1.40
+folium>=0.17
+streamlit-folium>=0.22
+pandas>=2.0
+requests>=2.31
+python-dotenv>=1.0
+
+# development / tests
+pytest>=8.0

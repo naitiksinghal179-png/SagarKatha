@@ -1,0 +1,24 @@
+# secrets
+.env
+.streamlit/secrets.toml
+
+# runtime data created by users (never commit real stories or recordings)
+data/user_stories.json
+data/uploads/*
+!data/uploads/.gitkeep
+
+# python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+.coverage
+htmlcov/
+
+# editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
