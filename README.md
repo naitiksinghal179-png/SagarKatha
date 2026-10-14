@@ -94,10 +94,11 @@ SagarKatha/
 ├── docs/                       # problem, solution, architecture, journeys, consent & privacy
 ├── assets/                     # logo, architecture diagram, screenshots/
 ├── tests/
-└── demo/demo_video_link.md
+├── demo/demo_video_link.md
+└── prototype/                  # earlier single-file HTML prototype (reference only)
 ```
 
-Small additions beyond the base tree: `src/__init__.py` and `src/ui.py` (shared Streamlit helpers), `pytest.ini`, `.streamlit/config.toml` (theme, upload size, no usage stats), `.github/workflows/ci.yml` (runs the tests), `tests/conftest.py` and extra test modules, and `data/uploads/.gitkeep`.
+Small additions beyond the base tree: `prototype/` (the earlier single-file HTML version, see its README), `src/__init__.py` and `src/ui.py` (shared Streamlit helpers), `pytest.ini`, `.streamlit/config.toml` (theme, upload size, no usage stats), `.github/workflows/ci.yml` (runs the tests), `tests/conftest.py` and extra test modules, and `data/uploads/.gitkeep`.
 
 ## Data sources and licences
 

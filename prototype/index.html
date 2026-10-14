@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B1824">
+<title>SagarKatha — सागरकथा</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B1824;--card:rgba(255,255,255,.045);--line:rgba(255,255,255,.1);--tx:#EAF2F6;--tx2:rgba(234,242,246,.7);--tx3:rgba(234,242,246,.45);--wave:#2A9D8F;--sky:#7DD3FC;--gold:#F4D58D;--coral:#FCA5A5;--green:#6FCF97;--serif:'Cormorant Garamond','Noto Serif',Georgia,serif;--sans:'Noto Sans','Segoe UI',system-ui,-apple-system,Roboto,sans-serif;--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;--fs:16px;--navh:64px;--toph:58px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:var(--fs)}
+body{font-family:var(--sans);background:var(--bg);color:var(--tx);line-height:1.6;-webkit-tap-highlight-color:transparent;min-height:100vh}
+body.large{--fs:19px}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+input,select,textarea{font:inherit;color:inherit}
+a{color:var(--sky)}
+h1,h2,h3{font-family:var(--serif);line-height:1.15}
+.top{position:sticky;top:0;z-index:50;height:var(--toph);display:flex;align-items:center;gap:.5rem;padding:0 1rem;background:rgba(11,24,36,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.logo{font-family:var(--serif);font-weight:700;font-size:1.6rem;flex:1;cursor:pointer}
+.logo i{color:var(--sky)}
+.ibtn{min-height:44px;min-width:44px;padding:0 .8rem;border-radius:10px;border:1px solid var(--line);background:var(--card);display:inline-flex;align-items:center;justify-content:center;gap:.4rem;font-size:.9rem;cursor:pointer}
+.ibtn:hover{border-color:var(--wave)}
+.pill{font-family:var(--mono);font-size:.68rem;padding:.2rem .6rem;border-radius:99px;border:1px solid var(--line);white-space:nowrap}
+.pill.on{color:var(--green);border-color:rgba(111,207,151,.4)}
+.pill.off{color:var(--coral);border-color:rgba(252,165,165,.4)}
+main{padding:1rem 1rem calc(var(--navh) + 6rem);max-width:1100px;margin:0 auto}
+#nav{position:fixed;z-index:60;bottom:0;left:0;right:0;height:var(--navh);display:flex;background:rgba(11,24,36,.97);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+#nav button{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:.58rem;color:var(--tx3);padding:0 1px}
+#nav button span:last-child{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#nav .i{font-size:1.2rem;line-height:1}
+#nav button.on{color:var(--sky)}
+#nav button.rec .i{background:linear-gradient(135deg,var(--wave),#1A5F7A);width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:-20px;box-shadow:0 4px 16px rgba(42,157,143,.5)}
+@media(min-width:900px){
+#nav{top:var(--toph);bottom:0;right:auto;width:92px;height:auto;flex-direction:column;justify-content:flex-start;gap:.3rem;padding:1rem .3rem;border-top:0;border-right:1px solid var(--line)}
+#nav button{flex:none;height:64px;border-radius:12px;font-size:.72rem}
+#nav button.rec .i{margin-top:0}
+body{padding-left:92px}
+.top{margin-left:-92px;padding-left:calc(92px + 1rem)}
+main{padding-bottom:5rem}
+#chatFab{bottom:20px!important}
+}
+.page{display:none}
+.page.active{display:block;animation:fade .3s}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h2.pt{font-size:2.1rem;margin:.4rem 0 .3rem}
+h3.sx{font-size:1.5rem;margin:1.5rem 0 .6rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.sub{color:var(--tx2);margin-bottom:1rem;max-width:62ch}
+.meta{font-family:var(--mono);font-size:.68rem;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1rem}
+.grid{display:grid;gap:1rem}
+.g2{grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.btn{min-height:48px;padding:0 1.2rem;border-radius:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:.5rem;cursor:pointer;text-align:center}
+.btn.p{background:linear-gradient(135deg,var(--wave),#1A5F7A);color:#fff}
+.btn.g{border:1px solid var(--line);background:var(--card)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.chips{display:flex;gap:.45rem;overflow-x:auto;padding:.2rem 0 .6rem}
+.chip{min-height:38px;padding:0 .9rem;border-radius:99px;border:1px solid var(--line);font-size:.82rem;background:var(--card);display:inline-flex;align-items:center;gap:.35rem;white-space:nowrap}
+.chip.on{background:rgba(42,157,143,.28);border-color:var(--wave);color:#fff}
+.tag{display:inline-block;font-family:var(--mono);font-size:.65rem;padding:.1rem .55rem;border-radius:99px;margin:0 .25rem .25rem 0;background:rgba(255,255,255,.08)}
+.tag.cat{border:1px solid var(--c);color:var(--c);background:transparent}
+.hero{padding:2rem 1.2rem;border-radius:20px;background:radial-gradient(ellipse at 15% 0%,rgba(42,157,143,.28),transparent 60%),linear-gradient(160deg,#0E2338,#102840);border:1px solid var(--line)}
+.hero h1{font-size:clamp(2.2rem,6vw,3.6rem);margin:.4rem 0 .6rem;background:linear-gradient(135deg,#fff,#7DD3FC 60%,#2A9D8F);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .sub{font-size:1.05rem}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin:1rem 0}
+.stat{text-align:center}
+.stat b{display:block;font-family:var(--serif);font-size:2.2rem;color:var(--sky);line-height:1}
+.stat small{color:var(--tx3);font-size:.75rem}
+label.l{display:block;font-size:.82rem;color:var(--tx2);margin:1rem 0 .35rem;font-weight:700}
+.inp,.sel,.ta{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:12px;padding:.7rem .9rem;min-height:48px}
+.ta{min-height:120px;resize:vertical}
+.inp:focus,.sel:focus,.ta:focus{outline:2px solid var(--wave);outline-offset:1px}
+.sel option{background:#102840}
+.seg{display:flex;gap:.4rem;flex-wrap:wrap}
+.seg button{flex:1;min-width:92px;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-size:.85rem;padding:.3rem .5rem}
+.seg button.on{border-color:var(--wave);background:rgba(42,157,143,.24)}
+.mic{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,var(--wave),#1A5F7A);font-size:2.4rem;display:flex;align-items:center;justify-content:center;margin:.3rem auto .5rem}
+.mic.rec{background:linear-gradient(135deg,#B84040,#7f1d1d);animation:pulse 1.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(184,64,64,.6)}70%{box-shadow:0 0 0 26px rgba(184,64,64,0)}100%{box-shadow:0 0 0 0 rgba(184,64,64,0)}}
+.pv{display:flex;align-items:center;gap:.5rem;margin:.6rem 0;flex-wrap:wrap}
+.pv img{max-height:110px;border-radius:10px}
+.th{width:100%;height:120px;object-fit:cover;border-radius:10px;margin-bottom:.4rem;display:block}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.5rem;margin:.6rem 0}
+.gal img{width:100%;border-radius:10px;cursor:zoom-in}
+#leaflet{height:min(62vh,560px);min-height:380px;border-radius:16px;border:1px solid var(--line);background:#0a1d2f}
+.leaflet-container{background:#0a1d2f;font-family:var(--sans)}
+.pin{width:22px;height:22px;border-radius:50%;background:var(--c);border:2px solid #0B1824;box-shadow:0 0 0 2px var(--c),0 2px 8px rgba(0,0,0,.5);position:relative}
+.pin.tale{border-radius:5px;transform:rotate(45deg)}
+.pin.new::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--c);animation:ping 1.6s ease-out 3}
+@keyframes ping{from{transform:scale(.6);opacity:1}to{transform:scale(2.4);opacity:0}}
+.flow svg{width:30px;height:30px;fill:var(--sky);filter:drop-shadow(0 0 4px rgba(0,0,0,.8))}
+.sealbl{color:rgba(125,211,252,.42);font:italic 600 .85rem var(--serif);letter-spacing:.35em;text-transform:uppercase;white-space:nowrap;text-align:center;pointer-events:none}
+.rglbl{color:rgba(234,242,246,.55);font:500 .62rem var(--mono);white-space:nowrap;pointer-events:none;text-shadow:0 0 4px #000}
+.leaflet-tooltip{background:#0E2338;color:var(--tx);border:1px solid var(--line)}
+.sc{cursor:pointer;transition:transform .2s,border-color .2s}
+.sc:hover{transform:translateY(-2px);border-color:var(--wave)}
+.sc q{display:block;font-family:var(--serif);font-style:italic;font-size:1.15rem;line-height:1.5;quotes:none;margin:.3rem 0}
+.bq{font-family:var(--serif);font-style:italic;font-size:1.25rem;line-height:1.6;border-left:3px solid var(--wave);padding:.4rem 0 .4rem 1rem;margin:.8rem 0;white-space:pre-wrap}
+.ov{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.72);backdrop-filter:blur(5px);display:none;align-items:flex-end;justify-content:center}
+.ov.open{display:flex}
+.sheet{background:#0E1E2E;border:1px solid var(--line);border-radius:20px 20px 0 0;width:100%;max-width:640px;max-height:88vh;overflow:auto;padding:1.2rem}
+@media(min-width:700px){.ov{align-items:center}.sheet{border-radius:20px}}
+.sh{display:flex;justify-content:space-between;align-items:center;gap:.5rem;margin-bottom:.8rem}
+.row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:.6rem 0}
+.opt{display:block;width:100%;text-align:left;padding:.7rem .9rem;margin:.4rem 0;border-radius:12px;border:1px solid var(--line);background:var(--card)}
+.opt.good{border-color:var(--green);background:rgba(111,207,151,.16)}
+.opt.bad{border-color:var(--coral);background:rgba(252,165,165,.14)}
+#chatFab{position:fixed;right:14px;bottom:calc(var(--navh) + 14px);z-index:70;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7DD3FC,#2A9D8F);color:#06222b;font-size:1.5rem;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+#chat{position:fixed;z-index:90;right:0;bottom:0;width:min(440px,100%);height:min(660px,90vh);background:#0E1E2E;border:1px solid var(--line);border-radius:20px 20px 0 0;display:none;flex-direction:column}
+#chat.open{display:flex}
+.chh{display:flex;justify-content:space-between;align-items:center;padding:.6rem 1rem;border-bottom:1px solid var(--line)}
+.msgs{flex:1;overflow:auto;padding:1rem;display:flex;flex-direction:column;gap:.6rem}
+.m{max-width:92%;padding:.6rem .85rem;font-size:.92rem;white-space:pre-wrap;word-wrap:break-word}
+.m.u{align-self:flex-end;background:rgba(42,157,143,.3);border-radius:14px 14px 2px 14px}
+.m.b{align-self:flex-start;background:rgba(255,255,255,.07);border-radius:14px 14px 14px 2px}
+.spk{font-size:.85rem;opacity:.75;padding:.2rem .4rem}
+.chin{display:flex;gap:.4rem;padding:.7rem;border-top:1px solid var(--line);align-items:center}
+#toast{position:fixed;left:50%;bottom:calc(var(--navh) + 84px);transform:translateX(-50%) translateY(20px);background:#0E2338;border:1px solid var(--wave);padding:.6rem 1rem;border-radius:12px;opacity:0;pointer-events:none;transition:.3s;z-index:300;max-width:90vw;font-size:.9rem;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%)}
+.compass{width:130px;height:130px;border-radius:50%;border:2px solid var(--line);position:relative;margin:auto;background:radial-gradient(circle,rgba(125,211,252,.1),transparent 70%)}
+.compass .ar{position:absolute;inset:20px;transition:transform .8s}
+.compass .ar svg{width:100%;height:100%;fill:var(--sky)}
+.compass i{position:absolute;font-style:normal;font-size:.65rem;color:var(--tx3);font-family:var(--mono)}
+.mt{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:.6rem;margin:1rem 0;text-align:center}
+.mt b{display:block;font-size:1.5rem;font-family:var(--serif)}
+.mt small{color:var(--tx3);font-size:.72rem}
+.adv{display:inline-block;padding:.35rem .9rem;border-radius:99px;font-weight:700;font-size:.85rem}
+.adv.ok{background:rgba(111,207,151,.18);color:var(--green)}
+.adv.caution{background:rgba(244,213,141,.18);color:var(--gold)}
+.adv.danger{background:rgba(252,165,165,.2);color:var(--coral)}
+.sos{display:block;text-decoration:none;color:#fff;background:linear-gradient(135deg,#B84040,#7f1d1d);border-radius:14px;padding:.9rem 1.1rem;font-weight:700;margin:1rem 0}
+.strip{display:flex;gap:.5rem;overflow-x:auto;padding:.3rem 0}
+.cell{min-width:80px;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.5rem .3rem;font-size:.72rem;color:var(--tx2)}
+.cell b{display:block;font-size:1.05rem;color:var(--tx)}
+.tw{overflow-x:auto}
+table.rt{width:100%;border-collapse:collapse;font-size:.85rem}
+.rt td,.rt th{padding:.55rem .4rem;border-bottom:1px solid var(--line);text-align:start}
+.rt th{font-family:var(--mono);font-size:.65rem;color:var(--tx3);text-transform:uppercase}
+.rt tr[data-act]{cursor:pointer}
+.rt tr[data-act]:hover{background:rgba(255,255,255,.04)}
+.spin{width:36px;height:36px;border:3px solid var(--line);border-top-color:var(--wave);border-radius:50%;margin:0 auto 1rem;animation:rot 1s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.foot{margin-top:2rem;font-size:.72rem;color:var(--tx3);line-height:1.7}
+.badge{display:inline-flex;flex-direction:column;align-items:center;width:78px;font-size:.68rem;text-align:center;opacity:.35}
+.badge.on{opacity:1}
+.badge span{font-size:1.8rem}
+@media print{body{background:#fff!important;padding:0!important}.top,#nav,#chatFab,#chat,.noprint,#toast,.ov{display:none!important}.page{display:none!important}#p-reports{display:block!important}main{padding:0!important;max-width:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="logo" data-act="go" data-p="home">Sagar<i>Katha</i></div>
+  <span id="net" class="pill on">● online</span>
+  <button class="ibtn" data-act="langsheet" aria-label="Language">🌐 <b id="langBtn">EN</b></button>
+  <button class="ibtn" data-act="settings" aria-label="Settings">⚙️</button>
+</header>
+
+<nav id="nav" aria-label="Main">
+  <button data-act="go" data-p="home"><span class="i">🏠</span><span data-i18n="nav_home"></span></button>
+  <button data-act="go" data-p="map"><span class="i">🗺️</span><span data-i18n="nav_map"></span></button>
+  <button data-act="go" data-p="ocean"><span class="i">🌊</span><span data-i18n="nav_ocean"></span></button>
+  <button class="rec" data-act="go" data-p="record"><span class="i">🎙️</span><span data-i18n="nav_record"></span></button>
+  <button data-act="go" data-p="tales"><span class="i">📖</span><span data-i18n="nav_tales"></span></button>
+  <button data-act="go" data-p="community"><span class="i">👥</span><span data-i18n="nav_com"></span></button>
+  <button data-act="go" data-p="reports"><span class="i">📊</span><span data-i18n="nav_rep"></span></button>
+</nav>
+
+<main>
+  <section id="p-home" class="page"></section>
+
+  <section id="p-map" class="page">
+    <h2 class="pt"><span data-i18n="map_t"></span> <span class="pill on">● LIVE</span></h2>
+    <input id="q" class="inp" type="search" maxlength="60" data-i18n-ph="search" style="margin:.6rem 0">
+    <div class="chips" id="catChips"></div>
+    <div class="chips" id="layerChips"></div>
+    <div id="leaflet"></div>
+    <div id="mapNote" class="meta" style="margin:.5rem 0"></div>
+    <h3 class="sx" data-i18n="lib"></h3>
+    <div id="lib" class="grid g2"></div>
+  </section>
+
+  <section id="p-record" class="page">
+    <h2 class="pt" data-i18n="rec_t"></h2>
+    <p class="sub" data-i18n="rec_sub"></p>
+    <div id="recHint" class="meta"></div>
+    <div class="card">
+      <div style="text-align:center">
+        <button id="mic" class="mic" data-act="mic" aria-label="Record voice">🎙️</button>
+        <div><b id="micLbl" data-i18n="rec_voice"></b> <span id="recTime" class="meta"></span></div>
+      </div>
+      <label class="l" for="recText">✍️</label>
+      <textarea id="recText" class="ta" maxlength="2000" data-i18n-ph="rec_ph"></textarea>
+      <div class="row">
+        <button id="dictBtn" class="btn g" data-act="dict">🗣️ <span data-i18n="rec_dict"></span></button>
+        <label class="btn g" for="recFile">📷 <span data-i18n="rec_media"></span></label>
+        <input type="file" id="recFile" accept="image/*,video/*" multiple hidden>
+      </div>
+      <div id="recPrev"></div>
+      <label class="l" for="recRegion" data-i18n="rec_where"></label>
+      <div class="row" style="margin-top:0">
+        <select id="recRegion" class="sel" style="flex:1;min-width:200px"></select>
+        <button class="btn g" data-act="gps">📍 <span data-i18n="rec_gps"></span></button>
+      </div>
+      <div id="gpsNote" class="meta"></div>
+      <label class="l" data-i18n="rec_prec"></label>
+      <div class="seg">
+        <button data-act="seg" data-k="prec" data-v="exact" data-i18n="p_exact"></button>
+        <button data-act="seg" data-k="prec" data-v="approx" class="on" data-i18n="p_approx"></button>
+        <button data-act="seg" data-k="prec" data-v="region" data-i18n="p_region"></button>
+      </div>
+      <label class="l" data-i18n="rec_vis"></label>
+      <div class="seg">
+        <button data-act="seg" data-k="vis" data-v="public" class="on" data-i18n="v_public"></button>
+        <button data-act="seg" data-k="vis" data-v="research" data-i18n="v_research"></button>
+        <button data-act="seg" data-k="vis" data-v="private" data-i18n="v_private"></button>
+      </div>
+      <label class="l" for="recName" data-i18n="rec_name"></label>
+      <input id="recName" class="inp" maxlength="40" autocomplete="off">
+      <label style="display:flex;gap:.6rem;align-items:center;margin:.8rem 0;min-height:44px"><input type="checkbox" id="recAnon" style="width:22px;height:22px"> <span data-i18n="rec_anon"></span></label>
+      <label style="display:flex;gap:.6rem;align-items:flex-start;margin:.4rem 0 1rem"><input type="checkbox" id="recCons" style="width:22px;height:22px;margin-top:.15rem"> <span data-i18n="rec_cons"></span></label>
+      <button id="recSave" class="btn p" data-act="save" style="width:100%"><span data-i18n="rec_save"></span></button>
+    </div>
+  </section>
+
+  <section id="p-ocean" class="page"></section>
+  <section id="p-tales" class="page"></section>
+  <section id="p-community" class="page"></section>
+  <section id="p-reports" class="page"></section>
+</main>
+
+<button id="chatFab" data-act="chat" aria-label="Sagar Mitra">💬</button>
+<div id="chat" role="dialog" aria-label="Sagar Mitra">
+  <div class="chh"><b style="font-family:var(--serif);font-size:1.3rem">🌊 <span data-i18n="ch_t"></span></b><span><button class="ibtn" data-act="chclear" aria-label="Clear chat">🗑️</button> <button class="ibtn" data-act="chatclose" aria-label="Close">✕</button></span></div>
+  <div class="msgs" id="chMsgs"></div>
+  <div id="chPrev" style="padding:0 .7rem"></div>
+  <div class="chin">
+    <label class="ibtn" for="chFile" aria-label="Attach photo">📎</label><input type="file" id="chFile" accept="image/*" hidden>
+    <input id="chIn" class="inp" maxlength="400" data-i18n-ph="ch_ph" style="flex:1;min-width:0">
+    <button class="ibtn" data-act="chdict" aria-label="Speak">🎤</button>
+    <button class="btn p" data-act="chsend" style="min-height:48px;padding:0 1rem" aria-label="Send">➤</button>
+  </div>
+</div>
+
+<div id="ov" class="ov"><div class="sheet" id="sheet"></div></div>
+<div id="busy" class="ov"><div class="sheet" style="text-align:center;max-width:320px;border-radius:20px"><div class="spin"></div><p id="busyMsg"></p></div></div>
+<div id="toast" role="status"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(()=>{
+'use strict';
+/* Leaflet is captured as LF because L below is the language lookup helper. */
+const LF=window.L;
+
+/* ========== CONFIG — in production point AI_URL at your Supabase Edge Function (never ship an API key) ========== */
+const CFG={AI_URL:'https://api.anthropic.com/v1/messages',MODEL:'claude-sonnet-4-6',MARINE:'https://marine-api.open-meteo.com/v1/marine',WX:'https://api.open-meteo.com/v1/forecast',TILES:'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'};
+const PAGES=['home','map','ocean','record','tales','community','reports'];
+
+/* ========== helpers ========== */
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const f1=v=>v==null||isNaN(v)?'—':(+v).toFixed(1);
+let toastT;const toast=m=>{const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),3400);};
+const PII=/((\+?91[\s-]?)?[6-9]\d{4}[\s-]?\d{5})|([\w.+-]+@[\w-]+\.[\w.]+)/;
+const ARROW='<svg viewBox="0 0 24 24"><path d="M12 2 L19 21 L12 16.5 L5 21 Z"/></svg>';
+const CARD8=['N','NE','E','SE','S','SW','W','NW'];
+const card=d=>d==null?'':CARD8[Math.round(d/45)%8];
+const toDataURL=b=>new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=no;r.readAsDataURL(b);});
+function dl(name,mime,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:mime}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000);}
+function shrinkTo(f,max,q){return new Promise((ok,no)=>{const im=new Image(),u=URL.createObjectURL(f);
+im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
+c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);ok(c.toDataURL('image/jpeg',q));};
+im.onerror=()=>{URL.revokeObjectURL(u);no(new Error('img'));};im.src=u;});}
+function arm(el,key){if(S.arm===key)return true;S.arm=key;const o=el.textContent;el.textContent='⚠️ Tap again';setTimeout(()=>{if(S.arm===key){S.arm=null;el.textContent=o;}},3500);return false;}
+
+/* ========== languages: 22 scheduled + English. q: ok | draft | fb (shows a fallback language until a native translation is added) ========== */
+const LANGS=[
+{c:'en',n:'English',e:'English',sr:'en-IN',q:'ok'},
+{c:'as',n:'অসমীয়া',e:'Assamese',sr:'as-IN',q:'ok'},
+{c:'bn',n:'বাংলা',e:'Bengali',sr:'bn-IN',q:'ok'},
+{c:'brx',n:'बड़ो',e:'Bodo',sr:'hi-IN',sc:'Devanagari script',q:'fb',fb:'hi'},
+{c:'doi',n:'डोगरी',e:'Dogri',sr:'hi-IN',sc:'Devanagari script',q:'draft',fb:'hi'},
+{c:'gu',n:'ગુજરાતી',e:'Gujarati',sr:'gu-IN',q:'ok'},
+{c:'hi',n:'हिन्दी',e:'Hindi',sr:'hi-IN',q:'ok'},
+{c:'kn',n:'ಕನ್ನಡ',e:'Kannada',sr:'kn-IN',q:'ok'},
+{c:'ks',n:'کٲشُر',e:'Kashmiri',sr:'ur-IN',sc:'Perso-Arabic script',rtl:1,q:'fb',fb:'ur'},
+{c:'kok',n:'कोंकणी',e:'Konkani',sr:'hi-IN',sc:'Devanagari script',q:'draft',fb:'hi'},
+{c:'mai',n:'मैथिली',e:'Maithili',sr:'hi-IN',sc:'Devanagari script',q:'draft',fb:'hi'},
+{c:'ml',n:'മലയാളം',e:'Malayalam',sr:'ml-IN',q:'ok'},
+{c:'mni',n:'ꯃꯤꯇꯩꯂꯣꯟ',e:'Manipuri (Meitei)',sr:'en-IN',sc:'Meetei Mayek script',q:'fb'},
+{c:'mr',n:'मराठी',e:'Marathi',sr:'mr-IN',q:'ok'},
+{c:'ne',n:'नेपाली',e:'Nepali',sr:'ne-NP',sc:'Devanagari script',q:'ok'},
+{c:'or',n:'ଓଡ଼ିଆ',e:'Odia',sr:'or-IN',q:'ok'},
+{c:'pa',n:'ਪੰਜਾਬੀ',e:'Punjabi',sr:'pa-IN',q:'ok'},
+{c:'sa',n:'संस्कृतम्',e:'Sanskrit',sr:'hi-IN',sc:'Devanagari script',q:'ok'},
+{c:'sat',n:'ᱥᱟᱱᱛᱟᱲᱤ',e:'Santali',sr:'hi-IN',sc:'Ol Chiki script',q:'fb',fb:'hi'},
+{c:'sd',n:'سنڌي',e:'Sindhi',sr:'ur-IN',sc:'Perso-Arabic script',rtl:1,q:'draft',fb:'ur'},
+{c:'ta',n:'தமிழ்',e:'Tamil',sr:'ta-IN',q:'ok'},
+{c:'te',n:'తెలుగు',e:'Telugu',sr:'te-IN',q:'ok'},
+{c:'ur',n:'اردو',e:'Urdu',sr:'ur-IN',rtl:1,q:'ok'}
+];
+const L=c=>LANGS.find(x=>x.c===c)||LANGS[0];
+
+/* ========== built-in UI translations (work offline). Order must match K. ========== */
+const K=['nav_home','nav_map','nav_record','nav_ocean','nav_tales','nav_com','hero_t','btn_rec','btn_map','sea_now','latest','rec_voice','rec_where','rec_gps','rec_save','rec_vis','v_public','v_research','v_private','map_t','search','all','c_species','c_current','c_weather','c_change','c_technique','c_folklore','oc_t','cur','wave','sst','wind','adv_ok','adv_c','adv_d','sos','tl_t','listen','trans','post','lang','nav_rep'];
+const EN=["Home","Map","Record","Ocean","Tales","Community","Stories of the sea, saved for tomorrow","Record a story","Open the map","Sea right now","Latest stories","Record voice","Where is this from?","Use my location","Save story","Who can see it?","Everyone","Researchers","Only me","Live story map","Search…","All","Fish & species","Currents","Weather signs","Change","Methods","Folklore","Live ocean & weather","Current","Waves","Sea temp","Wind","Calm conditions","Rough sea — be careful","Very rough — check official warnings","Emergency at sea? Call Coast Guard 1554","Tales of the sea","Listen","Translate","Post","Language","Reports"];
+const TR={
+hi:["होम","नक्शा","रिकॉर्ड","समुद्र","कथाएँ","समुदाय","समुद्र की कहानियाँ, कल के लिए सुरक्षित","कहानी रिकॉर्ड करें","नक्शा खोलें","अभी समुद्र कैसा है","नई कहानियाँ","आवाज़ रिकॉर्ड करें","यह कहाँ की बात है?","मेरी लोकेशन लें","कहानी सहेजें","इसे कौन देख सकता है?","सब","शोधकर्ता","सिर्फ़ मैं","लाइव कहानी नक्शा","खोजें…","सभी","मछली और प्रजातियाँ","धाराएँ","मौसम के संकेत","बदलाव","तरीके","लोककथा","लाइव समुद्र और मौसम","धारा","लहरें","समुद्र का तापमान","हवा","शांत स्थिति","समुद्र उग्र है — सावधान रहें","बहुत उग्र — आधिकारिक चेतावनी जाँचें","समुद्र में आपात स्थिति? तटरक्षक को 1554 पर कॉल करें","समुद्र की कथाएँ","सुनें","अनुवाद","पोस्ट करें","भाषा","रिपोर्ट"],
+bn:["হোম","মানচিত্র","রেকর্ড","সমুদ্র","কাহিনি","সম্প্রদায়","সাগরের গল্প, আগামীর জন্য সংরক্ষিত","গল্প রেকর্ড করুন","মানচিত্র খুলুন","এখন সমুদ্র কেমন","নতুন গল্প","কণ্ঠ রেকর্ড করুন","এটি কোথাকার কথা?","আমার অবস্থান নিন","গল্প সংরক্ষণ করুন","কে দেখতে পারবে?","সবাই","গবেষক","শুধু আমি","লাইভ গল্পের মানচিত্র","খুঁজুন…","সব","মাছ ও প্রজাতি","স্রোত","আবহাওয়ার লক্ষণ","পরিবর্তন","পদ্ধতি","লোককথা","সরাসরি সমুদ্র ও আবহাওয়া","স্রোত","ঢেউ","সমুদ্রের তাপমাত্রা","হাওয়া","শান্ত অবস্থা","সমুদ্র উত্তাল — সাবধান","খুব উত্তাল — সরকারি সতর্কতা দেখুন","সমুদ্রে জরুরি অবস্থা? কোস্ট গার্ডকে 1554-এ ফোন করুন","সাগরের কাহিনি","শুনুন","অনুবাদ","পোস্ট করুন","ভাষা","রিপোর্ট"],
+ta:["முகப்பு","வரைபடம்","பதிவு","கடல்","கதைகள்","சமூகம்","கடலின் கதைகள், நாளைக்காகப் பாதுகாப்போம்","கதையைப் பதிவு செய்","வரைபடத்தைத் திற","இப்போது கடல் எப்படி","புதிய கதைகள்","குரலைப் பதிவு செய்","இது எங்குள்ளது?","என் இருப்பிடத்தைப் பயன்படுத்து","கதையைச் சேமி","யார் பார்க்கலாம்?","அனைவரும்","ஆய்வாளர்கள்","நான் மட்டும்","நேரலைக் கதை வரைபடம்","தேடு…","அனைத்தும்","மீன் & இனங்கள்","நீரோட்டங்கள்","வானிலை அறிகுறிகள்","மாற்றம்","முறைகள்","நாட்டுப்புறக் கதை","நேரலைக் கடல் & வானிலை","நீரோட்டம்","அலைகள்","கடல் வெப்பநிலை","காற்று","அமைதியான நிலை","கடல் கொந்தளிப்பு — கவனம்","மிகக் கொந்தளிப்பு — அதிகாரப்பூர்வ எச்சரிக்கையைப் பாருங்கள்","கடலில் அவசரமா? கடலோரக் காவல்படைக்கு 1554 அழையுங்கள்","கடலின் கதைகள்","கேள்","மொழிபெயர்","பதிவிடு","மொழி","அறிக்கை"],
+te:["హోమ్","మ్యాప్","రికార్డ్","సముద్రం","కథలు","సమాజం","సముద్ర కథలు, రేపటి కోసం భద్రం","కథను రికార్డ్ చేయండి","మ్యాప్ తెరవండి","ఇప్పుడు సముద్రం ఎలా ఉంది","తాజా కథలు","గొంతు రికార్డ్ చేయండి","ఇది ఎక్కడిది?","నా లొకేషన్ వాడండి","కథను సేవ్ చేయండి","ఎవరు చూడగలరు?","అందరూ","పరిశోధకులు","నేను మాత్రమే","లైవ్ కథల మ్యాప్","వెతకండి…","అన్నీ","చేపలు & జాతులు","ప్రవాహాలు","వాతావరణ సంకేతాలు","మార్పు","పద్ధతులు","జానపద కథ","లైవ్ సముద్రం & వాతావరణం","ప్రవాహం","అలలు","సముద్ర ఉష్ణోగ్రత","గాలి","ప్రశాంత పరిస్థితి","సముద్రం అల్లకల్లోలం — జాగ్రత్త","చాలా అల్లకల్లోలం — అధికారిక హెచ్చరికలు చూడండి","సముద్రంలో అత్యవసరమా? కోస్ట్ గార్డ్‌కు 1554కు కాల్ చేయండి","సముద్ర కథలు","వినండి","అనువదించు","పోస్ట్ చేయండి","భాష","నివేదిక"],
+kn:["ಮುಖಪುಟ","ನಕ್ಷೆ","ರೆಕಾರ್ಡ್","ಸಮುದ್ರ","ಕಥೆಗಳು","ಸಮುದಾಯ","ಸಮುದ್ರದ ಕಥೆಗಳು, ನಾಳೆಗಾಗಿ ಉಳಿಸಲಾಗಿದೆ","ಕಥೆಯನ್ನು ರೆಕಾರ್ಡ್ ಮಾಡಿ","ನಕ್ಷೆ ತೆರೆಯಿರಿ","ಈಗ ಸಮುದ್ರ ಹೇಗಿದೆ","ಹೊಸ ಕಥೆಗಳು","ಧ್ವನಿ ರೆಕಾರ್ಡ್ ಮಾಡಿ","ಇದು ಎಲ್ಲಿಯದು?","ನನ್ನ ಸ್ಥಳ ಬಳಸಿ","ಕಥೆಯನ್ನು ಉಳಿಸಿ","ಯಾರು ನೋಡಬಹುದು?","ಎಲ್ಲರೂ","ಸಂಶೋಧಕರು","ನಾನು ಮಾತ್ರ","ಲೈವ್ ಕಥಾ ನಕ್ಷೆ","ಹುಡುಕಿ…","ಎಲ್ಲಾ","ಮೀನು ಮತ್ತು ಜಾತಿಗಳು","ಪ್ರವಾಹಗಳು","ಹವಾಮಾನ ಸೂಚನೆಗಳು","ಬದಲಾವಣೆ","ವಿಧಾನಗಳು","ಜಾನಪದ","ಲೈವ್ ಸಮುದ್ರ ಮತ್ತು ಹವಾಮಾನ","ಪ್ರವಾಹ","ಅಲೆಗಳು","ಸಮುದ್ರ ತಾಪಮಾನ","ಗಾಳಿ","ಶಾಂತ ಸ್ಥಿತಿ","ಸಮುದ್ರ ಪ್ರಕ್ಷುಬ್ಧ — ಎಚ್ಚರಿಕೆ","ತುಂಬಾ ಪ್ರಕ್ಷುಬ್ಧ — ಅಧಿಕೃತ ಎಚ್ಚರಿಕೆ ನೋಡಿ","ಸಮುದ್ರದಲ್ಲಿ ತುರ್ತು? ಕರಾವಳಿ ಕಾವಲು ಪಡೆಗೆ 1554 ಕರೆ ಮಾಡಿ","ಸಮುದ್ರದ ಕಥೆಗಳು","ಆಲಿಸಿ","ಅನುವಾದಿಸಿ","ಪೋಸ್ಟ್ ಮಾಡಿ","ಭಾಷೆ","ವರದಿ"],
+ml:["ഹോം","ഭൂപടം","റെക്കോർഡ്","കടൽ","കഥകൾ","സമൂഹം","കടലിന്റെ കഥകൾ, നാളേക്കായി സൂക്ഷിക്കാം","കഥ റെക്കോർഡ് ചെയ്യുക","ഭൂപടം തുറക്കുക","ഇപ്പോൾ കടൽ എങ്ങനെ","പുതിയ കഥകൾ","ശബ്ദം റെക്കോർഡ് ചെയ്യുക","ഇത് എവിടെ നിന്നാണ്?","എന്റെ ലൊക്കേഷൻ ഉപയോഗിക്കുക","കഥ സേവ് ചെയ്യുക","ആർക്കൊക്കെ കാണാം?","എല്ലാവർക്കും","ഗവേഷകർ","ഞാൻ മാത്രം","ലൈവ് കഥാ ഭൂപടം","തിരയുക…","എല്ലാം","മത്സ്യവും ഇനങ്ങളും","ഒഴുക്കുകൾ","കാലാവസ്ഥാ സൂചനകൾ","മാറ്റം","രീതികൾ","നാടോടിക്കഥ","ലൈവ് കടലും കാലാവസ്ഥയും","ഒഴുക്ക്","തിരമാലകൾ","കടൽ താപനില","കാറ്റ്","ശാന്തമായ അവസ്ഥ","കടൽ പ്രക്ഷുബ്ധം — ശ്രദ്ധിക്കുക","വളരെ പ്രക്ഷുബ്ധം — ഔദ്യോഗിക മുന്നറിയിപ്പ് നോക്കുക","കടലിൽ അടിയന്തരാവസ്ഥയോ? കോസ്റ്റ് ഗാർഡിനെ 1554-ൽ വിളിക്കുക","കടലിന്റെ കഥകൾ","കേൾക്കുക","വിവർത്തനം","പോസ്റ്റ് ചെയ്യുക","ഭാഷ","റിപ്പോർട്ട്"],
+mr:["मुख्यपृष्ठ","नकाशा","नोंदवा","समुद्र","कथा","समुदाय","समुद्राच्या गोष्टी, उद्यासाठी जपलेल्या","गोष्ट रेकॉर्ड करा","नकाशा उघडा","आत्ता समुद्र कसा आहे","नवीन गोष्टी","आवाज रेकॉर्ड करा","ही कुठली गोष्ट आहे?","माझे लोकेशन वापरा","गोष्ट जतन करा","कोण पाहू शकते?","सर्वजण","संशोधक","फक्त मी","लाइव्ह गोष्टींचा नकाशा","शोधा…","सर्व","मासे आणि प्रजाती","प्रवाह","हवामानाचे संकेत","बदल","पद्धती","लोककथा","लाइव्ह समुद्र आणि हवामान","प्रवाह","लाटा","समुद्राचे तापमान","वारा","शांत स्थिती","समुद्र खवळलेला — सावध रहा","खूप खवळलेला — अधिकृत इशारे तपासा","समुद्रात आणीबाणी? तटरक्षक दलाला 1554 वर कॉल करा","समुद्राच्या कथा","ऐका","भाषांतर","पोस्ट करा","भाषा","अहवाल"],
+gu:["હોમ","નકશો","રેકોર્ડ","દરિયો","વાર્તાઓ","સમુદાય","દરિયાની વાતો, આવતીકાલ માટે સાચવેલી","વાર્તા રેકોર્ડ કરો","નકશો ખોલો","હમણાં દરિયો કેવો છે","નવી વાર્તાઓ","અવાજ રેકોર્ડ કરો","આ ક્યાંની વાત છે?","મારું લોકેશન વાપરો","વાર્તા સાચવો","કોણ જોઈ શકે?","બધા","સંશોધકો","ફક્ત હું","લાઇવ વાર્તા નકશો","શોધો…","બધું","માછલી અને પ્રજાતિ","પ્રવાહો","હવામાનના સંકેતો","બદલાવ","પદ્ધતિઓ","લોકકથા","લાઇવ દરિયો અને હવામાન","પ્રવાહ","મોજાં","દરિયાનું તાપમાન","પવન","શાંત સ્થિતિ","દરિયો તોફાની — સાવચેત રહો","ખૂબ તોફાની — સત્તાવાર ચેતવણી તપાસો","દરિયામાં કટોકટી? કોસ્ટ ગાર્ડને 1554 પર કૉલ કરો","દરિયાની કથાઓ","સાંભળો","અનુવાદ","પોસ્ટ કરો","ભાષા","અહેવાલ"],
+or:["ଘର","ମାନଚିତ୍ର","ରେକର୍ଡ","ସମୁଦ୍ର","କାହାଣୀ","ସମୁଦାୟ","ସମୁଦ୍ରର କାହାଣୀ, ଆସନ୍ତାକାଲି ପାଇଁ ସୁରକ୍ଷିତ","କାହାଣୀ ରେକର୍ଡ କରନ୍ତୁ","ମାନଚିତ୍ର ଖୋଲନ୍ତୁ","ବର୍ତ୍ତମାନ ସମୁଦ୍ର କେମିତି","ନୂଆ କାହାଣୀ","ସ୍ୱର ରେକର୍ଡ କରନ୍ତୁ","ଏହା କେଉଁଠାର କଥା?","ମୋ ଲୋକେସନ୍ ବ୍ୟବହାର କରନ୍ତୁ","କାହାଣୀ ସେଭ୍ କରନ୍ତୁ","କିଏ ଦେଖିପାରିବ?","ସମସ୍ତେ","ଗବେଷକ","କେବଳ ମୁଁ","ଲାଇଭ୍ କାହାଣୀ ମାନଚିତ୍ର","ଖୋଜନ୍ତୁ…","ସବୁ","ମାଛ ଓ ପ୍ରଜାତି","ସ୍ରୋତ","ପାଣିପାଗ ସଙ୍କେତ","ପରିବର୍ତ୍ତନ","ପଦ୍ଧତି","ଲୋକକଥା","ଲାଇଭ୍ ସମୁଦ୍ର ଓ ପାଣିପାଗ","ସ୍ରୋତ","ଲହଡ଼ି","ସମୁଦ୍ର ତାପମାତ୍ରା","ପବନ","ଶାନ୍ତ ଅବସ୍ଥା","ସମୁଦ୍ର ଉତ୍ତାଳ — ସାବଧାନ","ବହୁତ ଉତ୍ତାଳ — ସରକାରୀ ସତର୍କତା ଦେଖନ୍ତୁ","ସମୁଦ୍ରରେ ଜରୁରୀକାଳୀନ? ଉପକୂଳ ରକ୍ଷୀ ବାହିନୀକୁ 1554 ରେ କଲ୍ କରନ୍ତୁ","ସମୁଦ୍ରର କାହାଣୀ","ଶୁଣନ୍ତୁ","ଅନୁବାଦ","ପୋଷ୍ଟ କରନ୍ତୁ","ଭାଷା","ରିପୋର୍ଟ"],
+pa:["ਹੋਮ","ਨਕਸ਼ਾ","ਰਿਕਾਰਡ","ਸਮੁੰਦਰ","ਕਹਾਣੀਆਂ","ਭਾਈਚਾਰਾ","ਸਮੁੰਦਰ ਦੀਆਂ ਕਹਾਣੀਆਂ, ਕੱਲ੍ਹ ਲਈ ਸੰਭਾਲੀਆਂ","ਕਹਾਣੀ ਰਿਕਾਰਡ ਕਰੋ","ਨਕਸ਼ਾ ਖੋਲ੍ਹੋ","ਹੁਣ ਸਮੁੰਦਰ ਕਿਹੋ ਜਿਹਾ ਹੈ","ਨਵੀਆਂ ਕਹਾਣੀਆਂ","ਆਵਾਜ਼ ਰਿਕਾਰਡ ਕਰੋ","ਇਹ ਕਿੱਥੋਂ ਦੀ ਗੱਲ ਹੈ?","ਮੇਰੀ ਲੋਕੇਸ਼ਨ ਵਰਤੋ","ਕਹਾਣੀ ਸੰਭਾਲੋ","ਕੌਣ ਦੇਖ ਸਕਦਾ ਹੈ?","ਸਾਰੇ","ਖੋਜਕਾਰ","ਸਿਰਫ਼ ਮੈਂ","ਲਾਈਵ ਕਹਾਣੀ ਨਕਸ਼ਾ","ਖੋਜੋ…","ਸਭ","ਮੱਛੀ ਅਤੇ ਪ੍ਰਜਾਤੀਆਂ","ਧਾਰਾਵਾਂ","ਮੌਸਮ ਦੇ ਸੰਕੇਤ","ਬਦਲਾਅ","ਤਰੀਕੇ","ਲੋਕ ਕਥਾ","ਲਾਈਵ ਸਮੁੰਦਰ ਅਤੇ ਮੌਸਮ","ਧਾਰਾ","ਲਹਿਰਾਂ","ਸਮੁੰਦਰ ਦਾ ਤਾਪਮਾਨ","ਹਵਾ","ਸ਼ਾਂਤ ਹਾਲਾਤ","ਸਮੁੰਦਰ ਖ਼ਰਾਬ — ਸਾਵਧਾਨ ਰਹੋ","ਬਹੁਤ ਖ਼ਰਾਬ — ਸਰਕਾਰੀ ਚੇਤਾਵਨੀ ਵੇਖੋ","ਸਮੁੰਦਰ ਵਿੱਚ ਐਮਰਜੈਂਸੀ? ਤਟ ਰੱਖਿਅਕ ਨੂੰ 1554 ਉੱਤੇ ਕਾਲ ਕਰੋ","ਸਮੁੰਦਰ ਦੀਆਂ ਕਥਾਵਾਂ","ਸੁਣੋ","ਅਨੁਵਾਦ","ਪੋਸਟ ਕਰੋ","ਭਾਸ਼ਾ","ਰਿਪੋਰਟ"],
+ur:["ہوم","نقشہ","ریکارڈ","سمندر","کہانیاں","برادری","سمندر کی کہانیاں، کل کے لیے محفوظ","کہانی ریکارڈ کریں","نقشہ کھولیں","ابھی سمندر کیسا ہے","نئی کہانیاں","آواز ریکارڈ کریں","یہ کہاں کی بات ہے؟","میرا مقام استعمال کریں","کہانی محفوظ کریں","کون دیکھ سکتا ہے؟","سب","محققین","صرف میں","لائیو کہانی نقشہ","تلاش کریں…","سب","مچھلی اور اقسام","دھارے","موسم کے اشارے","تبدیلی","طریقے","لوک کہانی","لائیو سمندر اور موسم","دھارا","لہریں","سمندر کا درجہ حرارت","ہوا","پرسکون حالات","سمندر طوفانی — احتیاط کریں","بہت طوفانی — سرکاری انتباہ دیکھیں","سمندر میں ہنگامی صورتحال؟ کوسٹ گارڈ کو 1554 پر کال کریں","سمندر کی کہانیاں","سنیں","ترجمہ","پوسٹ کریں","زبان","رپورٹ"],
+as:["হোম","মানচিত্ৰ","ৰেকৰ্ড","সাগৰ","কাহিনী","সম্প্ৰদায়","সাগৰৰ কাহিনী, ভৱিষ্যতৰ বাবে সংৰক্ষিত","কাহিনী ৰেকৰ্ড কৰক","মানচিত্ৰ খোলক","এতিয়া সাগৰ কেনেকুৱা","নতুন কাহিনী","মাত ৰেকৰ্ড কৰক","এইয়া ক’ৰ কথা?","মোৰ অৱস্থান ব্যৱহাৰ কৰক","কাহিনী সংৰক্ষণ কৰক","কোনে চাব পাৰে?","সকলোৱে","গৱেষক","কেৱল মই","লাইভ কাহিনীৰ মানচিত্ৰ","বিচাৰক…","সকলো","মাছ আৰু প্ৰজাতি","স্ৰোত","বতৰৰ সংকেত","পৰিৱৰ্তন","পদ্ধতি","লোককথা","লাইভ সাগৰ আৰু বতৰ","স্ৰোত","ঢৌ","সাগৰৰ তাপমাত্ৰা","বতাহ","শান্ত অৱস্থা","সাগৰ উত্তাল — সাৱধান","অতি উত্তাল — চৰকাৰী সতৰ্কবাণী চাওক","সাগৰত জৰুৰীকালীন? কোষ্ট গাৰ্ডক 1554 ত ফোন কৰক","সাগৰৰ কাহিনী","শুনক","অনুবাদ","পোষ্ট কৰক","ভাষা","প্ৰতিবেদন"],
+ne:["गृहपृष्ठ","नक्सा","रेकर्ड","समुद्र","कथाहरू","समुदाय","समुद्रका कथा, भोलिका लागि सुरक्षित","कथा रेकर्ड गर्नुहोस्","नक्सा खोल्नुहोस्","अहिले समुद्र कस्तो छ","नयाँ कथाहरू","आवाज रेकर्ड गर्नुहोस्","यो कहाँको कुरा हो?","मेरो स्थान प्रयोग गर्नुहोस्","कथा सुरक्षित गर्नुहोस्","कसले हेर्न सक्छ?","सबैले","अनुसन्धानकर्ता","म मात्र","प्रत्यक्ष कथा नक्सा","खोज्नुहोस्…","सबै","माछा र प्रजाति","धारहरू","मौसमका संकेत","परिवर्तन","तरिकाहरू","लोककथा","प्रत्यक्ष समुद्र र मौसम","धारा","छालहरू","समुद्रको तापक्रम","हावा","शान्त अवस्था","समुद्र उत्तेजित — सावधान","धेरै उत्तेजित — आधिकारिक चेतावनी हेर्नुहोस्","समुद्रमा आपत्काल? तटरक्षकलाई 1554 मा फोन गर्नुहोस्","समुद्रका कथाहरू","सुन्नुहोस्","अनुवाद","पोस्ट गर्नुहोस्","भाषा","प्रतिवेदन"],
+sa:["मुख्यपृष्ठम्","मानचित्रम्","अभिलेखः","समुद्रः","कथाः","समुदायः","सागरस्य कथाः, श्वःकृते संरक्षिताः","कथां अभिलिखतु","मानचित्रं उद्घाटयतु","अधुना समुद्रः कीदृशः","नूतनाः कथाः","स्वरं अभिलिखतु","इदं कुतः?","मम स्थानं प्रयोजयतु","कथां रक्षतु","कः द्रष्टुं शक्नोति?","सर्वे","अन्वेषकाः","केवलं अहम्","सजीवं कथामानचित्रम्","अन्वेषयतु…","सर्वम्","मत्स्याः प्रजातयः च","प्रवाहाः","ऋतुसङ्केताः","परिवर्तनम्","पद्धतयः","लोककथा","सजीवः समुद्रः ऋतुः च","प्रवाहः","तरङ्गाः","समुद्रतापमानम्","वायुः","शान्ता स्थितिः","समुद्रः क्षुब्धः — सावधानाः भवन्तु","अतिक्षुब्धः — शासकीयां चेतावनीं पश्यन्तु","समुद्रे आपत्कालः? तटरक्षकं 1554 इत्यत्र आह्वयन्तु","सागरकथाः","शृणोतु","अनुवादः","प्रकाशयतु","भाषा","प्रतिवेदनम्"],
+kok:["मुखपृष्ठ","नकासो","रेकॉर्ड","दर्यो","कथा","समुदाय","दर्याच्यो कथा, फाल्यांखातीर सांबाळ्ळ्यो","कथा रेकॉर्ड करात","नकासो उक्तो करात","आतां दर्यो कसो आसा","नवो कथा","आवाज रेकॉर्ड करात","ही खंयची गजाल?","म्हजें लोकेशन वापरात","कथा सांबाळात","कोण पळोवं शकता?","सगळे","संशोधक","फकत हांव","लायव्ह कथा नकासो","सोदात…","सगळें","मासळी आनी प्रजाती","प्रवाह","हवामानाचे सुतोवाच","बदल","पद्दती","लोककथा","लायव्ह दर्यो आनी हवामान","प्रवाह","लाटो","दर्याचें तापमान","वारो","शांत परिस्थिती","दर्यो खवळ्ळो — जतन करात","खूब खवळ्ळो — सरकारी इशारे पळयात","दर्यांत आणिबाणी? तटरक्षकांक 1554 वर फोन करात","दर्याच्यो कथा","आयकात","अनुवाद","पोस्ट करात","भास","अहवाल"],
+mai:["मुख्य पृष्ठ","नक्शा","रिकॉर्ड","समुद्र","कथा सभ","समुदाय","समुद्रक कथा, काल्हिक लेल सुरक्षित","कथा रिकॉर्ड करू","नक्शा खोलू","एखन समुद्र केहन अछि","नव कथा सभ","आवाज रिकॉर्ड करू","ई कतयक गप अछि?","हमर लोकेशन लिअ","कथा सहेजू","के देखि सकैत अछि?","सभ","शोधकर्ता","मात्र हम","लाइव कथा नक्शा","ताकू…","सभ","माछ आ प्रजाति","धारा सभ","मौसमक संकेत","बदलाव","तरीका","लोककथा","लाइव समुद्र आ मौसम","धारा","लहरि","समुद्रक तापमान","हवा","शांत स्थिति","समुद्र उग्र अछि — सावधान रहू","बहुत उग्र — सरकारी चेतावनी देखू","समुद्र मे आपात स्थिति? तटरक्षक केँ 1554 पर फोन करू","समुद्रक कथा","सुनू","अनुवाद","पोस्ट करू","भाषा","रिपोर्ट"],
+doi:["घर","नक्शा","रिकार्ड","समुंदर","कथां","समुदाय","समुंदर दियां कथां, कल्ल आस्तै सांभियां","कथा रिकार्ड करो","नक्शा खोलो","इस बेलै समुंदर किआं ऐ","नमियां कथां","आवाज़ रिकार्ड करो","एह् कुत्थूं दी गल्ल ऐ?","मेरा थाह् इस्तेमाल करो","कथा सुरक्खत करो","कुन दिक्ख सकदा ऐ?","सारे","शोधकर्ता","सिर्फ मैं","लाइव कथा नक्शा","ढूंढो…","सब","मच्छी ते प्रजातियां","धारां","मौसम दे संकेत","बदलाव","तरीके","लोककथा","लाइव समुंदर ते मौसम","धारा","लैहरां","समुंदर दा तापमान","हवा","शांत हालात","समुंदर उफान उप्पर — सावधान रौहो","बड़ा उफान — सरकारी चेतावनी दिक्खो","समुंदर च आपातकाल? तटरक्षक गी 1554 उप्पर फोन करो","समुंदर दियां कथां","सुनो","अनुवाद","पोस्ट करो","भाशा","रपोर्ट"],
+sd:["گهر","نقشو","رڪارڊ","سمنڊ","ڪهاڻيون","برادري","سمنڊ جون ڪهاڻيون، سڀاڻي لاءِ محفوظ","ڪهاڻي رڪارڊ ڪريو","نقشو کوليو","هينئر سمنڊ ڪيئن آهي","نيون ڪهاڻيون","آواز رڪارڊ ڪريو","هي ڪٿان جي ڳالهه آهي؟","منهنجو هنڌ استعمال ڪريو","ڪهاڻي محفوظ ڪريو","ڪير ڏسي سگهي ٿو؟","سڀ","محقق","رڳو مان","لائيو ڪهاڻي نقشو","ڳوليو…","سڀ","مڇي ۽ جنس","وهڪرا","موسم جا اشارا","تبديلي","طريقا","لوڪ ڪهاڻي","لائيو سمنڊ ۽ موسم","وهڪرو","لهرون","سمنڊ جو گرمي پد","هوا","پرسڪون حالتون","سمنڊ طوفاني — خبردار رهو","تمام طوفاني — سرڪاري ڊيڄاريندڙ ڏسو","سمنڊ ۾ هنگامي حالت؟ ڪوسٽ گارڊ کي 1554 تي ڪال ڪريو","سمنڊ جون ڪهاڻيون","ٻڌو","ترجمو","پوسٽ ڪريو","ٻولي","رپورٽ"]
+};
+/* English-only strings: Hindi is built in; other languages are upgraded by AI translation when reachable. */
+const EXTRA={tagline:"Ocean knowledge of India's fishers",hero_s:"Speak or write what the sea has taught you. Every story becomes a pin on the live map.",st_stories:"Stories",st_langs:"Languages",st_regions:"Coasts",tod:"Tale of the day",journey:"Your journey",pts:"points",
+rec_t:"Share what the sea told you",rec_sub:"Your voice matters. Speak or write in your own language.",rec_stop:"Stop",rec_dict:"Speak to type",rec_ph:"Tell us one thing about the sea that has changed in your lifetime…",rec_prec:"How exact should the pin be?",p_exact:"Exact",p_approx:"About 5 km",p_region:"Region only",
+rec_name:"Your name (optional)",rec_anon:"Stay anonymous",rec_media:"Add photos or video",rec_cons:"I agree to keep this story in the SagarKatha library",saved:"Saved! Your story is on the map.",queued:"Saved on your phone. It will upload when the network returns.",
+lib:"Story library",none:"No stories match yet.",l_stories:"Stories",l_tales:"Tales",l_flow:"Currents",l_tiles:"Detailed map",l_live:"Live demo",oc_note:"For information only. Always follow official INCOIS, IMD and Coast Guard warnings.",refresh:"Refresh",live:"Live data",sim:"Demo estimate",
+tl_sub:"Old stories from India's coasts. Read, listen, test yourself.",quiz:"Test yourself",ok_a:"Right! +10 points",no_a:"Not quite — try again",share_tale:"Share a tale from your village",lesson:"What it teaches",
+cm_sub:"Ask elders, share sea signs, help each other.",post_ph:"Ask a question or share a sea sign…",pt_q:"Question",pt_s:"Sea sign",pt_a:"Safety",pt_t:"Tip",reported:"Thank you — sent for review",
+ch_t:"Sagar Mitra",ch_ph:"Ask about weather, fish, safety…",ch_hi:"Namaste! I am Sagar Mitra. Ask me about sea conditions, safety, fish, folktales or the app. You can also attach a photo.",ch_c1:"How is the weather on my coast?",ch_c2:"Tell me a sea folktale",ch_c3:"How do I make a report?",ch_clear:"Clear chat",ch_off:"offline helper",
+large:"Large text",anon:"Anonymous",mic_err:"Microphone is not available here. You can type your story.",gps_err:"Could not get your location. Please choose your coast.",need_cons:"Please tick the agreement box",need_story:"Please add a story: speak, write or add a photo",need_place:"Please choose where this is from",pii:"Please remove phone numbers or email addresses",tr_fail:"Translation needs an internet connection and is not available right now",wait:"Please wait a few seconds",synced:"Back online — your stories were uploaded",
+rep_t:"Reports & database",rep_sub:"Everything you save is stored in the database. Build a report from it, then print, download or back it up.",rep_period:"Period",rep_7:"7 days",rep_30:"30 days",rep_all:"All time",rep_region:"Region",rep_demo:"Include sample data",rep_make:"Create report",rep_ai:"Write summary with AI",rep_print:"Print / PDF",rep_html:"Download report",rep_csv:"Download CSV",rep_json:"Backup database",rep_import:"Restore backup",rep_saved:"Saved reports",rep_empty:"No data in this period yet.",
+db_t:"Database",db_eng:"Storage",cnt_stories:"Stories",cnt_media:"Photos & media",cnt_posts:"Posts",cnt_log:"Ocean snapshots",cnt_rep:"Reports",oc_save:"Save snapshot",oc_ask:"Ask Sagar Mitra",oc_win:"Calmer windows (indicative)",oc_24:"Next 24 hours",oc_off:"Official bulletins",oc_nowin:"No calm window found in the next 48 hours."};
+const HI_X={tagline:"भारत के मछुआरों का समुद्री ज्ञान",hero_s:"समुद्र ने आपको जो सिखाया, उसे बोलकर या लिखकर साझा करें। हर कहानी लाइव नक्शे पर एक पिन बन जाती है।",st_stories:"कहानियाँ",st_langs:"भाषाएँ",st_regions:"तट",tod:"आज की कथा",journey:"आपकी यात्रा",pts:"अंक",
+rec_t:"समुद्र ने जो बताया, वह साझा करें",rec_sub:"आपकी आवाज़ मायने रखती है। अपनी भाषा में बोलें या लिखें।",rec_stop:"रोकें",rec_dict:"बोलकर लिखें",rec_ph:"समुद्र की एक ऐसी बात बताइए जो आपके जीवन में बदल गई है…",rec_prec:"पिन कितना सटीक हो?",p_exact:"सटीक",p_approx:"लगभग 5 किमी",p_region:"सिर्फ़ क्षेत्र",
+rec_name:"आपका नाम (वैकल्पिक)",rec_anon:"गुमनाम रहें",rec_media:"फोटो या वीडियो जोड़ें",rec_cons:"मैं सहमत हूँ कि यह कहानी सागरकथा लाइब्रेरी में रखी जाए",saved:"सहेज ली गई! आपकी कहानी नक्शे पर है।",queued:"आपके फोन में सहेजी गई। नेटवर्क आते ही अपलोड हो जाएगी।",
+lib:"कहानी पुस्तकालय",none:"अभी कोई कहानी नहीं मिली।",l_stories:"कहानियाँ",l_tales:"कथाएँ",l_flow:"धाराएँ",l_tiles:"विस्तृत नक्शा",l_live:"लाइव डेमो",oc_note:"केवल जानकारी के लिए। हमेशा INCOIS, IMD और तटरक्षक की चेतावनियों का पालन करें।",refresh:"ताज़ा करें",live:"लाइव डेटा",sim:"अनुमानित डेमो",
+tl_sub:"भारत के तटों की पुरानी कथाएँ। पढ़ें, सुनें, खुद को परखें।",quiz:"खुद को परखें",ok_a:"सही! +10 अंक",no_a:"ठीक नहीं — फिर कोशिश करें",share_tale:"अपने गाँव की कथा साझा करें",lesson:"यह क्या सिखाती है",
+cm_sub:"बुज़ुर्गों से पूछें, समुद्र के संकेत साझा करें, एक-दूसरे की मदद करें।",post_ph:"सवाल पूछें या समुद्र का कोई संकेत साझा करें…",pt_q:"सवाल",pt_s:"समुद्र का संकेत",pt_a:"सुरक्षा",pt_t:"सुझाव",reported:"धन्यवाद — समीक्षा के लिए भेज दिया गया",
+ch_t:"सागर मित्र",ch_ph:"मौसम, मछली, सुरक्षा के बारे में पूछें…",ch_hi:"नमस्ते! मैं सागर मित्र हूँ। समुद्र की स्थिति, सुरक्षा, मछली, कथाओं या ऐप के बारे में पूछिए। आप फोटो भी जोड़ सकते हैं।",ch_c1:"मेरे तट पर मौसम कैसा है?",ch_c2:"कोई समुद्री कथा सुनाओ",ch_c3:"रिपोर्ट कैसे बनाऊँ?",ch_clear:"चैट साफ़ करें",ch_off:"ऑफ़लाइन सहायक",
+large:"बड़े अक्षर",anon:"गुमनाम",mic_err:"यहाँ माइक्रोफ़ोन उपलब्ध नहीं है। आप अपनी कहानी लिख सकते हैं।",gps_err:"आपकी लोकेशन नहीं मिल सकी। कृपया अपना तट चुनें।",need_cons:"कृपया सहमति वाला बॉक्स चुनें",need_story:"कृपया कहानी जोड़ें: बोलें, लिखें या फोटो जोड़ें",need_place:"कृपया चुनें कि यह कहाँ की बात है",pii:"कृपया फोन नंबर या ईमेल हटाएँ",tr_fail:"अनुवाद के लिए इंटरनेट चाहिए, अभी उपलब्ध नहीं है",wait:"कृपया कुछ सेकंड रुकें",synced:"नेटवर्क वापस आ गया — कहानियाँ अपलोड हो गईं",
+rep_t:"रिपोर्ट और डेटाबेस",rep_sub:"आप जो भी सहेजते हैं वह डेटाबेस में रखा जाता है। उससे रिपोर्ट बनाएँ, प्रिंट करें, डाउनलोड करें या बैकअप लें।",rep_period:"अवधि",rep_7:"7 दिन",rep_30:"30 दिन",rep_all:"पूरा समय",rep_region:"क्षेत्र",rep_demo:"नमूना डेटा शामिल करें",rep_make:"रिपोर्ट बनाएँ",rep_ai:"AI से सारांश लिखें",rep_print:"प्रिंट / PDF",rep_html:"रिपोर्ट डाउनलोड करें",rep_csv:"CSV डाउनलोड करें",rep_json:"डेटाबेस बैकअप",rep_import:"बैकअप बहाल करें",rep_saved:"सहेजी गई रिपोर्टें",rep_empty:"इस अवधि में अभी कोई डेटा नहीं।",
+db_t:"डेटाबेस",db_eng:"भंडारण",cnt_stories:"कहानियाँ",cnt_media:"फोटो और मीडिया",cnt_posts:"पोस्ट",cnt_log:"समुद्र स्नैपशॉट",cnt_rep:"रिपोर्टें",oc_save:"स्नैपशॉट सहेजें",oc_ask:"सागर मित्र से पूछें",oc_win:"शांत समय (अनुमानित)",oc_24:"अगले 24 घंटे",oc_off:"आधिकारिक बुलेटिन",oc_nowin:"अगले 48 घंटों में कोई शांत समय नहीं मिला।"};
+
+/* ========== geography ========== */
+const REGIONS=[
+{id:'guj',short:'Gujarat',name:'Saurashtra & Kutch',state:'Gujarat',lat:20.95,lng:70.3,ol:20.3,og:69.6},
+{id:'mum',short:'Mumbai',name:'Mumbai & Konkan',state:'Maharashtra',lat:18.95,lng:72.8,ol:18.9,og:72.4},
+{id:'goa',short:'Goa',name:'Goa & Karwar',state:'Goa / Karnataka',lat:15.4,lng:73.8,ol:15.3,og:73.3},
+{id:'mng',short:'Mangaluru',name:'Mangaluru & Udupi',state:'Karnataka',lat:12.9,lng:74.8,ol:12.9,og:74.2},
+{id:'ker',short:'Kochi',name:'Kerala coast',state:'Kerala',lat:10.0,lng:76.2,ol:9.9,og:75.6},
+{id:'tvm',short:'Kanyakumari',name:'Kanyakumari',state:'Tamil Nadu',lat:8.1,lng:77.55,ol:7.6,og:77.6},
+{id:'gom',short:'Rameswaram',name:'Gulf of Mannar & Rameswaram',state:'Tamil Nadu',lat:9.25,lng:79.2,ol:8.9,og:79.2},
+{id:'che',short:'Chennai',name:'Chennai & Coromandel',state:'Tamil Nadu',lat:13.1,lng:80.3,ol:13.1,og:80.7},
+{id:'ap',short:'Vizag',name:'Andhra coast',state:'Andhra Pradesh',lat:17.7,lng:83.3,ol:17.4,og:83.8},
+{id:'odi',short:'Odisha',name:'Odisha & Chilika',state:'Odisha',lat:19.7,lng:85.3,ol:19.3,og:86.2},
+{id:'wb',short:'Sundarbans',name:'Sundarbans & Hooghly',state:'West Bengal',lat:21.8,lng:88.9,ol:21.0,og:88.8},
+{id:'and',short:'Andaman',name:'Andaman Islands',state:'Andaman & Nicobar',lat:11.62,lng:92.73,ol:11.6,og:93.4},
+{id:'lak',short:'Lakshadweep',name:'Lakshadweep',state:'Lakshadweep',lat:10.57,lng:72.64,ol:10.6,og:72.0}
+];
+const REG=id=>REGIONS.find(r=>r.id===id)||REGIONS[0];
+const nearest=(a,b)=>REGIONS.reduce((m,r)=>{const d=(r.lat-a)**2+(r.lng-b)**2;return d<m.d?{d,r}:m;},{d:1e9,r:REGIONS[0]}).r;
+/* Coast-only basemap (no land borders): always works offline and never misdraws boundaries. For orientation only. */
+const COAST=[[23.97,68.18],[23.73,68.53],[23.22,68.72],[22.83,69.35],[22.84,69.70],[23.0,70.22],[22.95,70.45],[22.5,70.05],[22.43,69.83],[22.47,69.07],[22.24,68.97],[21.64,69.6],[21.25,69.97],[20.91,70.37],[20.71,71.0],[20.9,71.5],[21.08,71.77],[21.77,72.15],[22.2,72.4],[22.3,72.6],[21.7,72.6],[21.1,72.65],[20.4,72.83],[19.35,72.8],[18.95,72.82],[18.64,72.87],[17.8,73.1],[16.99,73.28],[16.06,73.46],[15.5,73.8],[14.8,74.1],[14.28,74.44],[13.62,74.68],[12.87,74.84],[11.87,75.37],[11.25,75.77],[10.77,75.92],[9.97,76.24],[9.49,76.32],[8.88,76.59],[8.48,76.95],[8.08,77.55],[8.37,78.06],[8.76,78.2],[9.28,79.31],[9.74,79.02],[10.28,79.87],[10.77,79.84],[11.14,79.85],[11.75,79.77],[11.93,79.83],[12.62,80.2],[13.08,80.29],[13.42,80.32],[14.25,80.12],[15.5,80.05],[15.9,80.47],[16.17,81.14],[16.95,82.24],[17.69,83.22],[18.33,84.12],[19.26,84.9],[19.8,85.83],[20.3,86.67],[20.78,87.0],[21.5,87.0],[21.62,87.55],[21.65,88.05],[21.8,88.9]];
+const LANKA=[[9.83,80.23],[9.27,80.82],[8.57,81.23],[7.72,81.7],[6.84,81.84],[6.35,81.4],[6.12,81.12],[5.93,80.59],[6.03,80.22],[6.93,79.84],[7.58,79.79],[8.03,79.83],[9.0,79.92],[9.7,79.85]];
+const SEAS=[['Arabian Sea',15.8,66.8],['Bay of Bengal',14,87.8],['Indian Ocean',4.8,79],['Andaman Sea',10,96]];
+const CATS={species:{k:'c_species',col:'#6FCF97',i:'🐟'},current:{k:'c_current',col:'#7DD3FC',i:'🌀'},weather:{k:'c_weather',col:'#F4D58D',i:'⛅'},change:{k:'c_change',col:'#FCA5A5',i:'📉'},technique:{k:'c_technique',col:'#C4B5FD',i:'🎣'},folklore:{k:'c_folklore',col:'#F9A8D4',i:'📜'}};
+const ADV={ok:{c:'ok',k:'adv_ok'},c:{c:'caution',k:'adv_c'},d:{c:'danger',k:'adv_d'}};
+const catEn=k=>EN[K.indexOf(CATS[k]?CATS[k].k:'c_change')]||k;
+
+/* ========== content ========== */
+const TALES=[
+{id:'t1',e:'🪓',ti:'Parashurama and the Retreating Sea',pl:'Konkan–Malabar coast',lat:13.34,lng:74.74,tx:"Long ago the sage Parashurama stood on the western hills and wished for new land where people could live. He hurled his axe far out over the water. Where it fell, the sea drew back, and a long green strip of coast appeared: the Konkan and the Malabar. Fishers say the sea still remembers, and that it comes close in the monsoon as if asking for its land back.",ls:"Coasts are shared with the sea, so respect its moods.",q:"How does the new coast appear in this tale?",o:["A river carries soil to the sea","The sea draws back where the axe falls","A storm builds a sandbar"],a:1},
+{id:'t2',e:'🐟',ti:'Matsya and the Great Flood',pl:'Told across India',tx:"A tiny fish begged the king Manu to save it from bigger fish. Manu kept it in a jar, then a pond, then a river, and each time it grew. At last the fish became huge and revealed itself as the god Vishnu. It warned Manu that a great flood was coming and told him to build a boat. When the waters rose, the fish towed the boat to safety, carrying the seeds of life for a new beginning.",ls:"Kindness to the smallest creature can save the world.",q:"What did the fish do after it grew?",o:["It warned Manu and towed his boat through the flood","It ate the other fish in the river","It swam back to the sea alone"],a:0},
+{id:'t3',e:'🏛️',ti:'The Drowned City of Dwarka',pl:'Dwarka, Gujarat',lat:22.24,lng:68.97,tx:"Tradition says Krishna built the shining city of Dwarka beside the western sea. After he left the world, the sea rose and covered the city. Divers and marine archaeologists have studied underwater stone structures off Dwarka and Bet Dwarka, though scholars still debate how old they are. Gujarat's fishers grew up on this tale: today's shore may be tomorrow's sea.",ls:"Coastlines change. The sea is powerful, so stay humble before it.",q:"What does the legend say happened to Dwarka?",o:["Fire destroyed it","The sea rose and covered it","It was moved inland"],a:1},
+{id:'t4',e:'⚓',ti:'Poompuhar, the Port the Sea Took',pl:'Poompuhar, Tamil Nadu',lat:11.14,lng:79.85,tx:"Poompuhar, also called Kaveripoompattinam, was a busy port where the river Kaveri meets the sea. Tamil epics such as Silappatikaram and Manimekalai sing of its ships, markets and seaside festivals. Manimekalai also tells that the sea swallowed the city, and that a sea goddess watched over travellers on the waves. Underwater surveys have searched the sea floor near Poompuhar for traces of the old port.",ls:"Great ports can vanish. Memory is how a coast survives.",q:"What do Tamil epic traditions say happened to the port of Puhar?",o:["It was burned in a war","The sea swallowed it","The river dried up"],a:1},
+{id:'t5',e:'🐅',ti:'Bonbibi, Lady of the Forest',pl:'Sundarbans, West Bengal',lat:21.9,lng:88.8,tx:"In the mangrove forests of the Sundarbans, honey-gatherers, woodcutters and fishers pray to Bonbibi, lady of the forest. The tale says a greedy tiger-spirit, Dakshin Rai, wanted to eat a poor boy named Dukhe. The boy called on Bonbibi, and she saved him. Her rule for everyone who enters the forest is simple: take only what you need, and never be greedy. People of different faiths honour her together.",ls:"Take only what you need. Greed brings danger.",q:"What is Bonbibi's rule for people who enter the forest?",o:["Bring gold as a gift","Go in alone at night","Take only what you need"],a:2},
+{id:'t6',e:'🛕',ti:'Kalijai of Chilika',pl:'Chilika lake, Odisha',lat:19.72,lng:85.25,tx:"On a small island in Chilika lake stands a shrine to Kalijai. The tale says a young bride was crossing the lake to her wedding when a storm rose and she was lost to the water. Villagers believe her spirit became a goddess who guards the boats. Boatmen still pray to her before sailing across the wide, shallow lake, because the weather there can turn quickly.",ls:"Respect the weather and pray for a safe crossing.",q:"Whom does Kalijai protect?",o:["Only temple priests","Farmers in the hills","Boatmen crossing the lake"],a:2},
+{id:'t7',e:'🥥',ti:'Narali Purnima, a Gift to the Sea',pl:'Koli communities, Maharashtra',lat:18.96,lng:72.83,tx:"Every year after the monsoon, on the full-moon day of Shravan, Koli fishing families of Maharashtra gather on the shore. They offer a coconut to the sea to say thank you and to ask for safe journeys. The monsoon months are a rest time, when many fish breed. The coconut marks the day the boats go back to the water.",ls:"Give thanks, and let the sea rest so it can give again.",q:"What do Koli families offer to the sea?",o:["A coconut","A silver fish","A new net"],a:0},
+{id:'t8',e:'🐿️',ti:"Rama's Bridge and the Little Squirrel",pl:'Rameswaram, Tamil Nadu',lat:9.29,lng:79.31,tx:"The Ramayana tells of the great bridge built across the sea to Lanka. Rama's army of vanaras dropped stones into the water, and the stones floated when Rama's name was written on them. A little squirrel also helped, rolling in the sand and shaking grains onto the bridge. Rama stroked her back in thanks. The chain of shoals between Rameswaram and Sri Lanka is known as Rama's Bridge, or Adam's Bridge.",ls:"Small help counts. Every hand matters.",q:"Who helped by carrying tiny grains of sand?",o:["A little squirrel","A crab","A heron"],a:0}
+];
+const SEED=[
+{rg:'guj',c:'change',sp:['Bombil (Bombay duck)'],tg:['shore catch','monsoon'],d:[.05,-.12],tx:"When I was a boy the Bombil came so close in the monsoon that we could net them from the shore. Now the boats have to go much farther out to find them.",sm:"Bombil, once caught near shore in the monsoon, is now found much farther out."},
+{rg:'ker',c:'species',sp:['Sardine'],tg:['monsoon','mudbank','chakara'],d:[.12,0],tx:"Before the monsoon the water near our beach turns brown and calm. Old fishers call it chakara, and the sardines come in close. We watch the colour of the water to know.",sm:"Calm, muddy water near the beach in the monsoon (chakara) brings sardines close to shore."},
+{rg:'che',c:'weather',sp:[],tg:['north-east wind','clouds','dusk'],d:[-.05,0],tx:"When the wind swings to the north-east and the clouds pile up over the sea at dusk, my father brought the boats in early. He read the sky, not a phone.",sm:"A north-east wind shift and dusk clouds were a signal to bring boats in early."},
+{rg:'odi',c:'species',sp:['Prawn','Crab'],tg:['chilika','clear water'],d:[0,-.05],tx:"In Chilika the crabs and prawns are plentiful when the water is clear and the wind is light. We set the nets before sunrise.",sm:"Clear water and light wind in Chilika signal good prawn and crab catches."},
+{rg:'wb',c:'folklore',sp:[],tg:['bonbibi','sundarbans','safety'],d:[.1,-.1],tx:"Before we enter the creeks of the Sundarbans we call on Bonbibi. We go in groups, never alone, and we take only what we need.",sm:"Fishers invoke Bonbibi, travel in groups and take only what they need in the Sundarbans."},
+{rg:'mng',c:'technique',sp:['Sardine'],tg:['ring net','shoal','dawn'],d:[.1,-.05],tx:"At first light we look for silver flashes on the water. That is the shoal. We circle it quietly with the net before the sun gets high.",sm:"Fishers spot sardine shoals by silver flashes at dawn and circle them with nets."},
+{rg:'ap',c:'change',sp:[],tg:['erosion','village','shoreline'],d:[0,.05],tx:"The sea is taking the beach at our village. Our fathers' houses stood where the waves are now.",sm:"Coastal erosion has moved the shoreline past the site of old village houses."},
+{rg:'lak',c:'species',sp:['Tuna','Seabirds'],tg:['pole and line','birds'],d:[0,0],tx:"We follow the birds. When they dive over one spot, the tuna are driving small fish to the surface. That is where we throw the bait.",sm:"Diving seabirds reveal where tuna are herding small fish near the surface."},
+{rg:'and',c:'technique',sp:['Squid'],tg:['night fishing','lamp'],d:[-.05,.1],tx:"On calm nights we hang a bright lamp over the water. The squid come up to the light and we lift them in with small nets.",sm:"On calm nights lamps draw squid to the surface for small-net catches."},
+{rg:'goa',c:'weather',sp:[],tg:['pre-monsoon','calm sea'],d:[0,-.03],tx:"When the sea goes strangely flat and quiet before the monsoon, we pull the boats high up the beach. The weather will turn soon.",sm:"An unusually flat, quiet sea before the monsoon signals a weather change."}
+];
+const SEEDPOSTS=[
+{id:'p1',sample:true,owner:'sample',name:'Sample · fisher',type:'q',tx:"The sardines seem to arrive later each year. Does anyone else see this on their coast?",ts:-2*864e5,likes:7,replies:[{n:'Sample · elder',tx:"Yes. My father said they came with the first rains. Now we wait for weeks."}]},
+{id:'p3',sample:true,owner:'sample',name:'Sample · volunteer',type:'a',tx:"Safety reminder: carry a lifejacket and keep your phone in a waterproof pouch. For an emergency at sea, the Coast Guard toll-free number is 1554.",ts:-6*864e5,likes:21,replies:[]}
+];
+const BADGES=[{i:'🐚',n:'First story',f:()=>S.recs.length>=1},{i:'📖',n:'Tale reader',f:()=>S.prof.read.length>=4},{i:'🧠',n:'Quiz star',f:()=>S.prof.quiz.length>=4},{i:'🤝',n:'Helper',f:()=>S.posts.some(p=>p.owner===S.prof.uid)}];
+const KW={species:['fish','sardine','mackerel','tuna','pomfret','prawn','shrimp','crab','squid','hilsa','bombil','lobster','shark','oyster','seaweed','मछली','झींगा'],current:['current','tide','flow','drift','eddy','upwelling','धारा','ज्वार'],weather:['wind','storm','cloud','rain','cyclone','monsoon','sky','lightning','fog','हवा','तूफान','बारिश','बादल'],change:['used to','before','earlier','less','decline','erosion','changed','पहले','कम'],technique:['net','hook','line','boat','bait','trawl','lamp','जाल','नाव'],folklore:['goddess','legend','ancestor','prayer','temple','tale','देवी','पूजा','कथा']};
+
+/* ========== DATABASE (IndexedDB → artifact storage → memory). Collections: stories, media, posts, ocean_log, reports, meta ========== */
+const COLS=['stories','media','posts','ocean_log','reports','meta'];
+const DB={eng:'Memory',idb:null,mem:{},
+async init(){
+try{if(!window.indexedDB)throw 0;
+this.idb=await Promise.race([new Promise((ok,no)=>{const q=indexedDB.open('sagarkatha',1);q.onupgradeneeded=()=>COLS.forEach(c=>q.result.createObjectStore(c,{keyPath:'id'}));q.onsuccess=()=>ok(q.result);q.onerror=()=>no(q.error);q.onblocked=()=>no(new Error('blocked'));}),new Promise((_,no)=>setTimeout(()=>no(new Error('timeout')),2500))]);
+this.eng='IndexedDB';return;}catch(e){this.idb=null;}
+if(window.storage){try{await window.storage.list('sk3:');this.eng='Storage';}catch(e){}}
+},
+_tx(c,m,fn){return new Promise((ok,no)=>{const tx=this.idb.transaction(c,m),r=fn(tx.objectStore(c));tx.oncomplete=()=>ok(r&&r.result);tx.onerror=tx.onabort=()=>no(tx.error);});},
+async put(c,o){if(this.eng==='IndexedDB')return this._tx(c,'readwrite',s=>s.put(o));if(this.eng==='Storage'){try{await window.storage.set('sk3:'+c+':'+o.id,JSON.stringify(o));return;}catch(e){}}this.mem[c+':'+o.id]=o;},
+async get(c,id){if(this.eng==='IndexedDB')return(await this._tx(c,'readonly',s=>s.get(id)))||null;if(this.eng==='Storage'){try{const r=await window.storage.get('sk3:'+c+':'+id);if(r&&r.value)return JSON.parse(r.value);}catch(e){}}return this.mem[c+':'+id]||null;},
+async all(c){if(this.eng==='IndexedDB')return(await this._tx(c,'readonly',s=>s.getAll()))||[];
+let out=[];if(this.eng==='Storage'){try{const l=await window.storage.list('sk3:'+c+':');out=(await Promise.all(((l&&l.keys)||[]).map(async k=>{try{const r=await window.storage.get(k);return r&&r.value?JSON.parse(r.value):null;}catch(e){return null;}}))).filter(Boolean);}catch(e){}}
+const ids=new Set(out.map(o=>o.id));Object.keys(this.mem).forEach(k=>{if(k.startsWith(c+':')&&!ids.has(this.mem[k].id))out.push(this.mem[k]);});return out;},
+async del(c,id){if(this.eng==='IndexedDB')return this._tx(c,'readwrite',s=>s.delete(id));if(this.eng==='Storage'){try{await window.storage.delete('sk3:'+c+':'+id);}catch(e){}}delete this.mem[c+':'+id];},
+async clear(c){if(this.eng==='IndexedDB')return this._tx(c,'readwrite',s=>s.clear());for(const o of await this.all(c))await this.del(c,o.id);}
+};
+
+/* ========== state ========== */
+const S={page:'home',recs:[],posts:[],media:{},urls:{},prof:{uid:uid(),name:'',lang:'en',points:0,read:[],quiz:[],large:false,sample:true,viewer:'visitor',liked:[],hidden:[],seeded:false},
+ocean:{data:{},detail:{},live:false,ts:0,sel:'che',last:null},filters:{cats:new Set(),q:'',layers:{stories:true,tales:true,flow:false,tiles:false}},draft:{prec:'approx',vis:'public',media:[]},
+chat:[],chatImg:null,typing:false,ptype:'q',newId:null,te:0,tl:0,live:{on:false,timer:null,n:0,items:[]},noAI:false,arm:null,rep:{days:30,region:'all',sample:null,html:'',d:null}};
+const saveProf=()=>DB.put('meta',{...S.prof,id:'profile'});
+const award=n=>{S.prof.points+=n;saveProf();};
+const mediaURL=m=>m.data||(m.blob?(S.urls[m.id]||(S.urls[m.id]=URL.createObjectURL(m.blob))):'');
+const mediaOf=r=>(r.mids||[]).map(i=>S.media[i]).filter(Boolean);
+async function addMedia(story,kind,payload,name){
+const m={id:uid(),story,kind,name:String(name||'').slice(0,80),ts:Date.now()};
+if(typeof payload==='string')m.data=payload;
+else if(DB.eng==='IndexedDB'){m.blob=payload;m.size=payload.size;}
+else if(payload.size<900e3)m.data=await toDataURL(payload);
+else return null;
+await DB.put('media',m);S.media[m.id]=m;return m.id;
+}
+
+/* ========== i18n ========== */
+let TT={};
+const t=k=>TT[k]??k;
+const h=k=>esc(t(k));
+function buildTT(code,ai){
+const l=L(code),tt={...EXTRA};
+K.forEach((k,i)=>{tt[k]=EN[i];});
+if(code==='hi'||l.fb==='hi')Object.assign(tt,HI_X);
+if(ai)Object.assign(tt,ai);
+[l.fb,code].forEach(c=>{const a=c&&TR[c];if(a)K.forEach((k,i)=>{if(a[i])tt[k]=a[i];});});
+return tt;
+}
+function applyI18n(){
+$$('[data-i18n]').forEach(e=>e.textContent=t(e.dataset.i18n));
+$$('[data-i18n-ph]').forEach(e=>e.placeholder=t(e.dataset.i18nPh));
+const l=L(S.prof.lang);document.documentElement.lang=l.c;document.documentElement.dir=l.rtl?'rtl':'ltr';
+$('#langBtn').textContent=l.c.toUpperCase();document.body.classList.toggle('large',!!S.prof.large);
+}
+function parseJSON(s){s=String(s).replace(/```json|```/g,'');const a=s.indexOf('{'),b=s.lastIndexOf('}');if(a<0||b<0)throw new Error('json');return JSON.parse(s.slice(a,b+1));}
+async function claude(system,messages,ms){
+const ac=new AbortController(),to=setTimeout(()=>ac.abort(),ms||30000);
+try{
+const r=await fetch(CFG.AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},signal:ac.signal,body:JSON.stringify({model:CFG.MODEL,max_tokens:1000,system,messages})});
+if(!r.ok)throw new Error('AI '+r.status);
+const j=await r.json();const out=(j.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n');
+if(!out.trim())throw new Error('empty');return out;
+}finally{clearTimeout(to);}
+}
+async function enhance(code){
+if(code==='en'||code==='hi'||L(code).q==='fb'||S.noAI)return;
+const l=L(code),keys=Object.keys(EXTRA),chunks=[];
+for(let i=0;i<keys.length;i+=10)chunks.push(keys.slice(i,i+10));
+const res=await Promise.allSettled(chunks.map(async ks=>{
+const o={};ks.forEach(k=>o[k]=EXTRA[k]);
+const out=await claude(`You translate app text for Indian fishing communities. Translate the JSON values from English into ${l.e} (${l.n})${l.sc?', written in '+l.sc:''}. Use simple everyday words. Keep the JSON keys unchanged. Keep emoji, numbers and acronyms (INCOIS, IMD, AI, CSV, PDF) unchanged. Reply with ONLY the JSON object.`,[{role:'user',content:JSON.stringify(o)}],20000);
+return parseJSON(out);
+}));
+const ok=res.filter(r=>r.status==='fulfilled').map(r=>r.value);
+if(!ok.length){S.noAI=true;return;}
+const tr=Object.assign({},...ok);await DB.put('meta',{id:'i18x:'+code,tr});
+if(S.prof.lang===code){TT=buildTT(code,tr);applyI18n();renderAll();}
+}
+async function setLang(code){
+closeModal();
+const c=code==='en'?null:await DB.get('meta','i18x:'+code),ai=c&&c.tr;
+TT=buildTT(code,ai);S.prof.lang=code;await saveProf();applyI18n();renderAll();
+if(code!=='en'&&!ai)enhance(code);
+}
+function busy(on,msg){$('#busyMsg').textContent=msg||'';$('#busy').classList.toggle('open',!!on);}
+
+/* ========== access rules (mirrors Row-Level Security in production) ========== */
+const seedRecs=()=>SEED.map((s,i)=>{const r=REG(s.rg);return{id:'s'+i,sample:true,owner:'sample',name:'',ts:Date.now()-(i+2)*3*864e5,rg:s.rg,lat:r.lat+s.d[0],lng:r.lng+s.d[1],prec:'approx',vis:'public',lang:'en',tx:s.tx,ai:{cat:s.c,sp:s.sp,tg:s.tg,sm:s.sm,src:'sample'},mids:[],status:'synced'};});
+const allRecs=()=>[...(S.prof.sample?[...S.live.items,...seedRecs()]:[]),...S.recs];
+const canSee=r=>r.owner===S.prof.uid||r.vis==='public'||(r.vis==='research'&&S.prof.viewer==='researcher');
+const visibleRecs=()=>allRecs().filter(canSee).sort((a,b)=>b.ts-a.ts);
+function filtered(){
+const F=S.filters;
+return visibleRecs().filter(r=>{
+if(F.cats.size&&!F.cats.has(r.ai.cat))return false;
+if(F.q){const rg=REG(r.rg);const hay=(r.tx+' '+r.ai.sm+' '+(r.ai.sp||[]).join(' ')+' '+(r.ai.tg||[]).join(' ')+' '+rg.name+' '+rg.state).toLowerCase();if(!hay.includes(F.q))return false;}
+return true;});
+}
+
+/* ========== navigation ========== */
+function go(p){
+if(!PAGES.includes(p))return;
+if(p!=='map')stopLive();
+S.page=p;
+$$('.page').forEach(e=>e.classList.toggle('active',e.id==='p-'+p));
+$$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
+window.scrollTo({top:0});
+({home:renderHome,map:showMap,record:prepRecord,ocean:showOcean,tales:renderTales,community:renderCom,reports:showReports}[p])();
+}
+function renderAll(){go(S.page);if($('#chat').classList.contains('open'))renderChat();}
+function modal(html){$('#sheet').innerHTML=html;$('#ov').classList.add('open');$('#sheet').scrollTop=0;}
+function closeModal(){$('#ov').classList.remove('open');if('speechSynthesis' in window)speechSynthesis.cancel();}
+
+/* ========== HOME ========== */
+function renderHome(){
+const recs=visibleRecs(),tale=TALES[Math.floor(Date.now()/864e5)%TALES.length],o=S.ocean.data;
+const sea=['che','ker','guj','ap'].map(id=>{const r=REG(id),d=o[id];
+if(!d)return`<div class="card"><div class="meta">${esc(r.short)}</div><b>…</b></div>`;
+const a=ADV[assess(d).lv];
+return`<div class="card sc" data-act="ocsel" data-id="${id}"><div class="meta">${esc(r.short)} · ${esc(r.state)}</div><div class="row" style="justify-content:space-between"><span>🌊 ${f1(d.wave)} m</span><span>🧭 ${f1(d.cur)} km/h</span></div><span class="adv ${a.c}">${h(a.k)}</span></div>`;}).join('');
+$('#p-home').innerHTML=`
+<div class="hero"><div class="meta">${h('tagline')} · VBYLD 2027</div><h1>${h('hero_t')}</h1><p class="sub">${h('hero_s')}</p>
+<div class="row"><button class="btn p" data-act="go" data-p="record">🎙️ ${h('btn_rec')}</button><button class="btn g" data-act="go" data-p="map">🗺️ ${h('btn_map')}</button><button class="btn g" data-act="langsheet">🌐 ${esc(L(S.prof.lang).n)}</button></div></div>
+<div class="stats card"><div class="stat"><b>${recs.length}</b><small>${h('st_stories')}</small></div><div class="stat"><b>22</b><small>${h('st_langs')}</small></div><div class="stat"><b>${REGIONS.length}</b><small>${h('st_regions')}</small></div></div>
+<h3 class="sx">${h('sea_now')} <span class="pill ${S.ocean.live?'on':'off'}">${h(S.ocean.live?'live':'sim')}</span></h3>
+<div class="grid g3">${sea}</div>
+<a class="sos" href="tel:1554">🆘 ${h('sos')}</a>
+<h3 class="sx">${h('latest')}</h3><div class="grid g2">${recs.slice(0,3).map(storyCard).join('')}</div>
+<h3 class="sx">${h('tod')}</h3>
+<div class="card sc" data-act="tale" data-id="${tale.id}"><div style="font-size:2rem">${tale.e}</div><h3>${esc(tale.ti)}</h3><div class="meta">${esc(tale.pl)}</div></div>
+<div class="card sc" style="margin-top:1rem" data-act="go" data-p="reports"><div class="meta">📊 ${h('db_t')} · ${esc(DB.eng)}</div><p>${S.recs.length} ${h('cnt_stories')} · ${Object.keys(S.media).length} ${h('cnt_media')} · ${S.posts.length} ${h('cnt_posts')} → ${h('nav_rep')}</p></div>
+<h3 class="sx">${h('journey')} · ${S.prof.points} ${h('pts')}</h3>
+<div class="card row">${BADGES.map(b=>`<div class="badge ${b.f()?'on':''}"><span>${b.i}</span>${esc(b.n)}</div>`).join('')}</div>
+<p class="foot">Ocean &amp; weather data: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a> (CC BY 4.0; wave model by DWD ICON and partners). Official advisories: <a href="https://incois.gov.in/samudra/" target="_blank" rel="noopener">INCOIS SAMUDRA</a> · <a href="https://mausam.imd.gov.in/" target="_blank" rel="noopener">IMD</a>. SagarKatha is an independent community project and is not an official warning service.</p>`;
+}
+function storyCard(r){
+const c=CATS[r.ai.cat]||CATS.change,rg=REG(r.rg),q=r.tx||r.ai.sm,im=mediaOf(r).find(m=>m.kind==='image');
+return`<div class="card sc" data-act="rec" data-id="${esc(r.id)}">${im?`<img class="th" src="${mediaURL(im)}" alt="">`:''}<div class="meta">${esc(rg.short)} · ${esc(rg.state)}${r.sample?' · SAMPLE':''}${r.vis!=='public'?' · 🔒':''}</div><q>${esc(q.length>170?q.slice(0,167)+'…':q)}</q><div style="margin-top:.5rem"><span class="tag cat" style="--c:${c.col}">${c.i} ${h(c.k)}</span>${(r.ai.sp||[]).map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div></div>`;
+}
+
+/* ========== MAP (built-in coast basemap + optional detailed tiles + live pins) ========== */
+let map=null,pins=null,tileLayer=null;
+function showMap(){initMap();renderMap();if(map)setTimeout(()=>map.invalidateSize(),150);}
+function initMap(){
+if(map)return;
+if(!LF){$('#leaflet').innerHTML='<p class="sub" style="padding:1rem">The map library could not load (check your internet). The story library below still works.</p>';return;}
+map=LF.map('leaflet',{minZoom:4,maxZoom:12,zoomSnap:.5}).setView([15.2,80],5);
+map.createPane('base').style.zIndex=150;
+const bp={pane:'base',interactive:false};
+for(let la=0;la<=30;la+=5)LF.polyline([[la,55],[la,105]],{...bp,color:'#ffffff',weight:.6,opacity:.07}).addTo(map);
+for(let lo=55;lo<=105;lo+=5)LF.polyline([[0,lo],[32,lo]],{...bp,color:'#ffffff',weight:.6,opacity:.07}).addTo(map);
+LF.polyline(COAST,{...bp,color:'#2A9D8F',weight:10,opacity:.13,lineJoin:'round'}).addTo(map);
+LF.polyline(COAST,{...bp,color:'#7DD3FC',weight:1.8,opacity:.9,lineJoin:'round'}).addTo(map);
+LF.polygon(LANKA,{...bp,color:'#7DD3FC',weight:1.4,opacity:.7,fillColor:'#1A5F7A',fillOpacity:.25}).addTo(map);
+SEAS.forEach(([n,la,lo])=>LF.marker([la,lo],{pane:'base',interactive:false,keyboard:false,icon:LF.divIcon({className:'sealbl',html:n,iconSize:[220,22],iconAnchor:[110,11]})}).addTo(map));
+REGIONS.forEach(r=>LF.marker([r.lat,r.lng],{pane:'base',interactive:false,keyboard:false,icon:LF.divIcon({className:'rglbl',html:esc(r.short),iconSize:[100,14],iconAnchor:[-10,7]})}).addTo(map));
+map.attributionControl.addAttribution('Simplified coastline, for orientation only');
+pins=LF.layerGroup().addTo(map);
+}
+function setTiles(on){
+if(!map||!LF)return;
+if(on&&!tileLayer){
+S.te=0;S.tl=0;
+tileLayer=LF.tileLayer(CFG.TILES,{subdomains:'abcd',maxZoom:12,attribution:'© OpenStreetMap contributors © CARTO'});
+tileLayer.on('tileload',()=>{S.tl++;});
+tileLayer.on('tileerror',()=>{if(++S.te>=4&&!S.tl){toast('Detailed map tiles are blocked here — using the built-in coast map.');S.filters.layers.tiles=false;setTiles(false);renderChips();}});
+tileLayer.addTo(map);
+}else if(!on&&tileLayer){map.removeLayer(tileLayer);tileLayer=null;}
+}
+function renderChips(){
+$('#catChips').innerHTML=`<button class="chip ${S.filters.cats.size?'':'on'}" data-act="cat" data-c="all">${h('all')}</button>`+Object.entries(CATS).map(([k,c])=>`<button class="chip ${S.filters.cats.has(k)?'on':''}" data-act="cat" data-c="${k}">${c.i} ${h(c.k)}</button>`).join('');
+$('#layerChips').innerHTML=[['stories','📍','l_stories'],['tales','🔶','l_tales'],['flow','🧭','l_flow'],['tiles','🗺️','l_tiles']].map(([k,i,tk])=>`<button class="chip ${S.filters.layers[k]?'on':''}" data-act="layer" data-l="${k}">${i} ${h(tk)}</button>`).join('')+`<button class="chip ${S.live.on?'on':''}" data-act="livesim">🔴 ${h('l_live')}</button>`;
+}
+function renderMap(){
+renderChips();
+const list=filtered();
+if(map&&pins){
+pins.clearLayers();
+if(S.filters.layers.stories)list.forEach(r=>{
+const c=CATS[r.ai.cat]||CATS.change;
+const ic=LF.divIcon({className:'',html:`<div class="pin ${r.id===S.newId?'new':''}" style="--c:${c.col}"></div>`,iconSize:[22,22],iconAnchor:[11,11]});
+LF.marker([r.lat,r.lng],{icon:ic}).addTo(pins).on('click',()=>openRec(r.id));
+});
+if(S.filters.layers.tales)TALES.filter(x=>x.lat).forEach(x=>{
+const ic=LF.divIcon({className:'',html:'<div class="pin tale" style="--c:#F9A8D4"></div>',iconSize:[22,22],iconAnchor:[11,11]});
+LF.marker([x.lat,x.lng],{icon:ic}).addTo(pins).bindTooltip(esc(x.ti)).on('click',()=>openTale(x.id));
+});
+if(S.filters.layers.flow){
+if(!S.ocean.ts)loadOcean().then(()=>{if(S.page==='map')renderMap();});
+REGIONS.forEach(r=>{const d=S.ocean.data[r.id];if(!d||d.cdir==null)return;
+const ic=LF.divIcon({className:'flow',html:`<div style="transform:rotate(${Math.round(d.cdir)}deg);width:30px;height:30px">${ARROW}</div>`,iconSize:[30,30],iconAnchor:[15,15]});
+LF.marker([r.ol,r.og],{icon:ic}).addTo(pins).bindTooltip(`${esc(r.short)}: ${f1(d.cur)} km/h → ${card(d.cdir)}`);});
+}
+}
+$('#mapNote').textContent=(S.live.on?'🔴 LIVE · ':'')+list.length+' / '+visibleRecs().length+' '+t('st_stories');
+$('#lib').innerHTML=list.length?list.slice(0,40).map(storyCard).join(''):`<p class="sub">${h('none')}</p>`;
+}
+/* live demo: shows how pins arrive in real time. In production this is a Supabase Realtime subscription. */
+function startLive(){if(S.live.on)return;S.live.on=true;S.live.timer=setInterval(liveTick,5500);liveTick();}
+function stopLive(){S.live.on=false;clearInterval(S.live.timer);}
+function liveTick(){
+const s=SEED[Math.floor(Math.random()*SEED.length)],r=REG(s.rg);
+const rec={id:'L'+(++S.live.n),sample:true,live:true,owner:'sample',name:'',ts:Date.now(),rg:s.rg,lat:r.lat+(Math.random()-.5)*.6,lng:r.lng+(Math.random()-.5)*.4,prec:'approx',vis:'public',lang:'en',tx:s.tx,ai:{cat:s.c,sp:s.sp,tg:s.tg,sm:s.sm,src:'sample'},mids:[],status:'synced'};
+S.live.items.unshift(rec);if(S.live.items.length>25)S.live.items.pop();
+S.newId=rec.id;
+if(S.page==='map'){renderMap();toast('📍 '+r.short+' · '+s.sm.slice(0,70));}
+}
+
+/* ========== RECORD (photos, video, voice → database) ========== */
+function prepRecord(){
+const sel=$('#recRegion');
+if(!sel.options.length)sel.innerHTML='<option value="">—</option>'+REGIONS.map(r=>`<option value="${r.id}">${esc(r.name)} · ${esc(r.state)}</option>`).join('');
+$('#recHint').textContent=S.draft.kind==='folklore'?'📜 '+t('share_tale'):'';
+showPreview();
+}
+const fmtT=ms=>{const s=Math.floor(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
+function micUI(on){$('#mic').classList.toggle('rec',on);$('#micLbl').textContent=on?'⏹ '+t('rec_stop'):t('rec_voice');if(!on)$('#recTime').textContent='';}
+async function toggleMic(){
+if(S.mr&&S.mr.state==='recording'){S.mr.stop();return;}
+try{
+const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+const chunks=[],mr=new MediaRecorder(stream),t0=Date.now();S.mr=mr;
+mr.ondataavailable=e=>chunks.push(e.data);
+mr.onstop=()=>{stream.getTracks().forEach(x=>x.stop());clearInterval(S.tick);
+const blob=new Blob(chunks,{type:mr.mimeType||'audio/webm'});
+S.draft.media=(S.draft.media||[]).filter(m=>m.kind!=='audio');
+S.draft.media.push({kind:'audio',blob,url:URL.createObjectURL(blob),name:'voice-note'});micUI(false);showPreview();};
+mr.start();micUI(true);S.tick=setInterval(()=>{$('#recTime').textContent=fmtT(Date.now()-t0);},500);
+setTimeout(()=>{if(mr.state==='recording')mr.stop();},120000);
+}catch(e){toast(t('mic_err'));}
+}
+function dictate(el,btn){
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!SR){toast(t('mic_err'));return;}
+if(S.sr){S.sr.stop();return;}
+const r=new SR();r.lang=L(S.prof.lang).sr;r.interimResults=true;r.continuous=true;
+const base=el.value?el.value+' ':'';
+r.onresult=e=>{el.value=(base+[...e.results].map(x=>x[0].transcript).join(' ')).slice(0,el.maxLength>0?el.maxLength:2000);};
+r.onend=()=>{S.sr=null;btn.style.outline='';};
+r.onerror=()=>{S.sr=null;btn.style.outline='';toast(t('mic_err'));};
+try{r.start();S.sr=r;btn.style.outline='2px solid #B84040';}catch(e){toast(t('mic_err'));}
+}
+async function onFile(e){
+const fs=[...e.target.files];e.target.value='';
+const ms=S.draft.media||(S.draft.media=[]);
+for(const f of fs){
+try{
+if(f.type.startsWith('image/')){
+if(f.size>15e6){toast('Image too large (max 15 MB)');continue;}
+if(ms.filter(m=>m.kind==='image').length>=4){toast('Up to 4 photos per story');continue;}
+ms.push({kind:'image',data:await shrinkTo(f,900,.7),name:f.name});
+}else if(f.type.startsWith('video/')){
+if(f.size>25e6){toast('Video too large (max 25 MB)');continue;}
+ms.push({kind:'video',blob:f,url:URL.createObjectURL(f),name:f.name});
+}else toast('Please choose a photo or video');
+}catch(err){toast('Could not read that file');}
+}
+showPreview();
+}
+function showPreview(){
+const ms=S.draft.media||[];
+$('#recPrev').innerHTML=ms.map((m,i)=>`<div class="pv">${m.kind==='image'?`<img src="${m.data}" alt="">`:m.kind==='audio'?`<audio controls src="${m.url}"></audio>`:`<video controls src="${m.url}" style="max-width:100%;max-height:140px;border-radius:10px"></video>`}<button class="ibtn" data-act="rm" data-i="${i}" aria-label="Remove">✕</button></div>`).join('');
+}
+function useGPS(){
+if(!navigator.geolocation){toast(t('gps_err'));return;}
+navigator.geolocation.getCurrentPosition(p=>{
+const a=p.coords.latitude,b=p.coords.longitude;
+if(a<6||a>24.5||b<67.5||b>94.5){toast(t('gps_err'));return;}
+S.draft.gps=[a,b];const n=nearest(a,b);$('#recRegion').value=n.id;$('#gpsNote').textContent='📍 '+n.name;
+},()=>toast(t('gps_err')),{timeout:8000});
+}
+function ruleClassify(tx){
+const s=' '+tx.toLowerCase()+' ';let best='change',bs=0;
+for(const[c,ws]of Object.entries(KW)){const n=ws.reduce((a,w)=>a+(s.includes(w)?1:0),0);if(n>bs){bs=n;best=c;}}
+const sp=KW.species.filter(w=>/^[a-z]/.test(w)&&s.includes(w)).slice(0,4).map(w=>w[0].toUpperCase()+w.slice(1));
+return{cat:best,sp,tg:[],sm:tx?tx.slice(0,110)+(tx.length>110?'…':''):'Voice or photo story (transcription pending).',src:'rules'};
+}
+async function aiClassify(tx,rg){
+const out=await claude('You sort short oral stories from Indian fishing communities. The story may be in any Indian language. Reply with ONLY JSON, no markdown: {"cat":"species|current|weather|change|technique|folklore","sp":["fish or sea-life names mentioned, in English"],"tg":["2-4 short lowercase tags in English"],"sm":"one-sentence English summary, max 22 words"}',[{role:'user',content:`Region: ${rg.name}, ${rg.state}.\nStory: """${tx.slice(0,1500)}"""`}],20000);
+const j=parseJSON(out);
+return{cat:CATS[j.cat]?j.cat:'change',sp:(j.sp||[]).slice(0,5).map(x=>String(x).slice(0,40)),tg:(j.tg||[]).slice(0,5).map(x=>String(x).slice(0,24)),sm:String(j.sm||'').slice(0,200),src:'ai'};
+}
+async function saveRec(){
+const d=S.draft,tx=$('#recText').value.trim(),ms=d.media||[];
+if(!$('#recCons').checked)return toast(t('need_cons'));
+if(tx.length<10&&!ms.length)return toast(t('need_story'));
+const rgId=$('#recRegion').value;if(!rgId&&!d.gps)return toast(t('need_place'));
+if(Date.now()-(S.last||0)<5000)return toast(t('wait'));
+if(PII.test(tx))return toast(t('pii'));
+S.last=Date.now();
+const btn=$('#recSave');btn.disabled=true;btn.textContent='⏳ …';
+const rg=REG(rgId||nearest(d.gps[0],d.gps[1]).id);
+/* privacy: coordinates are blurred here, on the device, BEFORE anything is stored or uploaded */
+let lat,lng,prec=d.prec||'approx';
+if(!d.gps)prec='region';
+if(prec==='exact'){[lat,lng]=d.gps;}
+else if(prec==='approx'){lat=d.gps[0]+(Math.random()-.5)*.09;lng=d.gps[1]+(Math.random()-.5)*.09;}
+else{lat=rg.lat+(Math.random()-.5)*.3;lng=rg.lng+(Math.random()-.5)*.3;}
+let ai=ruleClassify(tx),status='queued';
+if(navigator.onLine){status='synced';if(tx.length>=10&&!S.noAI){try{ai=await aiClassify(tx,rg);}catch(e){}}}
+if(d.kind==='folklore')ai.cat='folklore';
+const id=uid(),mids=[];let lost=0;
+for(const m of ms){const mid=await addMedia(id,m.kind,m.data||m.blob,m.name);if(mid)mids.push(mid);else lost++;}
+const rec={id,owner:S.prof.uid,name:$('#recAnon').checked?'':$('#recName').value.trim().slice(0,40),ts:Date.now(),rg:rg.id,lat,lng,prec,vis:d.vis||'public',lang:S.prof.lang,tx:tx.slice(0,2000),ai,mids,status};
+await DB.put('stories',rec);S.recs.unshift(rec);award(20);
+ms.forEach(m=>{if(m.url)URL.revokeObjectURL(m.url);});
+S.newId=rec.id;resetDraft();
+toast(t(status==='queued'?'queued':'saved')+(lost?' ('+lost+' large file kept off-device)':''));
+go('map');
+if(map)setTimeout(()=>map.flyTo([rec.lat,rec.lng],7,{duration:1.4}),250);
+btn.disabled=false;btn.innerHTML='<span data-i18n="rec_save">'+h('rec_save')+'</span>';
+}
+function resetDraft(){
+S.draft={prec:'approx',vis:'public',media:[]};
+$('#recText').value='';$('#recName').value='';$('#recAnon').checked=false;$('#recCons').checked=false;$('#gpsNote').textContent='';$('#recRegion').value='';
+$$('[data-k=prec],[data-k=vis]').forEach(b=>b.classList.toggle('on',b.dataset.v==='approx'||b.dataset.v==='public'));
+$('#recPrev').innerHTML='';
+}
+async function syncQueue(){
+const q=S.recs.filter(r=>r.status==='queued');if(!q.length)return;
+for(const r of q){if(r.tx.length>=10&&!S.noAI){try{const a=await aiClassify(r.tx,REG(r.rg));if(r.ai.cat!=='folklore')r.ai=a;}catch(e){}}r.status='synced';await DB.put('stories',r);}
+toast(t('synced'));if(S.page==='map')renderMap();
+}
+function netUI(){const on=navigator.onLine,n=$('#net');n.className='pill '+(on?'on':'off');n.textContent=on?'● online':'● offline';}
+async function delRec(id){
+const r=S.recs.find(x=>x.id===id);if(!r)return;
+for(const m of mediaOf(r)){await DB.del('media',m.id);if(S.urls[m.id])URL.revokeObjectURL(S.urls[m.id]);delete S.media[m.id];}
+await DB.del('stories',id);S.recs=S.recs.filter(x=>x.id!==id);closeModal();toast('Deleted');renderAll();
+}
+
+/* ========== RECORD DETAIL ========== */
+function openRec(id){
+const r=allRecs().find(x=>x.id===id);if(!r)return;
+const rg=REG(r.rg),c=CATS[r.ai.cat]||CATS.change,ms=mediaOf(r);
+const visL={public:'v_public',research:'v_research',private:'v_private'}[r.vis]||'v_public';
+const precL={exact:'p_exact',approx:'p_approx',region:'p_region'}[r.prec]||'p_approx';
+const imgs=ms.filter(m=>m.kind==='image');
+modal(`<div class="sh"><span class="tag cat" style="--c:${c.col}">${c.i} ${h(c.k)}</span><button class="ibtn" data-act="close" aria-label="Close">✕</button></div>
+${r.sample?'<span class="tag">SAMPLE · illustrative placeholder, not real fisher data</span>':''}
+<div class="meta">${esc(rg.name)} · ${esc(rg.state)} · ${esc(new Date(r.ts).toLocaleDateString())}</div>
+<div class="bq" id="rtx" data-lang="${esc(r.lang)}">${esc(r.tx||r.ai.sm)}</div>
+<div class="bq" id="rtr" hidden></div>
+${imgs.length?`<div class="gal">${imgs.map(m=>`<img src="${mediaURL(m)}" alt="" data-act="zoom">`).join('')}</div>`:''}
+${ms.filter(m=>m.kind==='audio').map(m=>`<audio controls src="${mediaURL(m)}" style="width:100%;margin:.4rem 0"></audio>`).join('')}
+${ms.filter(m=>m.kind==='video').map(m=>`<video controls src="${mediaURL(m)}" style="max-width:100%;max-height:240px;border-radius:12px"></video>`).join('')}
+<div class="row"><button class="btn g" data-act="speak" data-src="rtx" data-dst="rtr">🔊 ${h('listen')}</button><button class="btn g" data-act="tr" data-src="rtx" data-dst="rtr">🌐 ${h('trans')}</button></div>
+<div class="card" style="margin-top:.6rem"><div class="meta">AI · ${esc(r.ai.src||'')}</div><p style="margin:.3rem 0">${esc(r.ai.sm)}</p>${(r.ai.sp||[]).concat(r.ai.tg||[]).map(s=>`<span class="tag">${esc(s)}</span>`).join('')}</div>
+<div class="meta" style="margin-top:.8rem">👤 ${esc(r.name||t('anon'))} · 👁️ ${h(visL)} · 📍 ${h(precL)} · ${r.status==='queued'?'⏳ queued':'✓ saved in database'}</div>
+${r.owner===S.prof.uid?`<div class="row"><button class="btn g" data-act="delrec" data-id="${esc(r.id)}">🗑️ Delete</button></div>`:''}`);
+}
+
+/* ========== OCEAN: live weather report engine ========== */
+const wxc=c=>c==null?['·','—']:c===0?['☀️','Clear']:c<=2?['🌤️','Partly cloudy']:c===3?['☁️','Overcast']:c<=48?['🌫️','Fog']:c<=57?['🌦️','Drizzle']:c<=67?['🌧️','Rain']:c<=82?['🌦️','Showers']:['⛈️','Thunderstorm'];
+const kn=v=>v==null?'—':(v/1.852).toFixed(0);
+/* Simple demo thresholds — NOT official. Official advisories: INCOIS and IMD. */
+function assess(d){
+const rank={ok:0,c:1,d:2};let lv='ok';const why=[];
+const up=(l,m)=>{if(rank[l]>rank[lv])lv=l;why.push(m);};
+const w=d.wave??0,g=Math.max(d.gust??0,d.wind??0),c=d.code??0;
+if(w>=4)up('d',`waves ${f1(w)} m`);else if(w>=2.5)up('c',`waves ${f1(w)} m`);
+if(g>=60)up('d',`gusts ${Math.round(g)} km/h`);else if(g>=40)up('c',`gusts ${Math.round(g)} km/h`);
+if(c>=95)up('d','thunderstorm');else if((c>=65&&c<=67)||c===82)up('c','heavy rain');
+if(d.vis!=null&&d.vis<2000)up('c','low visibility');
+return{lv,why};
+}
+const getJSON=async u=>{const ac=new AbortController(),to=setTimeout(()=>ac.abort(),12000);try{const r=await fetch(u,{signal:ac.signal});if(!r.ok)throw new Error(r.status);return await r.json();}finally{clearTimeout(to);}};
+async function loadOcean(force){
+if(S.ocean.ts&&!force&&Date.now()-S.ocean.ts<6e5)return;
+const la=REGIONS.map(r=>r.ol).join(','),lo=REGIONS.map(r=>r.og).join(',');
+try{
+const[m,w]=await Promise.all([
+getJSON(`${CFG.MARINE}?latitude=${la}&longitude=${lo}&current=wave_height,wave_period,wave_direction,swell_wave_height,swell_wave_period,sea_surface_temperature,ocean_current_velocity,ocean_current_direction`),
+getJSON(`${CFG.WX}?latitude=${la}&longitude=${lo}&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,precipitation`)]);
+const ma=[].concat(m),wa=[].concat(w);
+REGIONS.forEach((r,i)=>{const c=(ma[i]&&ma[i].current)||{},d=(wa[i]&&wa[i].current)||{};
+S.ocean.data[r.id]={wave:c.wave_height,per:c.wave_period,wdir:c.wave_direction,swell:c.swell_wave_height,sper:c.swell_wave_period,sst:c.sea_surface_temperature,cur:c.ocean_current_velocity,cdir:c.ocean_current_direction,wind:d.wind_speed_10m,gust:d.wind_gusts_10m,wdr:d.wind_direction_10m,air:d.temperature_2m,code:d.weather_code,rain:d.precipitation};});
+S.ocean.live=REGIONS.some(r=>{const d=S.ocean.data[r.id];return d.wave!=null||d.cur!=null;});
+if(!S.ocean.live)throw new Error('empty');
+S.ocean.ts=Date.now();logOcean();
+}catch(e){simulate();S.ocean.ts=Date.now();}
+}
+function simulate(){
+const hr=new Date().getUTCHours(),day=new Date().getUTCDate(),f=x=>Math.abs(Math.sin(x));
+REGIONS.forEach((r,i)=>{const s=Math.sin(i*12.9898+hr*.37+day),wd=Math.round(8+22*f(s*4.1));
+S.ocean.data[r.id]={wave:+(.7+1.8*f(s*3.1)).toFixed(1),per:+(6+4*f(s*2.2)).toFixed(0),swell:+(.5+1.2*f(s*1.3)).toFixed(1),sst:+(28+1.8*f(s*1.7)).toFixed(1),cur:+(.4+2.2*f(s*2.3)).toFixed(1),cdir:(i*47+hr*9)%360,wind:wd,gust:Math.round(wd*1.4),wdr:(i*29+hr*7)%360,air:+(27+3*f(s)).toFixed(1),code:f(s*5)>.8?61:f(s*5)>.5?2:0,rain:0};});
+S.ocean.live=false;
+}
+async function saveSnap(id,manual){
+const d=S.ocean.data[id];if(!d)return null;const A=assess(d);
+const o={id:uid(),ts:Date.now(),rg:id,live:S.ocean.live,manual:!!manual,wave:d.wave,per:d.per,cur:d.cur,cdir:d.cdir,sst:d.sst,wind:d.wind,gust:d.gust,code:d.code,lv:A.lv,why:A.why};
+await DB.put('ocean_log',o);return o;
+}
+/* automatic logging: at most one live snapshot per region every 6 h, so reports can show real trends */
+async function logOcean(){
+if(!S.ocean.live)return;
+if(!S.ocean.last){S.ocean.last={};(await DB.all('ocean_log')).forEach(l=>{if(!S.ocean.last[l.rg]||l.ts>S.ocean.last[l.rg])S.ocean.last[l.rg]=l.ts;});}
+for(const r of REGIONS){const d=S.ocean.data[r.id];if(!d||(d.wave==null&&d.cur==null))continue;if(S.ocean.last[r.id]&&Date.now()-S.ocean.last[r.id]<216e5)continue;const o=await saveSnap(r.id,false);if(o)S.ocean.last[r.id]=o.ts;}
+}
+function simRows(d){
+const bw=+d.wave||1.2,bc=+d.cur||1,bg=+d.gust||+d.wind||20;
+return Array.from({length:48},(_,i)=>({t:Date.now()+i*36e5,wave:+(bw*(1+.25*Math.sin(i/3.5))).toFixed(2),per:+d.per||7,swell:+d.swell||.8,cur:+(bc*(1+.3*Math.cos(i/4))).toFixed(2),cdir:d.cdir,sst:d.sst,temp:d.air||28,rain:Math.max(0,Math.round(30*Math.sin(i/6))),code:d.code||0,wind:Math.round(bg/1.4*(1+.2*Math.sin(i/5))),gust:Math.round(bg*(1+.2*Math.sin(i/5))),wdr:d.wdr,vis:10000}));
+}
+async function loadDetail(id,force){
+const r=REG(id),c=S.ocean.detail[id];
+if(c&&!force&&Date.now()-c.ts<6e5)return;
+let rows,live=true;
+try{
+const q=`latitude=${r.ol}&longitude=${r.og}&forecast_days=3`;
+const[m,w]=await Promise.all([
+getJSON(`${CFG.MARINE}?${q}&hourly=wave_height,wave_period,swell_wave_height,ocean_current_velocity,ocean_current_direction,sea_surface_temperature`),
+getJSON(`${CFG.WX}?${q}&hourly=temperature_2m,precipitation_probability,weather_code,wind_speed_10m,wind_gusts_10m,wind_direction_10m,visibility`)]);
+const wi=new Map(w.hourly.time.map((x,i)=>[x,i])),tm=m.hourly.time,H=m.hourly,W=w.hourly;
+let i0=tm.findIndex(x=>Date.parse(x+'Z')>=Date.now()-36e5);if(i0<0)i0=0;
+rows=[];
+for(let i=i0;i<Math.min(tm.length,i0+48);i++){const j=wi.get(tm[i]);if(j==null)continue;
+rows.push({t:Date.parse(tm[i]+'Z'),wave:H.wave_height[i],per:H.wave_period[i],swell:H.swell_wave_height[i],cur:H.ocean_current_velocity[i],cdir:H.ocean_current_direction[i],sst:H.sea_surface_temperature[i],temp:W.temperature_2m[j],rain:W.precipitation_probability[j],code:W.weather_code[j],wind:W.wind_speed_10m[j],gust:W.wind_gusts_10m[j],wdr:W.wind_direction_10m[j],vis:W.visibility[j]});}
+if(!rows.length||rows.every(x=>x.wave==null&&x.cur==null))throw new Error('empty');
+}catch(e){live=false;rows=simRows(S.ocean.data[id]||{});}
+S.ocean.detail[id]={ts:Date.now(),live,rows};
+if(S.page==='ocean'&&S.ocean.sel===id)renderOcean();
+}
+const fmtWin=([a,b])=>new Date(a).toLocaleString([],{weekday:'short',hour:'2-digit',minute:'2-digit'})+' → '+new Date(b).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+function calmWin(rows){
+const out=[];let st=null;
+const ok=r=>(r.wave??9)<1.5&&Math.max(r.gust??0,r.wind??0)<30&&(r.code??0)<80&&(r.rain??0)<50;
+rows.forEach((r,i)=>{const g=ok(r);if(g&&st==null)st=i;if((!g||i===rows.length-1)&&st!=null){const en=g?i:i-1;if(en-st+1>=3)out.push([rows[st].t,rows[en].t]);st=null;}});
+return out.slice(0,3);
+}
+const peaks=(rows,n)=>{const a=rows.slice(0,n);return{w:Math.max(0,...a.map(r=>r.wave||0)),g:Math.max(0,...a.map(r=>Math.max(r.gust||0,r.wind||0))),r:Math.max(0,...a.map(r=>r.rain||0))};};
+function chart(vals,col,unit,thr,label){
+const f=vals.filter(v=>v!=null&&!isNaN(v));if(f.length<2)return'';
+const W=300,H=70,mx=(Math.max(...f,thr||0)*1.1)||1;
+const pts=vals.map((v,i)=>v==null?null:`${(i/(vals.length-1)*W).toFixed(1)},${(H-4-(v/mx)*(H-12)).toFixed(1)}`).filter(Boolean).join(' ');
+const ty=thr?(H-4-(thr/mx)*(H-12)).toFixed(1):null;
+return`<div class="meta" style="margin-top:.8rem">${esc(label)} · max ${Math.max(...f).toFixed(1)} ${esc(unit)}</div><svg viewBox="0 0 ${W} ${H}" style="width:100%;height:${H}px"><polygon points="0,${H-4} ${pts} ${W},${H-4}" fill="${col}" opacity=".15"/><polyline points="${pts}" fill="none" stroke="${col}" stroke-width="2"/>${ty?`<line x1="0" x2="${W}" y1="${ty}" y2="${ty}" stroke="#FCA5A5" stroke-dasharray="4 3" stroke-width="1"/>`:''}</svg>`;
+}
+function showOcean(){renderOcean();loadOcean().then(()=>{if(S.page==='ocean')renderOcean();loadDetail(S.ocean.sel);});}
+function renderOcean(){
+const r=REG(S.ocean.sel),d=S.ocean.data[r.id],det=S.ocean.detail[r.id],has=S.ocean.ts>0&&d;
+let body='<div class="spin"></div>';
+if(has){
+const rows=det?det.rows:[],A=assess({...d,vis:rows[0]&&rows[0].vis}),a=ADV[A.lv],[em,wt]=wxc(d.code),win=calmWin(rows);
+const live=S.ocean.live&&(!det||det.live);
+body=`<div class="row" style="justify-content:space-between"><span class="meta">${esc(r.name)} · ${esc(r.state)}</span><span class="pill ${live?'on':'off'}">${h(live?'live':'sim')}</span></div>
+<div class="row" style="justify-content:center;font-size:1.2rem"><span style="font-size:2.2rem">${em}</span><b>${esc(wt)}</b><span>${f1(d.air)}°C</span></div>
+<div class="compass" title="${h('cur')}"><i style="top:3px;left:50%;transform:translateX(-50%)">N</i><i style="bottom:3px;left:50%;transform:translateX(-50%)">S</i><i style="right:6px;top:50%;transform:translateY(-50%)">E</i><i style="left:6px;top:50%;transform:translateY(-50%)">W</i><div class="ar" style="transform:rotate(${Math.round(d.cdir||0)}deg)">${ARROW}</div></div>
+<div class="mt"><div><b>${f1(d.cur)}</b><small>${h('cur')} km/h → ${card(d.cdir)}</small></div><div><b>${f1(d.wave)}</b><small>${h('wave')} m · ${f1(d.per)} s</small></div><div><b>${f1(d.sst)}°</b><small>${h('sst')}</small></div><div><b>${f1(d.wind)}</b><small>${h('wind')} km/h (${kn(d.wind)} kn) ${card(d.wdr)}</small></div><div><b>${f1(d.gust)}</b><small>gusts km/h</small></div></div>
+<div style="text-align:center"><span class="adv ${a.c}">${h(a.k)}</span>${A.why.length?`<div class="meta" style="margin-top:.4rem">${esc(A.why.join(' · '))}</div>`:''}</div>
+${rows.length?`<h3 class="sx" style="font-size:1.2rem">${h('oc_24')}</h3><div class="strip">${rows.filter((_,i)=>i%3===0&&i<24).map(x=>`<div class="cell">${esc(new Date(x.t).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}))}<b>${wxc(x.code)[0]}</b>${f1(x.wave)} m<br>${Math.round(x.gust||x.wind||0)} km/h</div>`).join('')}</div>
+${chart(rows.map(x=>x.wave),'#7DD3FC','m',2.5,t('wave')+' · 48 h')}${chart(rows.map(x=>Math.max(x.gust||0,x.wind||0)),'#F4D58D','km/h',40,'Wind gusts · 48 h')}${chart(rows.map(x=>x.cur),'#6FCF97','km/h',null,t('cur')+' · 48 h')}${chart(rows.map(x=>x.rain),'#C4B5FD','%',null,'Rain chance · 48 h')}
+<h3 class="sx" style="font-size:1.2rem">${h('oc_win')}</h3>${win.length?`<ul style="margin-left:1.2rem;color:var(--tx2)">${win.map(w=>`<li>${esc(fmtWin(w))}</li>`).join('')}</ul>`:`<p class="sub">${h('oc_nowin')}</p>`}`:'<div class="spin"></div>'}
+<div class="row" style="justify-content:center"><button class="btn g" data-act="ocrefresh">🔄 ${h('refresh')}</button><button class="btn g" data-act="ocsave">💾 ${h('oc_save')}</button><button class="btn p" data-act="ocask">💬 ${h('oc_ask')}</button></div>`;
+}
+$('#p-ocean').innerHTML=`<h2 class="pt">${h('oc_t')}</h2><p class="sub">${h('oc_note')}</p>
+<div class="chips">${REGIONS.map(x=>`<button class="chip ${x.id===r.id?'on':''}" data-act="ocsel2" data-id="${x.id}">${esc(x.short)}</button>`).join('')}<button class="chip" data-act="ocgps">📍</button></div>
+<div class="card">${body}</div>
+<a class="sos" href="tel:1554">🆘 ${h('sos')}</a>
+<h3 class="sx">${h('oc_off')}</h3><div class="row"><a class="chip" href="https://incois.gov.in/samudra/" target="_blank" rel="noopener">INCOIS SAMUDRA</a><a class="chip" href="https://mausam.imd.gov.in/" target="_blank" rel="noopener">IMD</a><a class="chip" href="tel:1554">☎ 1554</a></div>
+<h3 class="sx">${h('oc_t')}</h3><div class="card tw"><table class="rt"><tr><th></th><th>${h('wave')}</th><th>${h('cur')}</th><th>${h('wind')}</th><th></th></tr>
+${REGIONS.map(x=>{const y=S.ocean.data[x.id];if(!y)return'';const z=ADV[assess(y).lv];return`<tr data-act="ocsel2" data-id="${x.id}"><td>${esc(x.short)}</td><td>${f1(y.wave)} m</td><td>${f1(y.cur)} km/h</td><td>${f1(y.wind)} km/h</td><td><span class="adv ${z.c}" style="padding:.1rem .6rem">●</span></td></tr>`;}).join('')}</table></div>
+<p class="foot">Caution levels use simple demo thresholds (waves ≥ 2.5 m, gusts ≥ 40 km/h, heavy rain or low visibility = caution; waves ≥ 4 m, gusts ≥ 60 km/h or thunderstorm = very rough). They are <b>not</b> official, and "calmer windows" are indicative only. Data: Open-Meteo.com (CC BY 4.0), wave model DWD ICON and partners. Current direction = where the water is heading. Live snapshots are saved to the database (max one per region every 6 h) for reports.</p>`;
+}
+
+/* ========== TALES ========== */
+function renderTales(){
+$('#p-tales').innerHTML=`<h2 class="pt">${h('tl_t')}</h2><p class="sub">${h('tl_sub')}</p>
+<div class="grid g3">${TALES.map(x=>`<div class="card sc" data-act="tale" data-id="${x.id}"><div style="font-size:2.2rem">${x.e}</div><h3 style="font-size:1.35rem">${esc(x.ti)}</h3><div class="meta">${esc(x.pl)}</div>${S.prof.read.includes(x.id)?'<span class="tag">✓</span>':''}${S.prof.quiz.includes(x.id)?'<span class="tag">🧠</span>':''}</div>`).join('')}</div>
+<div class="row" style="margin-top:1.2rem"><button class="btn p" data-act="sharetale">📜 ${h('share_tale')}</button></div>
+<p class="foot">Short retellings of widely told traditions; community versions differ. Help us record yours.</p>`;
+}
+function openTale(id){
+const x=TALES.find(y=>y.id===id);if(!x)return;
+if(!S.prof.read.includes(id)){S.prof.read.push(id);award(5);}
+modal(`<div class="sh"><span style="font-size:2rem">${x.e}</span><button class="ibtn" data-act="close" aria-label="Close">✕</button></div>
+<h3 style="font-size:1.7rem">${esc(x.ti)}</h3><div class="meta">${esc(x.pl)}</div>
+<div class="bq" id="ttx" data-lang="en">${esc(x.tx)}</div><div class="bq" id="ttr" hidden></div>
+<div class="row"><button class="btn g" data-act="speak" data-src="ttx" data-dst="ttr">🔊 ${h('listen')}</button><button class="btn g" data-act="tr" data-src="ttx" data-dst="ttr">🌐 ${h('trans')}</button>${x.lat?`<button class="btn g" data-act="showtale" data-id="${x.id}">🗺️ ${h('nav_map')}</button>`:''}</div>
+<div class="card" style="margin:.8rem 0"><div class="meta">${h('lesson')}</div><p>${esc(x.ls)}</p></div>
+<div class="meta">${h('quiz')}</div><p style="margin:.3rem 0;font-weight:700">${esc(x.q)}</p>
+${x.o.map((o,i)=>`<button class="opt" data-act="quiz" data-t="${x.id}" data-i="${i}">${esc(o)}</button>`).join('')}<div id="qres" class="meta"></div>`);
+}
+function answerQuiz(tid,i,el){
+const x=TALES.find(y=>y.id===tid);if(!x)return;
+const ok=i===x.a;el.classList.add(ok?'good':'bad');
+if(ok){$$('.opt').forEach(b=>b.disabled=true);if(!S.prof.quiz.includes(tid)){S.prof.quiz.push(tid);award(10);}$('#qres').textContent=t('ok_a');}
+else $('#qres').textContent=t('no_a');
+}
+
+/* ========== COMMUNITY ========== */
+function renderCom(){
+const posts=S.posts.filter(p=>!S.prof.hidden.includes(p.id)&&(S.prof.sample||!p.sample)).sort((a,b)=>b.ts-a.ts);
+const TY={q:'pt_q',s:'pt_s',a:'pt_a',t:'pt_t'};
+$('#p-community').innerHTML=`<h2 class="pt">${h('nav_com')}</h2><p class="sub">${h('cm_sub')}</p>
+<div class="card"><div class="seg">${Object.entries(TY).map(([k,v])=>`<button class="${S.ptype===k?'on':''}" data-act="ptype" data-v="${k}">${h(v)}</button>`).join('')}</div>
+<textarea id="postTx" class="ta" style="min-height:90px;margin-top:.6rem" maxlength="500" placeholder="${h('post_ph')}"></textarea>
+<div class="row"><input id="postName" class="inp" maxlength="40" placeholder="${h('rec_name')}" value="${esc(S.prof.name)}" style="flex:1;min-width:150px"><button class="btn p" data-act="post">${h('post')}</button></div></div>
+<div class="grid" style="margin-top:1rem">${posts.map(p=>{
+const liked=S.prof.liked.includes(p.id);
+return`<div class="card"><div class="meta">${h(TY[p.type]||'pt_q')} · ${esc(p.name||t('anon'))}${p.sample?' · SAMPLE':''} · ${esc(new Date(p.ts).toLocaleDateString())}</div>
+<p style="margin:.4rem 0;white-space:pre-wrap">${esc(p.tx)}</p>
+${(p.replies||[]).map(r=>`<div style="margin:.4rem 0 .4rem 1rem;padding-inline-start:.8rem;border-inline-start:2px solid var(--line);font-size:.9rem"><span class="meta">${esc(r.n||t('anon'))}</span><br>${esc(r.tx)}</div>`).join('')}
+<div class="row"><button class="chip ${liked?'on':''}" data-act="like" data-id="${esc(p.id)}">👍 ${(p.likes||0)+(liked?1:0)}</button><button class="chip" data-act="report" data-id="${esc(p.id)}">🚩</button></div>
+<div class="row" style="margin:0"><input class="inp" data-for="${esc(p.id)}" maxlength="200" placeholder="↩ …" style="flex:1;min-width:140px"><button class="btn g" data-act="reply" data-id="${esc(p.id)}">↩</button></div></div>`;}).join('')}</div>`;
+}
+async function addPost(){
+const tx=$('#postTx').value.trim(),nm=$('#postName').value.trim().slice(0,40);
+if(tx.length<5)return;if(PII.test(tx))return toast(t('pii'));
+if(Date.now()-(S.last||0)<5000)return toast(t('wait'));S.last=Date.now();
+S.prof.name=nm;const p={id:uid(),owner:S.prof.uid,name:nm,type:S.ptype,tx:tx.slice(0,500),ts:Date.now(),likes:0,replies:[]};
+S.posts.unshift(p);await DB.put('posts',p);await saveProf();award(5);renderCom();
+}
+async function addReply(id){
+const inp=$(`[data-for="${CSS.escape(id)}"]`),tx=(inp&&inp.value||'').trim();
+if(tx.length<2)return;if(PII.test(tx))return toast(t('pii'));
+const p=S.posts.find(x=>x.id===id);if(!p)return;
+(p.replies=p.replies||[]).push({n:S.prof.name,tx:tx.slice(0,200)});await DB.put('posts',p);renderCom();
+}
+
+/* ========== AI CHAT (Sagar Mitra): live conditions + library + database context, photo input, offline helper ========== */
+const ACT_ICON={map:'🗺️',record:'🎙️',ocean:'🌊',tales:'📖',reports:'📊',community:'👥',home:'🏠'};
+function renderChat(){
+const el=$('#chMsgs');
+el.innerHTML=`<div class="m b">${h('ch_hi')}</div>`+(S.chat.length?'':`<div class="row">${['ch_c1','ch_c2','ch_c3'].map(k=>`<button class="chip" data-act="cs">${h(k)}</button>`).join('')}</div>`)
++S.chat.map((m,i)=>`<div class="m ${m.role==='user'?'u':'b'}">${m.img?`<img src="${m.img}" alt="" style="max-width:100%;max-height:150px;border-radius:8px;display:block;margin-bottom:.3rem">`:''}${esc(m.content)}${m.role==='assistant'?`<div class="row" style="margin:.3rem 0 0">${m.src==='local'?`<span class="tag">${h('ch_off')}</span>`:''}<button class="spk" data-act="speakmsg" data-i="${i}" aria-label="Listen">🔊</button>${(m.acts||[]).map(a=>`<button class="chip" data-act="go" data-p="${esc(a)}">${ACT_ICON[a]||'➡️'} ${esc(a)}</button>`).join('')}</div>`:''}</div>`).join('')+(S.typing?'<div class="m b">…</div>':'');
+$('#chPrev').innerHTML=S.chatImg?`<div class="pv"><img src="${S.chatImg}" alt="" style="max-height:56px"><button class="ibtn" data-act="chrmimg" aria-label="Remove">✕</button></div>`:'';
+el.scrollTop=el.scrollHeight;
+}
+function relevant(q){
+const w=q.toLowerCase().split(/\W+/).filter(x=>x.length>3);if(!w.length)return[];
+return visibleRecs().map(r=>{const hay=(r.tx+' '+r.ai.sm+' '+(r.ai.tg||[]).join(' ')+' '+(r.ai.sp||[]).join(' ')).toLowerCase();return{r,s:w.reduce((a,x)=>a+(hay.includes(x)?1:0),0)};}).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,4).map(x=>x.r);
+}
+function chatCtx(q){
+const r=REG(S.ocean.sel),d=S.ocean.data[r.id],det=S.ocean.detail[r.id];
+const lines=[`Selected coast: ${r.name}, ${r.state} (${S.ocean.live?'LIVE Open-Meteo data':'DEMO ESTIMATES, not real'})`];
+if(d){const A=assess(d);lines.push(`Now: ${wxc(d.code)[1]}, waves ${f1(d.wave)} m (period ${f1(d.per)} s), swell ${f1(d.swell)} m, current ${f1(d.cur)} km/h toward ${card(d.cdir)}, sea temp ${f1(d.sst)} C, wind ${f1(d.wind)} km/h gusts ${f1(d.gust)} km/h; app caution level: ${A.lv==='ok'?'calm':A.lv==='c'?'caution':'very rough'}${A.why.length?' ('+A.why.join(', ')+')':''}`);}
+if(det){const pk=peaks(det.rows,24);lines.push(`Next 24 h: max wave ${f1(pk.w)} m, max gust ${f1(pk.g)} km/h, max rain chance ${Math.round(pk.r)}%; calmer windows: ${calmWin(det.rows).map(fmtWin).join('; ')||'none in 48 h'}`);}
+lines.push('Other coasts now: '+REGIONS.filter(x=>x.id!==r.id).map(x=>{const y=S.ocean.data[x.id];return y?`${x.short} ${f1(y.wave)} m / ${f1(y.wind)} km/h`:null;}).filter(Boolean).join(', '));
+lines.push(`Database: ${S.recs.length} user stories, ${visibleRecs().length} visible, ${Object.keys(S.media).length} media files, ${S.posts.length} posts`);
+const rel=relevant(q).map(x=>`- (${REG(x.rg).short}${x.sample?', sample':''}) ${x.ai.sm}`).join('\n');
+return lines.join('\n')+'\nLIBRARY STORIES THAT MAY HELP:\n'+(rel||'(none)')+'\nFOLKTALES IN APP: '+TALES.map(x=>x.ti).join('; ');
+}
+function localBot(q,img){
+const s=q.toLowerCase(),r=REG(S.ocean.sel),d=S.ocean.data[r.id];
+if(img)return"I can't look at photos while the AI service is offline. Describe what you see and I will help, or save the photo inside a story on the Record page. [[open:record]]";
+if(/emergency|sos|rescue|help me|1554|danger|sinking|मदद/.test(s))return"Emergency at sea: call the Indian Coast Guard toll-free number 1554. Stay with your boat, wear a lifejacket and keep your phone dry.";
+if(/weather|wave|wind|sea |storm|cyclone|rain|safe|current|tide|मौसम|लहर|हवा|तूफान/.test(s)&&d){const A=assess(d);return`${r.name} now: waves ${f1(d.wave)} m, wind ${f1(d.wind)} km/h (gusts ${f1(d.gust)}), current ${f1(d.cur)} km/h. App caution level: ${A.lv==='ok'?'calm':A.lv==='c'?'be careful':'very rough'}${S.ocean.live?'':' (demo estimate, not real)'}. I am not an official forecaster: check INCOIS and IMD before going out. Emergency at sea: 1554. [[open:ocean]]`;}
+if(/tale|folk|legend|कथा/.test(s)){const x=TALES[Math.floor(Math.random()*TALES.length)];return x.ti+': '+x.tx.slice(0,260)+'… [[open:tales]]';}
+if(/report|download|export|database|backup|data/.test(s))return"Open Reports to build a report from everything saved in the database, then print it, download it or back it up. [[open:reports]]";
+if(/record|upload|photo|add|how|use|कहानी/.test(s))return"To add a story: open Record, speak or write, add photos if you like, choose your coast and tap Save. It is stored in the database and appears on the map. [[open:record]]";
+const rel=relevant(q);if(rel.length)return'From the library: '+rel.map(x=>x.ai.sm).join(' ');
+return"I can help with sea conditions, safety numbers, folktales and how to use the app. (The AI service is offline, so my answers are simple.)";
+}
+async function sendChat(txt){
+txt=(txt||$('#chIn').value).trim();const img=S.chatImg;
+if((!txt&&!img)||S.typing)return;
+$('#chIn').value='';S.chatImg=null;
+S.chat.push({role:'user',content:txt||'(photo)',img});S.typing=true;renderChat();
+let reply,src='ai';
+try{
+const l=L(S.prof.lang);
+const sys=`You are "Sagar Mitra", the assistant inside SagarKatha, an app where India's fishing communities share ocean knowledge.
+Reply in ${l.e} (${l.n}) using short, simple sentences for people with low literacy. Use at most about 120 words.
+You help with: sea and weather signs, reading the live conditions below, fish and species, folktales, and how to use the app (Record saves a story with photos/voice, Map shows live pins, Ocean shows the live report, Tales has folktales and quizzes, Community is for questions, Reports builds reports from the database).
+SAFETY RULES: You are NOT an official forecaster. Never say it is safe to go to sea. For storms, cyclones or any go/no-go decision, point to INCOIS (incois.gov.in), IMD (mausam.imd.gov.in), the state fisheries department, and for emergencies at sea the Indian Coast Guard toll-free number 1554. If data below is DEMO ESTIMATES, say so.
+If the user shares a photo, describe what you can see (fish, net, sky, sea, boat damage) and how sure you are; for species give likely candidates, not certainty.
+Use only the data below for numbers; do not invent facts about real people. If useful, end with up to two action tags from: [[open:map]] [[open:record]] [[open:ocean]] [[open:tales]] [[open:reports]] [[open:community]].
+${chatCtx(txt)}`;
+let hist=S.chat.slice(-11);while(hist.length&&hist[0].role!=='user')hist=hist.slice(1);
+const msgs=hist.map((m,i)=>{
+if(m.img&&i===hist.length-1)return{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:m.img.split(',')[1]}},{type:'text',text:m.content}]};
+return{role:m.role,content:m.img?m.content+' [photo]':m.content};});
+reply=await claude(sys,msgs,45000);
+}catch(e){reply=localBot(txt,!!img);src='local';}
+const acts=[...reply.matchAll(/\[\[open:(\w+)\]\]/g)].map(m=>m[1]).filter(a=>PAGES.includes(a));
+reply=reply.replace(/\[\[open:\w+\]\]/g,'').trim().slice(0,3000);
+S.chat.push({role:'assistant',content:reply,acts:[...new Set(acts)].slice(0,2),src});
+S.typing=false;renderChat();
+DB.put('meta',{id:'chat',msgs:S.chat.slice(-30).map(({img,...m})=>m)});
+}
+async function onChatFile(e){
+const f=e.target.files[0];e.target.value='';if(!f||!f.type.startsWith('image/'))return;
+try{S.chatImg=await shrinkTo(f,1024,.8);renderChat();}catch(err){toast('Could not read that photo');}
+}
+
+/* ========== REPORTS + DATABASE ========== */
+const PAPER_CSS=".paper{font:14px/1.6 system-ui,'Noto Sans',sans-serif;color:#1a2530;background:#fff;padding:24px;max-width:820px;margin:auto;border-radius:12px}.paper h1{font:700 28px Georgia,serif;margin:0 0 4px}.paper h2{font:700 18px Georgia,serif;margin:22px 0 8px;border-bottom:2px solid #2A9D8F;padding-bottom:4px}.paper .kf{display:flex;gap:10px;flex-wrap:wrap}.paper .kf div{flex:1;min-width:100px;background:#eef6f6;border-radius:8px;padding:10px;text-align:center}.paper .kf b{display:block;font-size:24px;color:#1A5F7A}.paper .bar{display:flex;align-items:center;gap:8px;margin:3px 0;font-size:12px}.paper .bar i{display:block;height:12px;background:#2A9D8F;border-radius:3px}.paper .bar span:first-child{width:130px}.paper table{width:100%;border-collapse:collapse;font-size:12px}.paper td,.paper th{border-bottom:1px solid #dde;padding:4px;text-align:left}.paper .hl{border-left:3px solid #2A9D8F;padding:4px 10px;margin:8px 0}.paper .hl img{max-height:110px;border-radius:6px;display:block;margin-top:4px}.paper small,.paper .note{color:#667;font-size:11px}";
+async function showReports(){
+if(!$('#paperCss')){const s=document.createElement('style');s.id='paperCss';s.textContent=PAPER_CSS;document.head.appendChild(s);}
+const[logs,reps]=await Promise.all([DB.all('ocean_log'),DB.all('reports')]);
+const o=S.rep;if(o.sample==null)o.sample=!S.recs.length;
+const cnt=[['cnt_stories',S.recs.length],['cnt_media',Object.keys(S.media).length],['cnt_posts',S.posts.length],['cnt_log',logs.length],['cnt_rep',reps.length]];
+const rows=visibleRecs().filter(r=>!r.live).slice(0,40);
+$('#p-reports').innerHTML=`<div class="noprint"><h2 class="pt">${h('rep_t')}</h2><p class="sub">${h('rep_sub')}</p>
+<div class="card"><div class="meta">${h('db_t')} · ${h('db_eng')}: <b>${esc(DB.eng)}</b></div><div class="mt">${cnt.map(([k,v])=>`<div><b>${v}</b><small>${h(k)}</small></div>`).join('')}</div>
+<div class="row"><button class="btn g" data-act="repjson">💾 ${h('rep_json')}</button><label class="btn g" for="repFile">📥 ${h('rep_import')}</label><input type="file" id="repFile" accept=".json,application/json" hidden></div></div>
+<h3 class="sx">${h('rep_make')}</h3><div class="card">
+<div class="meta">${h('rep_period')}</div><div class="seg">${[[7,'rep_7'],[30,'rep_30'],[0,'rep_all']].map(([v,k])=>`<button class="${o.days===v?'on':''}" data-act="rp" data-v="${v}">${h(k)}</button>`).join('')}</div>
+<div class="meta" style="margin-top:.8rem">${h('rep_region')}</div><div class="chips">${[['all',t('all')],...REGIONS.map(r=>[r.id,r.short])].map(([id,n])=>`<button class="chip ${o.region===id?'on':''}" data-act="rrg" data-id="${id}">${esc(n)}</button>`).join('')}</div>
+<button class="chip ${o.sample?'on':''}" data-act="rsample">🧪 ${h('rep_demo')}</button>
+<div class="row"><button class="btn p" data-act="repmake">📊 ${h('rep_make')}</button><button class="btn g" data-act="repai">✨ ${h('rep_ai')}</button></div>
+<div class="row"><button class="btn g" data-act="repprint">🖨️ ${h('rep_print')}</button><button class="btn g" data-act="rephtml">⬇️ ${h('rep_html')}</button><button class="btn g" data-act="repcsv">⬇️ ${h('rep_csv')}</button></div></div></div>
+<div id="repOut" style="margin:1rem 0"></div>
+<div class="noprint">${reps.length?`<h3 class="sx">${h('rep_saved')}</h3><div class="card">${reps.sort((a,b)=>b.ts-a.ts).slice(0,10).map(x=>`<div class="row" style="justify-content:space-between"><span>${esc(x.title)}</span><span><button class="chip" data-act="repopen" data-id="${esc(x.id)}">↗</button> <button class="chip" data-act="repdel" data-id="${esc(x.id)}">🗑️</button></span></div>`).join('')}</div>`:''}
+<h3 class="sx">${h('db_t')} · ${h('cnt_stories')}</h3><div class="card tw"><table class="rt"><tr><th>Date</th><th>Region</th><th>Topic</th><th>Species</th><th>👁</th><th>📎</th><th></th></tr>${rows.map(r=>`<tr data-act="rec" data-id="${esc(r.id)}"><td>${esc(new Date(r.ts).toLocaleDateString())}</td><td>${esc(REG(r.rg).short)}${r.sample?' ·S':''}</td><td>${h(CATS[r.ai.cat].k)}</td><td>${esc((r.ai.sp||[]).join(', '))}</td><td>${esc(r.vis)}</td><td>${mediaOf(r).length}</td><td>${r.owner===S.prof.uid?'<button class="chip" data-act="delrec" data-id="'+esc(r.id)+'">🗑️</button>':''}</td></tr>`).join('')}</table></div></div>`;
+if(o.html)$('#repOut').innerHTML=o.html;
+}
+async function buildReportData(){
+const o=S.rep,from=o.days?Date.now()-o.days*864e5:0;
+const recs=allRecs().filter(r=>canSee(r)&&(o.sample||!r.sample)&&r.ts>=from&&(o.region==='all'||r.rg===o.region));
+const cnt=(a,f)=>{const m={};a.forEach(x=>[].concat(f(x)).forEach(k=>{if(k)m[k]=(m[k]||0)+1;}));return Object.entries(m).sort((x,y)=>y[1]-x[1]);};
+const d={ts:Date.now(),days:o.days,region:o.region,sample:o.sample,n:recs.length,recs,cats:cnt(recs,r=>r.ai.cat),regs:cnt(recs,r=>REG(r.rg).short),spp:cnt(recs,r=>r.ai.sp||[]).slice(0,8),langs:cnt(recs,r=>L(r.lang).e),photos:0,audio:0,video:0};
+d.label=(o.days?`Last ${o.days} days`:'All time')+' · '+(o.region==='all'?'all coasts':REG(o.region).name);
+recs.forEach(r=>mediaOf(r).forEach(m=>{if(m.kind==='image')d.photos++;else if(m.kind==='audio')d.audio++;else d.video++;}));
+const first=recs.length?Math.min(...recs.map(r=>r.ts)):Date.now(),span=Math.max(1,Math.ceil((Date.now()-(from||first))/864e5));
+d.step=span<=14?1:7;const nb=Math.min(12,Math.max(1,Math.ceil(span/d.step)));d.bins=Array(nb).fill(0);
+recs.forEach(r=>{const i=nb-1-Math.min(nb-1,Math.floor((Date.now()-r.ts)/(d.step*864e5)));d.bins[Math.max(0,i)]++;});
+d.posts=S.posts.filter(p=>(o.sample||!p.sample)&&p.ts>=from).length;
+const logs=(await DB.all('ocean_log')).filter(l=>l.live&&l.ts>=from&&(o.region==='all'||l.rg===o.region)),by={};
+logs.forEach(l=>{const b=by[l.rg]||(by[l.rg]={r:REG(l.rg).short,n:0,sw:0,maxW:0,maxG:0,sc:0});b.n++;b.sw+=l.wave||0;b.maxW=Math.max(b.maxW,l.wave||0);b.maxG=Math.max(b.maxG,l.gust||0);b.sc+=l.cur||0;});
+d.ocean=Object.values(by).map(b=>({r:b.r,n:b.n,avgW:b.sw/b.n,maxW:b.maxW,maxG:b.maxG,avgC:b.sc/b.n}));
+d.hl=[];
+for(const r of recs.filter(x=>x.tx||x.ai.sm).slice(0,6)){const im=mediaOf(r).find(m=>m.kind==='image');let img=null;if(im)img=im.data||(im.blob?await toDataURL(im.blob):null);d.hl.push({rg:REG(r.rg).name,cat:catEn(r.ai.cat),sample:r.sample,tx:r.tx||r.ai.sm,sm:r.ai.sm,img});}
+return d;
+}
+function localNarr(d){
+if(!d.n)return t('rep_empty');
+const top=(a,k)=>a.slice(0,k).map(x=>`${x[0]} (${x[1]})`).join(', ');
+return`In ${d.days?'the last '+d.days+' days':'all recorded time'}, ${d.n} ${d.n===1?'story was':'stories were'} recorded across ${d.regs.length} coastal ${d.regs.length===1?'region':'regions'}${d.sample?' (sample data included)':''}. The most common topics were ${top(d.cats.map(([k,v])=>[catEn(k),v]),3)}. `+(d.spp.length?`Species and sea life mentioned most often: ${top(d.spp,4)}. `:'')+`The stories include ${d.photos} photo${d.photos===1?'':'s'}, ${d.audio} voice note${d.audio===1?'':'s'} and ${d.video} video${d.video===1?'':'s'}. `+(d.ocean.length?`${d.ocean.reduce((a,o)=>a+o.n,0)} live ocean snapshots were saved; the highest wave recorded was ${Math.max(...d.ocean.map(o=>o.maxW)).toFixed(1)} m.`:'No live ocean snapshots have been saved in this period.');
+}
+async function aiNarr(d){
+const facts={period:d.label,stories:d.n,topics:d.cats.map(([k,v])=>[catEn(k),v]),regions:d.regs,species:d.spp,languages:d.langs,media:{photos:d.photos,voiceNotes:d.audio,videos:d.video},communityPosts:d.posts,ocean:d.ocean.map(o=>({region:o.r,snapshots:o.n,avgWaveM:+o.avgW.toFixed(1),maxWaveM:+o.maxW.toFixed(1),maxGustKmh:Math.round(o.maxG)})),sampleDataIncluded:d.sample,examples:d.hl.map(x=>x.sm)};
+return(await claude('You write short, neutral report summaries for a coastal community knowledge project in India. Use ONLY the facts in the JSON; never invent numbers, places or quotes. 150-220 words, 2-3 short paragraphs, plain English. Mention if sample/demo data is included and that ocean figures come from automated model snapshots. End with one sentence on the limits of the data.',[{role:'user',content:JSON.stringify(facts)}],40000)).trim();
+}
+function repHTML(d,narr){
+const bars=a=>{const mx=Math.max(1,...a.map(x=>x[1]));return a.length?a.map(([k,v])=>`<div class="bar"><span>${esc(k)}</span><i style="width:${(v/mx*55).toFixed(0)}%"></i><span>${v}</span></div>`).join(''):'<small>—</small>';};
+const mb=Math.max(1,...d.bins);
+const tl=d.bins.map(v=>`<i style="display:inline-block;width:${(98/d.bins.length-1).toFixed(1)}%;height:${4+v/mb*44}px;background:#2A9D8F;margin-right:1%;vertical-align:bottom" title="${v}"></i>`).join('');
+return`<div class="paper"><h1>SagarKatha — Ocean Knowledge Report</h1><small>${esc(d.label)} · generated ${esc(new Date(d.ts).toLocaleString())}${d.sample?' · includes SAMPLE data':''}</small>
+<h2>Key figures</h2><div class="kf"><div><b>${d.n}</b>stories</div><div><b>${d.regs.length}</b>regions</div><div><b>${d.photos}</b>photos</div><div><b>${d.audio}</b>voice notes</div><div><b>${d.posts}</b>community posts</div></div>
+<h2>Summary</h2><p>${esc(narr)}</p>
+<h2>Topics</h2>${bars(d.cats.map(([k,v])=>[catEn(k),v]))}
+<h2>Regions</h2>${bars(d.regs)}
+<h2>Species and sea life mentioned</h2>${bars(d.spp)}
+<h2>Stories over time</h2><div style="height:50px">${tl}</div><small>${d.bins.length} ${d.step===1?'days':'weeks'} ending today</small>
+<h2>Languages</h2>${bars(d.langs)}
+<h2>Ocean conditions (saved live snapshots)</h2>${d.ocean.length?`<table><tr><th>Region</th><th>Snapshots</th><th>Avg wave m</th><th>Max wave m</th><th>Max gust km/h</th><th>Avg current km/h</th></tr>${d.ocean.map(o=>`<tr><td>${esc(o.r)}</td><td>${o.n}</td><td>${o.avgW.toFixed(1)}</td><td>${o.maxW.toFixed(1)}</td><td>${Math.round(o.maxG)}</td><td>${o.avgC.toFixed(1)}</td></tr>`).join('')}</table>`:'<small>No live snapshots saved in this period.</small>'}
+<h2>Highlights</h2>${d.hl.map(x=>`<div class="hl"><small>${esc(x.rg)} · ${esc(x.cat)}${x.sample?' · SAMPLE':''}</small><br>${esc(x.tx)}${x.img?`<img src="${x.img}" alt="">`:''}</div>`).join('')||'<small>—</small>'}
+<h2>Method and limits</h2><p class="note">Stories are volunteered by fishing communities. Pin locations are blurred on the device and shown at region level here; names are not included. Topics and tags were assigned by AI or simple rules and may contain errors. Ocean figures are automated Open-Meteo / DWD model snapshots, not official forecasts; for official advisories see INCOIS and IMD.</p></div>`;
+}
+async function makeReport(useAI){
+busy(true,'Building report…');
+try{
+const d=await buildReportData();let narr=localNarr(d),aiOk=false;
+if(useAI&&d.n&&!S.noAI){try{narr=await aiNarr(d);aiOk=true;}catch(e){toast('AI summary unavailable — used the built-in summary');}}
+const html=repHTML(d,narr);S.rep.html=html;S.rep.d=d;
+await DB.put('reports',{id:uid(),ts:Date.now(),title:d.label+(aiOk?' · AI summary':''),html});
+busy(false);await showReports();const out=$('#repOut');if(out)out.scrollIntoView({behavior:'smooth'});
+}catch(e){busy(false);toast('Could not build the report');}
+}
+const csvCell=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+function exportCSV(){
+const o=S.rep,from=o.days?Date.now()-o.days*864e5:0;
+const recs=allRecs().filter(r=>canSee(r)&&(o.sample||!r.sample)&&r.ts>=from&&(o.region==='all'||r.rg===o.region));
+if(!recs.length)return toast(t('rep_empty'));
+const head=['id','date','region','state','category','species','tags','summary','text','language','visibility','pin_precision','lat','lng','media','sample'];
+const rows=recs.map(r=>[r.id,new Date(r.ts).toISOString().slice(0,10),REG(r.rg).name,REG(r.rg).state,r.ai.cat,(r.ai.sp||[]).join('; '),(r.ai.tg||[]).join('; '),r.ai.sm,r.tx,r.lang,r.vis,r.prec,r.lat.toFixed(2),r.lng.toFixed(2),mediaOf(r).length,r.sample?'yes':'no'].map(csvCell).join(','));
+dl('sagarkatha-stories.csv','text/csv',[head.join(','),...rows].join('\n'));
+}
+async function backup(){
+const out={app:'sagarkatha',v:3,ts:Date.now()};
+for(const c of['stories','posts','ocean_log'])out[c]=await DB.all(c);
+out.media=[];
+for(const m of await DB.all('media')){if(m.kind==='video')continue;const data=m.data||(m.blob&&m.blob.size<1.5e6?await toDataURL(m.blob):null);if(data)out.media.push({id:m.id,story:m.story,kind:m.kind,name:m.name,ts:m.ts,data});}
+dl('sagarkatha-backup.json','application/json',JSON.stringify(out));
+}
+const cleanRec=o=>{
+if(!o||typeof o.id!=='string'||!REGIONS.some(r=>r.id===o.rg))return null;const a=o.ai||{};
+return{id:o.id.slice(0,40),owner:String(o.owner||S.prof.uid).slice(0,40),name:String(o.name||'').slice(0,40),ts:+o.ts||Date.now(),rg:o.rg,lat:+o.lat||REG(o.rg).lat,lng:+o.lng||REG(o.rg).lng,prec:['exact','approx','region'].includes(o.prec)?o.prec:'region',vis:['public','research','private'].includes(o.vis)?o.vis:'private',lang:LANGS.some(l=>l.c===o.lang)?o.lang:'en',tx:String(o.tx||'').slice(0,2000),ai:{cat:CATS[a.cat]?a.cat:'change',sp:(a.sp||[]).slice(0,5).map(x=>String(x).slice(0,40)),tg:(a.tg||[]).slice(0,5).map(x=>String(x).slice(0,24)),sm:String(a.sm||'').slice(0,200),src:'import'},mids:(o.mids||[]).slice(0,8).map(x=>String(x).slice(0,40)),status:'synced'};
+};
+async function restore(e){
+const f=e.target.files[0];e.target.value='';if(!f||f.size>60e6)return;
+try{
+const j=JSON.parse(await f.text());if(j.app!=='sagarkatha')throw new Error('bad');let n=0;
+for(const o of(j.stories||[]).slice(0,5000)){const r=cleanRec(o);if(r){await DB.put('stories',r);n++;}}
+for(const o of(j.media||[]).slice(0,5000))if(o&&typeof o.id==='string'&&['image','audio'].includes(o.kind)&&/^data:(image|audio)\//.test(o.data||''))await DB.put('media',{id:o.id.slice(0,40),story:String(o.story||'').slice(0,40),kind:o.kind,name:String(o.name||'').slice(0,80),ts:+o.ts||Date.now(),data:o.data});
+for(const o of(j.posts||[]).slice(0,2000))if(o&&typeof o.id==='string'&&typeof o.tx==='string')await DB.put('posts',{id:o.id.slice(0,40),owner:String(o.owner||'').slice(0,40),name:String(o.name||'').slice(0,40),type:'qsat'.includes(o.type)?o.type:'q',tx:o.tx.slice(0,500),ts:+o.ts||Date.now(),likes:+o.likes||0,replies:(o.replies||[]).slice(0,50).map(x=>({n:String(x.n||'').slice(0,40),tx:String(x.tx||'').slice(0,200)}))});
+for(const o of(j.ocean_log||[]).slice(0,5000))if(o&&typeof o.id==='string'&&REGIONS.some(r=>r.id===o.rg))await DB.put('ocean_log',{id:o.id.slice(0,40),ts:+o.ts||Date.now(),rg:o.rg,live:!!o.live,manual:!!o.manual,wave:+o.wave||0,per:+o.per||0,cur:+o.cur||0,cdir:+o.cdir||0,sst:+o.sst||0,wind:+o.wind||0,gust:+o.gust||0,code:+o.code||0,lv:['ok','c','d'].includes(o.lv)?o.lv:'ok',why:[]});
+await loadAll();toast(`Restored ${n} stories`);renderAll();
+}catch(err){toast('That file is not a SagarKatha backup');}
+}
+
+/* ========== audio + content translation ========== */
+function speak(txt,lang){
+if(!('speechSynthesis' in window)){toast('Audio reading is not supported on this device');return;}
+speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang=L(lang).sr;u.rate=.92;speechSynthesis.speak(u);
+}
+async function myMemory(text,to,from){
+const parts=text.match(/[^.!?।]+[.!?।]*\s*/g)||[text];let out='',buf='';
+const flush=async()=>{if(!buf.trim())return;const r=await getJSON('https://api.mymemory.translated.net/get?q='+encodeURIComponent(buf.trim())+'&langpair='+encodeURIComponent(from+'|'+to));
+const tt=r&&r.responseData&&r.responseData.translatedText;if(!tt||+r.responseStatus!==200)throw new Error('mm');out+=tt+' ';buf='';};
+for(const p of parts){if((buf+p).length>450)await flush();buf+=p;}
+await flush();return out.trim();
+}
+async function translateText(text,to,from){
+const l=L(to);
+if(!S.noAI){try{return(await claude(`Translate the user's text into ${l.e} (${l.n})${l.sc?', written in '+l.sc:''}. Keep the meaning and tone. Reply with the translation only.`,[{role:'user',content:text.slice(0,1800)}],15000)).trim();}catch(e){}}
+return await myMemory(text,to,from||'en');
+}
+async function translateEl(src,dst,btn){
+const to=S.prof.lang;if(to==='en'){openLangs();return;}
+const s=$('#'+src),d=$('#'+dst);if(!s||!d)return;
+const from=s.dataset.lang||'en';if(from===to){toast('Already in this language');return;}
+btn.disabled=true;const old=btn.innerHTML;btn.textContent='⏳';
+try{d.textContent=await translateText(s.textContent,to,from);d.dataset.lang=to;d.hidden=false;}catch(e){toast(t('tr_fail'));}
+btn.disabled=false;btn.innerHTML=old;
+}
+
+/* ========== settings + language sheet ========== */
+function openLangs(){
+const badge=l=>l.q==='ok'?'':l.q==='draft'?'<span class="tag">draft</span>':`<span class="tag">→ ${esc(L(l.fb||'en').e)}</span>`;
+modal(`<div class="sh"><b>🌐 ${h('lang')}</b><button class="ibtn" data-act="close" aria-label="Close">✕</button></div>
+<p class="meta" style="margin-bottom:.6rem">22 scheduled languages + English. Menus, buttons and safety messages are built in and work offline. "draft" = needs a native-speaker review. "→ Hindi/Urdu" = shows that language until a native translation is added.</p>
+<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.5rem">${LANGS.map(l=>`<button class="opt ${l.c===S.prof.lang?'good':''}" data-act="lang" data-c="${l.c}" style="margin:0"><b>${esc(l.n)}</b><br><span class="meta">${esc(l.e)}</span> ${badge(l)}</button>`).join('')}</div>`);
+}
+function openSettings(){
+modal(`<div class="sh"><b style="font-size:1.2rem">⚙️ Settings</b><button class="ibtn" data-act="close" aria-label="Close">✕</button></div>
+<div class="row"><button class="chip ${S.prof.large?'on':''}" data-act="large">🔠 ${h('large')}</button><button class="chip ${S.prof.sample?'on':''}" data-act="sampleT">🧪 Sample stories</button></div>
+<label class="l">Demo: preview the access rules as</label>
+<div class="seg"><button class="${S.prof.viewer==='visitor'?'on':''}" data-act="viewer" data-v="visitor">Visitor</button><button class="${S.prof.viewer==='researcher'?'on':''}" data-act="viewer" data-v="researcher">Verified researcher</button></div>
+<p class="meta" style="margin:.4rem 0">Stories marked "Researchers" only show up in researcher view. "Only me" stories never show to others.</p>
+<div class="row"><button class="btn g" data-act="go" data-p="reports">📊 ${h('nav_rep')}</button><button class="btn g" data-act="wipe" id="wipeBtn">🗑️ Erase all my data</button></div>
+<div class="card" style="margin-top:.8rem"><div class="meta">How your data is protected</div>
+<ul style="margin:.5rem 0 0 1.1rem;font-size:.85rem;color:var(--tx2);line-height:1.8">
+<li>The pin is blurred on your phone before saving.</li>
+<li>Photos are re-encoded in the browser, which removes hidden GPS data.</li>
+<li>You choose who sees each story. Names are never put in reports.</li>
+<li>All text is escaped before display; phone numbers and emails are blocked; restored backups are validated.</li>
+<li>Production adds login, Row-Level Security, private storage with signed links, rate limits and moderation.</li></ul></div>
+<p class="foot">The built-in map shows a simplified coastline only. "Detailed map" loads third-party tiles, which may draw borders differently from India's official map. Check the official boundary rules before using detailed tiles in a public launch. Storage engine here: ${esc(DB.eng)}.</p>`);
+}
+async function wipe(el){
+if(!arm(el,'wipe'))return;
+for(const c of COLS)await DB.clear(c);
+S.recs=[];S.posts=[];S.media={};S.chat=[];S.prof={...S.prof,name:'',points:0,read:[],quiz:[],liked:[],hidden:[],seeded:false};
+await loadAll();closeModal();toast('Erased');renderAll();
+}
+
+/* ========== actions ========== */
+function act(a,d,el){
+switch(a){
+case'go':closeModal();go(d.p);break;
+case'lang':setLang(d.c);break;
+case'langsheet':openLangs();break;
+case'settings':openSettings();break;
+case'close':closeModal();break;
+case'rec':openRec(d.id);break;
+case'tale':openTale(d.id);break;
+case'zoom':el.style.maxWidth=el.style.maxWidth?'':'none';el.parentElement.style.display=el.style.maxWidth?'block':'';break;
+case'showtale':{const x=TALES.find(y=>y.id===d.id);closeModal();go('map');if(map&&x)setTimeout(()=>map.flyTo([x.lat,x.lng],8,{duration:1.2}),250);break;}
+case'sharetale':S.draft.kind='folklore';go('record');break;
+case'cat':if(d.c==='all')S.filters.cats.clear();else S.filters.cats.has(d.c)?S.filters.cats.delete(d.c):S.filters.cats.add(d.c);renderMap();break;
+case'layer':S.filters.layers[d.l]=!S.filters.layers[d.l];if(d.l==='tiles')setTiles(S.filters.layers.tiles);renderMap();break;
+case'livesim':S.live.on?stopLive():startLive();renderChips();break;
+case'ocsel':S.ocean.sel=d.id;go('ocean');break;
+case'ocsel2':S.ocean.sel=d.id;renderOcean();loadDetail(d.id);break;
+case'ocgps':if(!navigator.geolocation)return toast(t('gps_err'));navigator.geolocation.getCurrentPosition(p=>{S.ocean.sel=nearest(p.coords.latitude,p.coords.longitude).id;renderOcean();loadDetail(S.ocean.sel);},()=>toast(t('gps_err')),{timeout:8000});break;
+case'ocrefresh':S.ocean.ts=0;S.ocean.data={};S.ocean.detail={};renderOcean();loadOcean(true).then(()=>{renderOcean();loadDetail(S.ocean.sel,true);});break;
+case'ocsave':saveSnap(S.ocean.sel,true).then(o=>toast(o?'💾 '+REG(o.rg).short+' — '+t('saved').split('!')[0]:'—'));break;
+case'ocask':{act('chat',{},el);sendChat(`Explain today's sea conditions for ${REG(S.ocean.sel).name} in simple words. What should fishers watch out for in the next 24 hours?`);break;}
+case'quiz':answerQuiz(d.t,+d.i,el);break;
+case'speak':{const dst=$('#'+d.dst),s=$('#'+d.src),use=(dst&&!dst.hidden&&dst.textContent)?dst:s;if(use)speak(use.textContent,use.dataset.lang||'en');break;}
+case'speakmsg':{const m=S.chat[+d.i];if(m)speak(m.content,S.prof.lang);break;}
+case'tr':translateEl(d.src,d.dst,el);break;
+case'seg':S.draft[d.k]=d.v;$$(`[data-act=seg][data-k=${d.k}]`).forEach(b=>b.classList.toggle('on',b===el));break;
+case'mic':toggleMic();break;
+case'dict':dictate($('#recText'),el);break;
+case'chdict':dictate($('#chIn'),el);break;
+case'gps':useGPS();break;
+case'save':saveRec();break;
+case'rm':{const m=(S.draft.media||[])[+d.i];if(m&&m.url)URL.revokeObjectURL(m.url);(S.draft.media||[]).splice(+d.i,1);showPreview();break;}
+case'delrec':if(arm(el,'del'+d.id))delRec(d.id);break;
+case'ptype':S.ptype=d.v;$$('[data-act=ptype]').forEach(b=>b.classList.toggle('on',b===el));break;
+case'post':addPost();break;
+case'reply':addReply(d.id);break;
+case'like':{const i=S.prof.liked.indexOf(d.id);i<0?S.prof.liked.push(d.id):S.prof.liked.splice(i,1);saveProf();renderCom();break;}
+case'report':S.prof.hidden.push(d.id);saveProf();toast(t('reported'));renderCom();break;
+case'chat':$('#chat').classList.add('open');$('#chatFab').style.display='none';if(!S.ocean.ts)loadOcean();loadDetail(S.ocean.sel);renderChat();break;
+case'chatclose':$('#chat').classList.remove('open');$('#chatFab').style.display='';break;
+case'chsend':sendChat();break;
+case'cs':sendChat(el.textContent);break;
+case'chrmimg':S.chatImg=null;renderChat();break;
+case'chclear':S.chat=[];S.chatImg=null;DB.put('meta',{id:'chat',msgs:[]});renderChat();break;
+case'large':S.prof.large=!S.prof.large;saveProf();applyI18n();el.classList.toggle('on',S.prof.large);break;
+case'sampleT':S.prof.sample=!S.prof.sample;saveProf();el.classList.toggle('on',S.prof.sample);renderAll();break;
+case'viewer':S.prof.viewer=d.v;saveProf();$$('[data-act=viewer]').forEach(b=>b.classList.toggle('on',b===el));renderAll();break;
+case'wipe':wipe(el);break;
+case'rp':S.rep.days=+d.v;showReports();break;
+case'rrg':S.rep.region=d.id;showReports();break;
+case'rsample':S.rep.sample=!S.rep.sample;showReports();break;
+case'repmake':makeReport(false);break;
+case'repai':makeReport(true);break;
+case'repprint':{if(!S.rep.html){toast(t('rep_empty'));break;}try{window.print();}catch(e){toast('Use "Download report", then print it from your browser');}break;}
+case'rephtml':{if(!S.rep.html){toast(t('rep_empty'));break;}dl('sagarkatha-report.html','text/html',`<!doctype html><html><head><meta charset="utf-8"><title>SagarKatha report</title><style>body{margin:0;background:#e9eef2;padding:16px}${PAPER_CSS}</style></head><body>${S.rep.html}</body></html>`);break;}
+case'repcsv':exportCSV();break;
+case'repjson':backup();break;
+case'repopen':DB.get('reports',d.id).then(x=>{if(x){S.rep.html=x.html;showReports();}});break;
+case'repdel':DB.del('reports',d.id).then(()=>{S.rep.html='';showReports();});break;
+}
+}
+
+/* ========== init ========== */
+async function loadAll(){
+const p=await DB.get('meta','profile');if(p){const{id,...rest}=p;Object.assign(S.prof,rest);}
+S.prof.uid=S.prof.uid||uid();
+S.recs=(await DB.all('stories')).sort((a,b)=>b.ts-a.ts);
+S.posts=await DB.all('posts');
+S.media={};(await DB.all('media')).forEach(m=>{S.media[m.id]=m;});
+const c=await DB.get('meta','chat');S.chat=(c&&c.msgs)||[];
+if(!S.prof.seeded){for(const x of SEEDPOSTS){const q={...x,ts:Date.now()+x.ts};await DB.put('posts',q);S.posts.push(q);}S.prof.seeded=true;}
+await saveProf();
+}
+async function migrate(){
+if(!window.storage||await DB.get('meta','mig'))return;
+try{
+const g=async k=>{try{const r=await window.storage.get(k);return r&&r.value?JSON.parse(r.value):null;}catch(e){return null;}};
+const p=await g('sk:prof');if(p&&!(await DB.get('meta','profile'))){const{id,...rest}=p;await DB.put('meta',{...rest,uid:id,id:'profile'});}
+for(const o of(await g('sk:recs'))||[])if(o&&o.id){const mids=[];for(const m of o.media||[])if(m&&m.u){const x=await addMedia(o.id,'image',m.u,'');if(x)mids.push(x);}const{media,audioUrl,vidUrl,...rest}=o;await DB.put('stories',{...rest,mids});}
+for(const o of(await g('sk:posts'))||[])if(o&&o.id)await DB.put('posts',o);
+}catch(e){}
+await DB.put('meta',{id:'mig'});
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b)act(b.dataset.act,b.dataset,b);});
+$('#ov').addEventListener('click',e=>{if(e.target.id==='ov')closeModal();});
+$('#q').addEventListener('input',e=>{clearTimeout(S.qt);S.qt=setTimeout(()=>{S.filters.q=e.target.value.trim().toLowerCase();renderMap();},200);});
+$('#recFile').addEventListener('change',onFile);
+$('#chFile').addEventListener('change',onChatFile);
+document.addEventListener('change',e=>{if(e.target.id==='repFile')restore(e);});
+$('#chIn').addEventListener('keydown',e=>{if(e.key==='Enter')sendChat();});
+window.addEventListener('online',()=>{netUI();syncQueue();});window.addEventListener('offline',netUI);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+window.addEventListener('error',e=>{if(e&&e.message&&!/ResizeObserver/.test(e.message))toast('⚠️ '+String(e.message).slice(0,90));});
+
+(async function init(){
+TT=buildTT('en');
+await DB.init();await migrate();await loadAll();
+const c=S.prof.lang==='en'?null:await DB.get('meta','i18x:'+S.prof.lang),ai=c&&c.tr;
+TT=buildTT(S.prof.lang,ai);
+applyI18n();netUI();prepRecord();go('home');
+loadOcean().then(()=>{if(S.page==='home')renderHome();});
+if(S.prof.lang!=='en'&&!ai)enhance(S.prof.lang);
+if(navigator.onLine)syncQueue();
+})();
+})();
+</script>
+</body>
+</html>
