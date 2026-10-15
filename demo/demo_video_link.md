@@ -1,12 +1,17 @@
 # Demo video
 
-**Video:** [`sagarkatha_demo_video.mp4`](sagarkatha_demo_video.mp4) (about 2 min 47 s, 1280×720, 6.8 MB). GitHub's file viewer does not play it inline, so **[watch it here](https://naitiksinghal179-png.github.io/SagarKatha/demo.html)** (plays in the browser) or download the file.
+**Video:** [`SagarKatha_Live_Demo.mp4`](SagarKatha_Live_Demo.mp4) (4 min 55 s, 1280×720, 12.7 MB). GitHub's file viewer does not play it inline, so **[watch it here](https://naitiksinghal179-png.github.io/SagarKatha/demo.html)** (plays in the browser) or download the file.
 
-It is a narrated **pitch video** (slides and captions) that explains the problem and the idea. It is not a screen recording of the app. The quotes shown in it are the author's own pitch material; check that each one is a real, consented quotation or label it as illustrative before using it publicly.
+It is a narrated **screen recording of the HTML prototype** (`prototype/index.html`, the same file that is published on GitHub Pages). It walks through every page and records a clearly labelled **SAMPLE** story from start to finish. What to know before you share it:
+
+- It was recorded from a local copy of the same file, with a browser **test microphone** (the voice note is just a beep) and a **test location** near Mangaluru.
+- The ocean numbers read **"Demo estimate"** because the recording had no internet. The AI features (story summary, translation, chat) were offline, so it shows the built-in fallbacks. The "live" pins are a simulation.
+- The sample story and the sample photo were made for the demo. They are not a fisher's knowledge.
+- The prototype has **not** been field-tested with fishing communities.
 
 If you upload it to YouTube or Drive as well, paste that link here.
 
-## Suggested script for a screen-recording of the app
+## Suggested script for a screen recording of the Streamlit app
 
 1. **(0:00)** Home page – the problem in one sentence, the sample-data notice.
 2. **(0:15)** *Contribute a story* – tick consent, record 10 seconds with the microphone, type the transcript, choose "Approximate" location, save, show the withdraw code.
